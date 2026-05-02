@@ -1,200 +1,153 @@
-<mxfile host="app.diagrams.net" modified="2026-05-02T00:00:00.000Z" agent="Team Echo" version="22.0.0" type="device">
+<mxfile host="app.diagrams.net" agent="Team Echo">
   <diagram name="Class Diagram" id="class-diagram-1">
-    <mxGraphModel dx="1422" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="2804" dy="902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Title -->
-        <mxCell id="title" value="Personal Task Management System — Class Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="80" y="10" width="1240" height="40" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1E2761;" value="Personal Task Management System - Class Diagram" vertex="1">
+          <mxGeometry height="40" width="1240" x="-40" y="10" as="geometry" />
         </mxCell>
-
-        <!-- Legend -->
-        <mxCell id="legend" value="Legend&#10;━━━ solid border = currently implemented&#10;┄┄┄ dashed border = target-state, planned for upcoming sprint" style="text;html=1;strokeColor=#1E2761;fillColor=#F8F9FB;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=10;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="80" y="780" width="400" height="80" as="geometry" />
+        <mxCell id="legend" parent="1" style="text;html=1;strokeColor=#1E2761;fillColor=#F8F9FB;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=10;fontColor=#1E2761;" value="Legend&#xa;━━━ solid border = currently implemented&#xa;┄┄┄ dashed border = target-state, planned for upcoming sprint" vertex="1">
+          <mxGeometry height="80" width="400" x="80" y="790" as="geometry" />
         </mxCell>
-
-        <!-- ============ WebUI (React SPA) — current ============ -->
-        <mxCell id="UI" value="WebUI (React SPA)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#ffffff;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="80" y="60" width="260" height="220" as="geometry" />
+        <mxCell id="UI" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#ffffff;fontSize=14;" value="WebUI (React SPA)" vertex="1">
+          <mxGeometry height="220" width="260" x="80" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="UI-attrs" value="Components:&#10;- Sidebar&#10;- Header&#10;- StatsCards&#10;- TaskTable&#10;- AddTaskModal&#10;- SearchFilter (UI only, not wired)&#10;- EditTaskModal (planned)" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" vertex="UI" parent="UI">
-          <mxGeometry y="28" width="260" height="120" as="geometry" />
+        <mxCell id="UI-attrs" parent="UI" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" value="Components:&#xa;- Sidebar&#xa;- Header&#xa;- StatsCards&#xa;- TaskTable&#xa;- AddTaskModal&#xa;- SearchFilter (UI only, not wired)&#xa;- EditTaskModal (planned)" vertex="UI">
+          <mxGeometry height="120" width="260" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="UI-sep" value="" style="line;strokeWidth=1;strokeColor=#1E2761;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="UI">
-          <mxGeometry y="148" width="260" height="8" as="geometry" />
+        <mxCell id="UI-sep" parent="UI" style="line;strokeWidth=1;strokeColor=#1E2761;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="148" as="geometry" />
         </mxCell>
-        <mxCell id="UI-methods" value="+ fetch GET  /api/tasks&#10;+ fetch POST /api/tasks&#10;+ fetch PUT  /api/tasks/:id&#10;+ fetch DEL  /api/tasks/:id" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" vertex="1" parent="UI">
-          <mxGeometry y="156" width="260" height="64" as="geometry" />
+        <mxCell id="UI-methods" parent="UI" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" value="+ fetch GET  /api/tasks&#xa;+ fetch POST /api/tasks&#xa;+ fetch PUT  /api/tasks/:id&#xa;+ fetch DEL  /api/tasks/:id" vertex="1">
+          <mxGeometry height="64" width="260" y="156" as="geometry" />
         </mxCell>
-
-        <!-- ============ FlaskRoutes — current ============ -->
-        <mxCell id="FR" value="FlaskRoutes (app.py)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#ffffff;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="440" y="60" width="280" height="220" as="geometry" />
+        <mxCell id="FR" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#ffffff;fontSize=14;" value="FlaskRoutes (app.py)" vertex="1">
+          <mxGeometry height="220" width="280" x="440" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="FR-attrs" value="- app: Flask&#10;- db: SQLAlchemy" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" vertex="1" parent="FR">
-          <mxGeometry y="28" width="280" height="44" as="geometry" />
+        <mxCell id="FR-attrs" parent="FR" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" value="- app: Flask&#xa;- db: SQLAlchemy" vertex="1">
+          <mxGeometry height="44" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="FR-sep" value="" style="line;strokeWidth=1;strokeColor=#1E2761;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="FR">
-          <mxGeometry y="72" width="280" height="8" as="geometry" />
+        <mxCell id="FR-sep" parent="FR" style="line;strokeWidth=1;strokeColor=#1E2761;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="72" as="geometry" />
         </mxCell>
-        <mxCell id="FR-methods" value="+ get_tasks()&#10;+ create_task()&#10;+ update_task(id)&#10;+ delete_task(id)&#10;+ dashboard()&#10;+ filter_tasks()&#10;+ health()" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" vertex="1" parent="FR">
-          <mxGeometry y="80" width="280" height="140" as="geometry" />
+        <mxCell id="FR-methods" parent="FR" style="text;strokeColor=#1E2761;fillColor=#E8F0FE;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#1E2761;" value="+ get_tasks()&#xa;+ create_task()&#xa;+ update_task(id)&#xa;+ delete_task(id)&#xa;+ dashboard()&#xa;+ filter_tasks()&#xa;+ health()" vertex="1">
+          <mxGeometry height="140" width="280" y="80" as="geometry" />
         </mxCell>
-
-        <!-- ============ TaskManager — planned (dashed) ============ -->
-        <mxCell id="TM" value="TaskManager  «planned»" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#5B2C6F;strokeColor=#5B2C6F;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="820" y="60" width="280" height="220" as="geometry" />
+        <mxCell id="TM" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#5B2C6F;strokeColor=#5B2C6F;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" value="TaskManager  «planned»" vertex="1">
+          <mxGeometry height="220" width="280" x="820" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="TM-attrs" value="- session: db.session&#10;- validator: ValidationService&#10;- filterer: FilterSortService" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" vertex="1" parent="TM">
-          <mxGeometry y="28" width="280" height="64" as="geometry" />
+        <mxCell id="TM-attrs" parent="TM" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" value="- session: db.session&#xa;- validator: ValidationService&#xa;- filterer: FilterSortService" vertex="1">
+          <mxGeometry height="64" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="TM-sep" value="" style="line;strokeWidth=1;strokeColor=#5B2C6F;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" vertex="1" parent="TM">
-          <mxGeometry y="92" width="280" height="8" as="geometry" />
+        <mxCell id="TM-sep" parent="TM" style="line;strokeWidth=1;strokeColor=#5B2C6F;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="92" as="geometry" />
         </mxCell>
-        <mxCell id="TM-methods" value="+ create(data) -> Task&#10;+ update(id, data) -> Task&#10;+ delete(id) -> bool&#10;+ list(filter, sort) -> [Task]&#10;+ dashboard() -> dict" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" vertex="1" parent="TM">
-          <mxGeometry y="100" width="280" height="120" as="geometry" />
+        <mxCell id="TM-methods" parent="TM" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" value="+ create(data) -&gt; Task&#xa;+ update(id, data) -&gt; Task&#xa;+ delete(id) -&gt; bool&#xa;+ list(filter, sort) -&gt; [Task]&#xa;+ dashboard() -&gt; dict" vertex="1">
+          <mxGeometry height="120" width="280" y="100" as="geometry" />
         </mxCell>
-
-        <!-- ============ ValidationService — planned ============ -->
-        <mxCell id="VS" value="ValidationService  «planned»" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#5B2C6F;strokeColor=#5B2C6F;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="820" y="320" width="280" height="160" as="geometry" />
+        <mxCell id="VS" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#5B2C6F;strokeColor=#5B2C6F;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" value="ValidationService  «planned»" vertex="1">
+          <mxGeometry height="160" width="280" x="820" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="VS-attrs" value="- rules: List&lt;Rule&gt;" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" vertex="1" parent="VS">
-          <mxGeometry y="28" width="280" height="32" as="geometry" />
+        <mxCell id="VS-attrs" parent="VS" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" value="- rules: List&lt;Rule&gt;" vertex="1">
+          <mxGeometry height="32" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="VS-sep" value="" style="line;strokeWidth=1;strokeColor=#5B2C6F;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" vertex="1" parent="VS">
-          <mxGeometry y="60" width="280" height="8" as="geometry" />
+        <mxCell id="VS-sep" parent="VS" style="line;strokeWidth=1;strokeColor=#5B2C6F;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="VS-methods" value="+ validate_create(data) -> [Error]&#10;+ validate_update(data) -> [Error]" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" vertex="1" parent="VS">
-          <mxGeometry y="68" width="280" height="92" as="geometry" />
+        <mxCell id="VS-methods" parent="VS" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" value="+ validate_create(data) -&gt; [Error]&#xa;+ validate_update(data) -&gt; [Error]" vertex="1">
+          <mxGeometry height="92" width="280" y="68" as="geometry" />
         </mxCell>
-
-        <!-- ============ FilterSortService — planned ============ -->
-        <mxCell id="FS" value="FilterSortService  «planned»" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#5B2C6F;strokeColor=#5B2C6F;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="820" y="520" width="280" height="160" as="geometry" />
+        <mxCell id="FS" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#5B2C6F;strokeColor=#5B2C6F;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" value="FilterSortService  «planned»" vertex="1">
+          <mxGeometry height="160" width="280" x="820" y="520" as="geometry" />
         </mxCell>
-        <mxCell id="FS-attrs" value="(stateless)" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" vertex="1" parent="FS">
-          <mxGeometry y="28" width="280" height="32" as="geometry" />
+        <mxCell id="FS-attrs" parent="FS" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" value="(stateless)" vertex="1">
+          <mxGeometry height="32" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="FS-sep" value="" style="line;strokeWidth=1;strokeColor=#5B2C6F;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" vertex="1" parent="FS">
-          <mxGeometry y="60" width="280" height="8" as="geometry" />
+        <mxCell id="FS-sep" parent="FS" style="line;strokeWidth=1;strokeColor=#5B2C6F;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="FS-methods" value="+ apply_filter(query, criteria)&#10;+ apply_sort(query, key, dir)" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" vertex="1" parent="FS">
-          <mxGeometry y="68" width="280" height="92" as="geometry" />
+        <mxCell id="FS-methods" parent="FS" style="text;strokeColor=#5B2C6F;fillColor=#F4ECF7;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#5B2C6F;dashed=1;dashPattern=8 4;" value="+ apply_filter(query, criteria)&#xa;+ apply_sort(query, key, dir)" vertex="1">
+          <mxGeometry height="92" width="280" y="68" as="geometry" />
         </mxCell>
-
-        <!-- ============ ReminderService — planned ============ -->
-        <mxCell id="RS" value="ReminderService  «planned»" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#2C5F2D;strokeColor=#2C5F2D;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="80" y="320" width="280" height="200" as="geometry" />
+        <mxCell id="RS" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#2C5F2D;strokeColor=#2C5F2D;fontColor=#ffffff;fontSize=14;dashed=1;dashPattern=8 4;strokeWidth=2;" value="ReminderService  «planned»" vertex="1">
+          <mxGeometry height="200" width="280" x="80" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="RS-attrs" value="- pending: List&lt;Notification&gt;&#10;- scheduler: APScheduler&#10;- interval_s: int" style="text;strokeColor=#2C5F2D;fillColor=#E8F5E9;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#2C5F2D;dashed=1;dashPattern=8 4;" vertex="1" parent="RS">
-          <mxGeometry y="28" width="280" height="60" as="geometry" />
+        <mxCell id="RS-attrs" parent="RS" style="text;strokeColor=#2C5F2D;fillColor=#E8F5E9;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#2C5F2D;dashed=1;dashPattern=8 4;" value="- pending: List&lt;Notification&gt;&#xa;- scheduler: APScheduler&#xa;- interval_s: int" vertex="1">
+          <mxGeometry height="60" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="RS-sep" value="" style="line;strokeWidth=1;strokeColor=#2C5F2D;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" vertex="1" parent="RS">
-          <mxGeometry y="88" width="280" height="8" as="geometry" />
+        <mxCell id="RS-sep" parent="RS" style="line;strokeWidth=1;strokeColor=#2C5F2D;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;dashed=1;dashPattern=8 4;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="88" as="geometry" />
         </mxCell>
-        <mxCell id="RS-methods" value="+ check_due_dates()&#10;+ schedule_reminder(t: Task)&#10;+ emit_notification(t: Task)" style="text;strokeColor=#2C5F2D;fillColor=#E8F5E9;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#2C5F2D;dashed=1;dashPattern=8 4;" vertex="1" parent="RS">
-          <mxGeometry y="96" width="280" height="100" as="geometry" />
+        <mxCell id="RS-methods" parent="RS" style="text;strokeColor=#2C5F2D;fillColor=#E8F5E9;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#2C5F2D;dashed=1;dashPattern=8 4;" value="+ check_due_dates()&#xa;+ schedule_reminder(t: Task)&#xa;+ emit_notification(t: Task)" vertex="1">
+          <mxGeometry height="100" width="280" y="96" as="geometry" />
         </mxCell>
-
-        <!-- ============ Task model — current (with target attrs) ============ -->
-        <mxCell id="Task" value="Task (SQLAlchemy model)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#B85042;strokeColor=#B85042;fontColor=#ffffff;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="440" y="320" width="280" height="320" as="geometry" />
+        <mxCell id="Task" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#B85042;strokeColor=#B85042;fontColor=#ffffff;fontSize=14;" value="Task (SQLAlchemy model)" vertex="1">
+          <mxGeometry height="320" width="280" x="440" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="Task-attrs" value="- id: Integer (PK)&#10;- title: String(140)&#10;- description: String(2000)&#10;- due_date: DateTime&#10;- priority: Enum(Priority)&#10;- category: String(50)&#10;- status: Enum(Status)&#10;- created_at: DateTime&#10;- updated_at: DateTime&#10;&#10;Current code: title(100), desc(300),&#10;due_date as String, priority/status&#10;as String, no created/updated_at" style="text;strokeColor=#B85042;fillColor=#FFF4E6;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontColor=#6D2E46;" vertex="1" parent="Task">
-          <mxGeometry y="28" width="280" height="220" as="geometry" />
+        <mxCell id="Task-attrs" parent="Task" style="text;strokeColor=#B85042;fillColor=#FFF4E6;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;fontColor=#6D2E46;" value="- id: Integer (PK)&#xa;- title: String(140)&#xa;- description: String(2000)&#xa;- due_date: DateTime&#xa;- priority: Enum(Priority)&#xa;- category: String(50)&#xa;- status: Enum(Status)&#xa;- created_at: DateTime&#xa;- updated_at: DateTime&#xa;&#xa;Current code: title(100), desc(300),&#xa;due_date as String, priority/status&#xa;as String, no created/updated_at" vertex="1">
+          <mxGeometry height="220" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="Task-sep" value="" style="line;strokeWidth=1;strokeColor=#B85042;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Task">
-          <mxGeometry y="248" width="280" height="8" as="geometry" />
+        <mxCell id="Task-sep" parent="Task" style="line;strokeWidth=1;strokeColor=#B85042;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="248" as="geometry" />
         </mxCell>
-        <mxCell id="Task-methods" value="+ to_dict() -> dict&#10;+ is_overdue() -> bool" style="text;strokeColor=#B85042;fillColor=#FFF4E6;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#6D2E46;" vertex="1" parent="Task">
-          <mxGeometry y="256" width="280" height="64" as="geometry" />
+        <mxCell id="Task-methods" parent="Task" style="text;strokeColor=#B85042;fillColor=#FFF4E6;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#6D2E46;" value="+ to_dict() -&gt; dict&#xa;+ is_overdue() -&gt; bool" vertex="1">
+          <mxGeometry height="64" width="280" y="256" as="geometry" />
         </mxCell>
-
-        <!-- ============ Priority enum — planned ============ -->
-        <mxCell id="EnumP" value="«enumeration»&#10;Priority  «planned»" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6B3;strokeColor=#B8860B;fontColor=#6D4C00;fontSize=11;align=center;verticalAlign=top;spacingTop=4;dashed=1;dashPattern=8 4;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="440" y="680" width="130" height="100" as="geometry" />
+        <mxCell id="EnumP" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6B3;strokeColor=#B8860B;fontColor=#6D4C00;fontSize=11;align=center;verticalAlign=top;spacingTop=4;dashed=1;dashPattern=8 4;strokeWidth=2;" value="«enumeration»&#xa;Priority  «planned»" vertex="1">
+          <mxGeometry height="100" width="130" x="440" y="680" as="geometry" />
         </mxCell>
-        <mxCell id="EnumP-vals" value="Low (1)&#10;Medium (2) — default&#10;High (3)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#6D4C00;" vertex="1" parent="EnumP">
-          <mxGeometry y="40" width="130" height="60" as="geometry" />
+        <mxCell id="EnumP-vals" parent="EnumP" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#6D4C00;" value="Low (1)&#xa;Medium (2) — default&#xa;High (3)" vertex="1">
+          <mxGeometry height="60" width="130" y="40" as="geometry" />
         </mxCell>
-
-        <!-- ============ Status enum — planned ============ -->
-        <mxCell id="EnumS" value="«enumeration»&#10;Status  «planned»" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6B3;strokeColor=#B8860B;fontColor=#6D4C00;fontSize=11;align=center;verticalAlign=top;spacingTop=4;dashed=1;dashPattern=8 4;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="590" y="680" width="130" height="100" as="geometry" />
+        <mxCell id="EnumS" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6B3;strokeColor=#B8860B;fontColor=#6D4C00;fontSize=11;align=center;verticalAlign=top;spacingTop=4;dashed=1;dashPattern=8 4;strokeWidth=2;" value="«enumeration»&#xa;Status  «planned»" vertex="1">
+          <mxGeometry height="100" width="130" x="590" y="680" as="geometry" />
         </mxCell>
-        <mxCell id="EnumS-vals" value="Pending — default&#10;Completed" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#6D4C00;" vertex="1" parent="EnumS">
-          <mxGeometry y="40" width="130" height="60" as="geometry" />
+        <mxCell id="EnumS-vals" parent="EnumS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#6D4C00;" value="Pending — default&#xa;Completed" vertex="1">
+          <mxGeometry height="60" width="130" y="40" as="geometry" />
         </mxCell>
-
-        <!-- ============ SQLAlchemy / SQLite — current ============ -->
-        <mxCell id="DS" value="SQLAlchemy ORM → SQLite" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#6D2E46;strokeColor=#6D2E46;fontColor=#ffffff;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="80" y="600" width="280" height="160" as="geometry" />
+        <mxCell id="DS" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=28;horizontalStack=0;resizeParent=1;resizeParentMax=0;horizontalLeftLane=0;horizontalRightLane=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;fillColor=#6D2E46;strokeColor=#6D2E46;fontColor=#ffffff;fontSize=14;" value="SQLAlchemy ORM → SQLite" vertex="1">
+          <mxGeometry height="160" width="280" x="80" y="600" as="geometry" />
         </mxCell>
-        <mxCell id="DS-attrs" value="- engine: SQLAlchemy Engine&#10;- session: scoped_session&#10;- url: TASKMGR_DB_PATH" style="text;strokeColor=#6D2E46;fillColor=#FCE4EC;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#6D2E46;" vertex="1" parent="DS">
-          <mxGeometry y="28" width="280" height="56" as="geometry" />
+        <mxCell id="DS-attrs" parent="DS" style="text;strokeColor=#6D2E46;fillColor=#FCE4EC;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#6D2E46;" value="- engine: SQLAlchemy Engine&#xa;- session: scoped_session&#xa;- url: TASKMGR_DB_PATH" vertex="1">
+          <mxGeometry height="56" width="280" y="28" as="geometry" />
         </mxCell>
-        <mxCell id="DS-sep" value="" style="line;strokeWidth=1;strokeColor=#6D2E46;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="DS">
-          <mxGeometry y="84" width="280" height="8" as="geometry" />
+        <mxCell id="DS-sep" parent="DS" style="line;strokeWidth=1;strokeColor=#6D2E46;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="84" as="geometry" />
         </mxCell>
-        <mxCell id="DS-methods" value="+ Task.query.all/get/filter_by&#10;+ session.add / commit / delete&#10;Alembic migrations (planned)" style="text;strokeColor=#6D2E46;fillColor=#FCE4EC;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#6D2E46;" vertex="1" parent="DS">
-          <mxGeometry y="92" width="280" height="64" as="geometry" />
+        <mxCell id="DS-methods" parent="DS" style="text;strokeColor=#6D2E46;fillColor=#FCE4EC;align=left;verticalAlign=top;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;fontColor=#6D2E46;" value="+ Task.query.all/get/filter_by&#xa;+ session.add / commit / delete&#xa;Alembic migrations (planned)" vertex="1">
+          <mxGeometry height="64" width="280" y="92" as="geometry" />
         </mxCell>
-
-        <!-- ============ Relationships ============ -->
-
-        <!-- WebUI -> FlaskRoutes (HTTP) -->
-        <mxCell id="rel-ui-fr" value="HTTP /api/*" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#36454F;endSize=8;fontSize=11;" edge="1" parent="1" source="UI" target="FR">
+        <mxCell id="rel-ui-fr" edge="1" parent="1" source="UI" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#36454F;endSize=8;fontSize=11;" target="FR" value="HTTP /api/*">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- FlaskRoutes -> TaskManager (planned) -->
-        <mxCell id="rel-fr-tm" value="delegates to (planned)" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#5B2C6F;endSize=8;dashed=1;dashPattern=8 4;fontSize=10;fontStyle=2;" edge="1" parent="1" source="FR" target="TM">
+        <mxCell id="rel-fr-tm" edge="1" parent="1" source="FR" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#5B2C6F;endSize=8;dashed=1;dashPattern=8 4;fontSize=10;fontStyle=2;" target="TM" value="delegates to (planned)">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- FlaskRoutes -> Task (current direct usage) -->
-        <mxCell id="rel-fr-task" value="uses (today)" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;endSize=8;fontSize=10;fontStyle=2;" edge="1" parent="1" source="FR" target="Task">
+        <mxCell id="rel-fr-task" edge="1" parent="1" source="FR" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;endSize=8;fontSize=10;fontStyle=2;" target="Task" value="uses (today)">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- TaskManager -> Task (manages 0..*) -->
-        <mxCell id="rel-tm-task" value="manages 0..*" style="endArrow=diamondThin;endFill=1;endSize=14;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;strokeColor=#5B2C6F;startArrow=none;dashed=1;dashPattern=8 4;fontSize=11;" edge="1" parent="1" source="TM" target="Task">
+        <mxCell id="rel-tm-task" edge="1" parent="1" source="TM" style="endArrow=diamondThin;endFill=1;endSize=14;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;strokeColor=#5B2C6F;startArrow=none;dashed=1;dashPattern=8 4;fontSize=11;" target="Task" value="manages 0..*">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- TaskManager -> ValidationService -->
-        <mxCell id="rel-tm-vs" value="uses" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#5B2C6F;endSize=8;dashed=1;dashPattern=8 4;fontSize=11;" edge="1" parent="1" source="TM" target="VS">
+        <mxCell id="rel-tm-vs" edge="1" parent="1" source="TM" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#5B2C6F;endSize=8;dashed=1;dashPattern=8 4;fontSize=11;" target="VS" value="uses">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- TaskManager -> FilterSortService -->
-        <mxCell id="rel-tm-fs" value="uses" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#5B2C6F;endSize=8;dashed=1;dashPattern=8 4;fontSize=11;" edge="1" parent="1" source="VS" target="FS">
+        <mxCell id="rel-tm-fs" edge="1" parent="1" source="VS" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#5B2C6F;endSize=8;dashed=1;dashPattern=8 4;fontSize=11;" target="FS" value="uses">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ReminderService -> Task (monitors) -->
-        <mxCell id="rel-rs-task" value="monitors" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeColor=#2C5F2D;endSize=8;dashed=1;dashPattern=8 4;fontSize=11;" edge="1" parent="1" source="RS" target="Task">
+        <mxCell id="rel-rs-task" edge="1" parent="1" source="RS" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeColor=#2C5F2D;endSize=8;dashed=1;dashPattern=8 4;fontSize=11;" target="Task" value="monitors">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- Task -> Priority (uses enum) -->
-        <mxCell id="rel-task-prio" value="priority" style="endArrow=open;endFill=0;html=1;exitX=0.4;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#B8860B;endSize=8;dashed=1;dashPattern=8 4;fontSize=10;fontStyle=2;" edge="1" parent="1" source="Task" target="EnumP">
+        <mxCell id="rel-task-prio" edge="1" parent="1" source="Task" style="endArrow=open;endFill=0;html=1;exitX=0.4;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#B8860B;endSize=8;dashed=1;dashPattern=8 4;fontSize=10;fontStyle=2;" target="EnumP" value="priority">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- Task -> Status (uses enum) -->
-        <mxCell id="rel-task-status" value="status" style="endArrow=open;endFill=0;html=1;exitX=0.6;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#B8860B;endSize=8;dashed=1;dashPattern=8 4;fontSize=10;fontStyle=2;" edge="1" parent="1" source="Task" target="EnumS">
+        <mxCell id="rel-task-status" edge="1" parent="1" source="Task" style="endArrow=open;endFill=0;html=1;exitX=0.6;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#B8860B;endSize=8;dashed=1;dashPattern=8 4;fontSize=10;fontStyle=2;" target="EnumS" value="status">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- Task -> SQLAlchemy/SQLite (persists via) -->
-        <mxCell id="rel-task-ds" value="persists via" style="endArrow=open;endFill=0;html=1;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;strokeColor=#36454F;endSize=8;fontSize=11;" edge="1" parent="1" source="Task" target="DS">
+        <mxCell id="rel-task-ds" edge="1" parent="1" source="Task" style="endArrow=open;endFill=0;html=1;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;strokeColor=#36454F;endSize=8;fontSize=11;" target="DS" value="persists via">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
       </root>
     </mxGraphModel>
   </diagram>

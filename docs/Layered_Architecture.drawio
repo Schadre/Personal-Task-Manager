@@ -1,162 +1,132 @@
-<mxfile host="app.diagrams.net" modified="2026-05-02T00:00:00.000Z" agent="Team Echo" version="22.0.0" type="device">
+<mxfile host="app.diagrams.net" agent="Team Echo">
   <diagram name="Layered Architecture" id="layered-arch-1">
-    <mxGraphModel dx="1422" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="1591" dy="1023" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Title -->
-        <mxCell id="title" value="Personal Task Management System — Layered Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="60" y="20" width="1280" height="40" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1E2761;" value="Personal Task Management System - Layered Architecture" vertex="1">
+          <mxGeometry height="40" width="1280" y="20" as="geometry" />
         </mxCell>
-
-        <!-- ===== USER ===== -->
-        <mxCell id="user-icon" value="" style="shape=actor;html=1;fillColor=#1E2761;strokeColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="100" y="120" width="40" height="60" as="geometry" />
+        <mxCell id="user-icon" parent="1" style="shape=actor;html=1;fillColor=#1E2761;strokeColor=#1E2761;" value="" vertex="1">
+          <mxGeometry height="60" width="40" x="100" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="user-label" value="User&#10;(student / professional)" style="text;html=1;align=center;fontSize=11;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="60" y="185" width="120" height="40" as="geometry" />
+        <mxCell id="user-label" parent="1" style="text;html=1;align=center;fontSize=11;fontColor=#1E2761;" value="User&#xa;(student / professional)" vertex="1">
+          <mxGeometry height="40" width="120" x="60" y="185" as="geometry" />
         </mxCell>
-
-        <!-- ===== CLOUDFLARE TUNNEL (ingress) ===== -->
-        <mxCell id="cf-tunnel" value="Cloudflare Tunnel&#10;(TLS termination, ingress; no inbound ports on host)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEEDD;strokeColor=#F38020;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#7A3E0E;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="80" width="780" height="50" as="geometry" />
+        <mxCell id="cf-tunnel" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEEDD;strokeColor=#F38020;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#7A3E0E;arcSize=10;" value="Cloudflare Tunnel&#xa;(TLS termination, ingress; no inbound ports on host)" vertex="1">
+          <mxGeometry height="50" width="780" x="240" y="80" as="geometry" />
         </mxCell>
-
-        <!-- ===== ENVIRONMENTS callout (right side) ===== -->
-        <mxCell id="envs" value="Environments&#10;━━━━━━━━━━━&#10;app.business-tempo.com  →  prod (main branch)&#10;dev.business-tempo.com  →  dev  (dev  branch)&#10;&#10;CI/CD: push to main/dev →&#10;GitHub Actions → SSH deploy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8F9FB;strokeColor=#1E2761;strokeWidth=1;fontSize=10;fontColor=#1E2761;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="80" width="280" height="180" as="geometry" />
+        <mxCell id="envs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8F9FB;strokeColor=#1E2761;strokeWidth=1;fontSize=10;fontColor=#1E2761;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;arcSize=10;" value="Environments&#xa;━━━━━━━━━━━&#xa;app.business-tempo.com  →  prod (main branch)&#xa;dev.business-tempo.com  →  dev  (dev  branch)&#xa;&#xa;CI/CD: push to main/dev →&#xa;GitHub Actions → SSH deploy" vertex="1">
+          <mxGeometry height="165" width="150" x="45" y="320" as="geometry" />
         </mxCell>
-
-        <!-- ===== LAYER 1: PRESENTATION (browser) ===== -->
-        <mxCell id="layer1" value="Presentation Layer&#10;(Browser — React SPA)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#1E2761;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="150" width="780" height="130" as="geometry" />
+        <mxCell id="layer1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#1E2761;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" value="Presentation Layer&#xa;(Browser — React SPA)" vertex="1">
+          <mxGeometry height="130" width="780" x="240" y="150" as="geometry" />
         </mxCell>
-        <mxCell id="ui-sidebar" value="Sidebar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="260" y="200" width="100" height="50" as="geometry" />
+        <mxCell id="ui-sidebar" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" value="Sidebar" vertex="1">
+          <mxGeometry height="50" width="100" x="260" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="ui-header" value="Header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="370" y="200" width="100" height="50" as="geometry" />
+        <mxCell id="ui-header" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" value="Header" vertex="1">
+          <mxGeometry height="50" width="100" x="370" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="ui-stats" value="StatsCards" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="480" y="200" width="100" height="50" as="geometry" />
+        <mxCell id="ui-stats" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" value="StatsCards" vertex="1">
+          <mxGeometry height="50" width="100" x="480" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="ui-table" value="TaskTable" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="590" y="200" width="100" height="50" as="geometry" />
+        <mxCell id="ui-table" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" value="TaskTable" vertex="1">
+          <mxGeometry height="50" width="100" x="590" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="ui-add" value="AddTaskModal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="700" y="200" width="120" height="50" as="geometry" />
+        <mxCell id="ui-add" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" value="AddTaskModal" vertex="1">
+          <mxGeometry height="50" width="120" x="700" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="ui-search" value="SearchFilter&#10;(planned wiring)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=10;fontColor=#1E2761;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="830" y="200" width="120" height="50" as="geometry" />
+        <mxCell id="ui-search" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=10;fontColor=#1E2761;arcSize=20;dashed=1;dashPattern=8 4;" value="SearchFilter&#xa;(planned wiring)" vertex="1">
+          <mxGeometry height="50" width="120" x="830" y="200" as="geometry" />
         </mxCell>
-        <mxCell id="layer1-tag" value="React 19 + Vite + Tailwind. Calls /api/* on the backend over HTTPS." style="text;html=1;align=right;fontSize=10;fontColor=#1E2761;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="600" y="255" width="410" height="20" as="geometry" />
+        <mxCell id="layer1-tag" parent="1" style="text;html=1;align=right;fontSize=10;fontColor=#1E2761;fontStyle=2;" value="React 19 + Vite + Tailwind. Calls /api/* on the backend over HTTPS." vertex="1">
+          <mxGeometry height="20" width="410" x="600" y="255" as="geometry" />
         </mxCell>
-
-        <!-- Server-side bracket label -->
-        <mxCell id="server-bracket" value="↓  ↓  ↓     S E R V E R   ( F l a s k   p r o c e s s   o n   1 2 7 . 0 . 0 . 1 )     ↓  ↓  ↓" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#5B2C6F;" vertex="1" parent="1">
-          <mxGeometry x="240" y="290" width="780" height="20" as="geometry" />
+        <mxCell id="layer2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2C5F2D;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#2C5F2D;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" value="Application Layer&#xa;(Flask routes + planned service classes)" vertex="1">
+          <mxGeometry height="140" width="780" x="240" y="320" as="geometry" />
         </mxCell>
-
-        <!-- ===== LAYER 2: APPLICATION (Flask) ===== -->
-        <mxCell id="layer2" value="Application Layer&#10;(Flask routes + planned service classes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2C5F2D;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#2C5F2D;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="320" width="780" height="140" as="geometry" />
+        <mxCell id="app-routes" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;" value="FlaskRoutes&#xa;(app.py)" vertex="1">
+          <mxGeometry height="60" width="130" x="260" y="375" as="geometry" />
         </mxCell>
-        <mxCell id="app-routes" value="FlaskRoutes&#10;(app.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="260" y="375" width="150" height="60" as="geometry" />
+        <mxCell id="app-tm" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" value="TaskManager&#xa;(planned)" vertex="1">
+          <mxGeometry height="60" width="130" x="410" y="375" as="geometry" />
         </mxCell>
-        <mxCell id="app-tm" value="TaskManager&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="430" y="375" width="150" height="60" as="geometry" />
+        <mxCell id="app-vs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" value="ValidationService&#xa;(planned)" vertex="1">
+          <mxGeometry height="60" width="130" x="565" y="375" as="geometry" />
         </mxCell>
-        <mxCell id="app-vs" value="ValidationService&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="600" y="375" width="160" height="60" as="geometry" />
+        <mxCell id="app-fs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" value="FilterSortService&#xa;(planned)" vertex="1">
+          <mxGeometry height="60" width="130" x="720" y="375" as="geometry" />
         </mxCell>
-        <mxCell id="app-fs" value="FilterSortService&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="780" y="375" width="150" height="60" as="geometry" />
+        <mxCell id="app-rs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=10;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" value="ReminderService&#xa;(planned, w/ APScheduler)" vertex="1">
+          <mxGeometry height="60" width="130" x="870" y="375" as="geometry" />
         </mxCell>
-        <mxCell id="app-rs" value="ReminderService&#10;(planned, w/ APScheduler)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=10;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="950" y="375" width="60" height="60" as="geometry" />
+        <mxCell id="layer2-tag" parent="1" style="text;html=1;align=right;fontSize=10;fontColor=#2C5F2D;fontStyle=2;" value="Python 3.12 + Flask + gunicorn (3 workers prod, 2 dev)." vertex="1">
+          <mxGeometry height="20" width="350" x="660" y="438" as="geometry" />
         </mxCell>
-        <mxCell id="layer2-tag" value="Python 3.12 + Flask + gunicorn (3 workers prod, 2 dev)." style="text;html=1;align=right;fontSize=10;fontColor=#2C5F2D;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="660" y="438" width="350" height="20" as="geometry" />
+        <mxCell id="layer3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#B85042;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" value="Domain Layer&#xa;(SQLAlchemy models + enums)" vertex="1">
+          <mxGeometry height="120" width="780" x="240" y="500" as="geometry" />
         </mxCell>
-
-        <!-- ===== LAYER 3: DOMAIN ===== -->
-        <mxCell id="layer3" value="Domain Layer&#10;(SQLAlchemy models + enums)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#B85042;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="490" width="780" height="120" as="geometry" />
+        <mxCell id="dom-task" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;" value="Task&#xa;id, title, description, due_date,&#xa;priority, category, status,&#xa;created_at, updated_at" vertex="1">
+          <mxGeometry height="60" width="280" x="260" y="550" as="geometry" />
         </mxCell>
-        <mxCell id="dom-task" value="Task&#10;id, title, description, due_date,&#10;priority, category, status,&#10;created_at, updated_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="260" y="540" width="280" height="60" as="geometry" />
+        <mxCell id="dom-priority" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;dashed=1;dashPattern=8 4;" value="Priority enum&#xa;{Low(1), Medium(2), High(3)}&#xa;(planned)" vertex="1">
+          <mxGeometry height="60" width="220" x="560" y="550" as="geometry" />
         </mxCell>
-        <mxCell id="dom-priority" value="Priority enum&#10;{Low(1), Medium(2), High(3)}&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="560" y="540" width="220" height="60" as="geometry" />
+        <mxCell id="dom-status" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;dashed=1;dashPattern=8 4;" value="Status enum&#xa;{Pending, Completed}&#xa;(planned)" vertex="1">
+          <mxGeometry height="60" width="200" x="800" y="550" as="geometry" />
         </mxCell>
-        <mxCell id="dom-status" value="Status enum&#10;{Pending, Completed}&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="800" y="540" width="200" height="60" as="geometry" />
+        <mxCell id="layer4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#6D2E46;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#6D2E46;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" value="Data Access Layer&#xa;(SQLAlchemy ORM)" vertex="1">
+          <mxGeometry height="125" width="780" x="240" y="660" as="geometry" />
         </mxCell>
-
-        <!-- ===== LAYER 4: DATA ACCESS ===== -->
-        <mxCell id="layer4" value="Data Access Layer&#10;(SQLAlchemy ORM)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#6D2E46;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#6D2E46;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="640" width="780" height="100" as="geometry" />
+        <mxCell id="da-orm" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6D2E46;fontSize=11;fontColor=#6D2E46;arcSize=20;" value="Flask-SQLAlchemy session&#xa;Task.query / session.commit / etc." vertex="1">
+          <mxGeometry height="50" width="320" x="330" y="710" as="geometry" />
         </mxCell>
-        <mxCell id="da-orm" value="Flask-SQLAlchemy session&#10;Task.query / session.commit / etc." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6D2E46;fontSize=11;fontColor=#6D2E46;arcSize=20;" vertex="1" parent="1">
-          <mxGeometry x="260" y="680" width="320" height="50" as="geometry" />
+        <mxCell id="da-alembic" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6D2E46;fontSize=11;fontColor=#6D2E46;arcSize=20;dashed=1;dashPattern=8 4;" value="Alembic migrations&#xa;(planned)" vertex="1">
+          <mxGeometry height="50" width="200" x="690" y="710" as="geometry" />
         </mxCell>
-        <mxCell id="da-alembic" value="Alembic migrations&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6D2E46;fontSize=11;fontColor=#6D2E46;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="600" y="680" width="200" height="50" as="geometry" />
+        <mxCell id="da-tag" parent="1" style="text;html=1;align=right;fontSize=10;fontColor=#6D2E46;fontStyle=2;" value="No StorageInterface abstraction — ORM is the abstraction." vertex="1">
+          <mxGeometry height="20" width="360" x="645" y="660" as="geometry" />
         </mxCell>
-        <mxCell id="da-tag" value="No StorageInterface abstraction — ORM is the abstraction." style="text;html=1;align=right;fontSize=10;fontColor=#6D2E46;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="650" y="715" width="360" height="20" as="geometry" />
+        <mxCell id="external" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#36454F;strokeWidth=1;fontSize=12;fontStyle=1;fontColor=#36454F;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;dashed=1;" value="Persistence" vertex="1">
+          <mxGeometry height="70" width="780" x="240" y="810" as="geometry" />
         </mxCell>
-
-        <!-- ===== EXTERNAL: STORAGE ===== -->
-        <mxCell id="external" value="Persistence" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#36454F;strokeWidth=1;fontSize=12;fontStyle=1;fontColor=#36454F;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="770" width="780" height="60" as="geometry" />
+        <mxCell id="ext-sqlite" parent="1" style="shape=cylinder3;html=1;fillColor=#ffffff;strokeColor=#36454F;fontSize=10;fontColor=#36454F;boundedLbl=1;backgroundOutline=1;size=10;verticalAlign=bottom;" value="SQLite file&#xa;/srv/task-manager/{env}/data/database.db" vertex="1">
+          <mxGeometry height="35" width="320" x="290" y="840" as="geometry" />
         </mxCell>
-        <mxCell id="ext-sqlite" value="SQLite file&#10;/srv/task-manager/{env}/data/database.db" style="shape=cylinder3;html=1;fillColor=#ffffff;strokeColor=#36454F;fontSize=10;fontColor=#36454F;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
-          <mxGeometry x="280" y="790" width="320" height="35" as="geometry" />
+        <mxCell id="ext-postgres" parent="1" style="shape=cylinder3;html=1;fillColor=#ffffff;strokeColor=#36454F;fontSize=10;fontColor=#36454F;boundedLbl=1;backgroundOutline=1;size=10;dashed=1;dashPattern=8 4;verticalAlign=bottom;" value="PostgreSQL (future, swap by URI)" vertex="1">
+          <mxGeometry height="35" width="320" x="645" y="840" as="geometry" />
         </mxCell>
-        <mxCell id="ext-postgres" value="PostgreSQL (future, swap by URI)" style="shape=cylinder3;html=1;fillColor=#ffffff;strokeColor=#36454F;fontSize=10;fontColor=#36454F;boundedLbl=1;backgroundOutline=1;size=10;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
-          <mxGeometry x="640" y="790" width="320" height="35" as="geometry" />
-        </mxCell>
-
-        <!-- ===== USER → cloudflared → presentation ===== -->
-        <mxCell id="e-user-cf" style="endArrow=classic;html=1;strokeColor=#F38020;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="user-icon" target="cf-tunnel">
+        <mxCell id="e-user-cf" edge="1" parent="1" source="user-icon" style="endArrow=classic;html=1;strokeColor=#F38020;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" target="cf-tunnel">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-cf-l1" style="endArrow=classic;html=1;strokeColor=#F38020;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="cf-tunnel" target="layer1">
+        <mxCell id="e-cf-l1" edge="1" parent="1" source="cf-tunnel" style="endArrow=classic;html=1;strokeColor=#F38020;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" target="layer1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ===== INTER-LAYER ARROWS ===== -->
-        <mxCell id="e-1-2" value="HTTP /api/*" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer1" target="layer2">
+        <mxCell id="e-1-2" edge="1" parent="1" source="layer1" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" target="layer2" value="HTTP /api/*">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-2-3" value="uses" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer2" target="layer3">
+        <mxCell id="e-2-3" edge="1" parent="1" source="layer2" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" target="layer3" value="uses">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-3-4" value="persisted via" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer3" target="layer4">
+        <mxCell id="e-3-4" edge="1" parent="1" source="layer3" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" target="layer4" value="persisted via">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-4-ext" value="reads/writes" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer4" target="external">
+        <mxCell id="e-4-ext" edge="1" parent="1" source="layer4" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" target="external" value="reads/writes">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ===== LEGEND ===== -->
-        <mxCell id="legend-bg" value="Legend" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#36454F;fontSize=11;fontStyle=1;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;" vertex="1" parent="1">
-          <mxGeometry x="60" y="640" width="160" height="160" as="geometry" />
+        <mxCell id="legend-bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#36454F;fontSize=11;fontStyle=1;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;" value="Legend" vertex="1">
+          <mxGeometry height="160" width="160" x="40" y="570" as="geometry" />
         </mxCell>
-        <mxCell id="legend-solid" value="solid border = currently&#10;implemented" style="text;html=1;align=left;fontSize=9;" vertex="1" parent="1">
-          <mxGeometry x="68" y="665" width="150" height="40" as="geometry" />
+        <mxCell id="legend-solid" parent="1" style="text;html=1;align=left;fontSize=9;" value="solid border = currently&#xa;implemented" vertex="1">
+          <mxGeometry height="40" width="150" x="48" y="595" as="geometry" />
         </mxCell>
-        <mxCell id="legend-dashed" value="dashed border = target-state,&#10;planned for sprint work" style="text;html=1;align=left;fontSize=9;" vertex="1" parent="1">
-          <mxGeometry x="68" y="710" width="150" height="40" as="geometry" />
+        <mxCell id="legend-dashed" parent="1" style="text;html=1;align=left;fontSize=9;" value="dashed border = target-state,&#xa;planned for sprint work" vertex="1">
+          <mxGeometry height="40" width="150" x="48" y="640" as="geometry" />
         </mxCell>
-        <mxCell id="legend-down" value="↓ arrows = downward&#10;dependency only" style="text;html=1;align=left;fontSize=9;" vertex="1" parent="1">
-          <mxGeometry x="68" y="755" width="150" height="40" as="geometry" />
+        <mxCell id="legend-down" parent="1" style="text;html=1;align=left;fontSize=9;" value="↓ arrows = downward&#xa;dependency only" vertex="1">
+          <mxGeometry height="40" width="150" x="48" y="685" as="geometry" />
         </mxCell>
-
       </root>
     </mxGraphModel>
   </diagram>

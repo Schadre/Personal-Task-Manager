@@ -1,162 +1,128 @@
-<mxfile host="app.diagrams.net" modified="2026-05-02T00:00:00.000Z" agent="Team Echo" version="22.0.0" type="device">
+<mxfile host="app.diagrams.net" agent="Team Echo">
   <diagram name="Use Case Diagram" id="use-case-diagram-1">
-    <mxGraphModel dx="1422" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+    <mxGraphModel dx="1193" dy="767" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Title -->
-        <mxCell id="title" value="Personal Task Management System — Use Case Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="180" y="20" width="860" height="30" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontStyle=1;fontColor=#1E2761;" value="Personal Task Management System - Use Case Diagram" vertex="1">
+          <mxGeometry height="30" width="860" x="180" y="20" as="geometry" />
         </mxCell>
-
-        <!-- System boundary -->
-        <mxCell id="boundary" value="Personal Task Management System" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#1E2761;strokeWidth=2;align=center;verticalAlign=top;fontSize=13;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="180" y="80" width="860" height="680" as="geometry" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#1E2761;strokeWidth=2;align=center;verticalAlign=top;fontSize=13;fontStyle=1;fontColor=#1E2761;" value="Personal Task Management System" vertex="1">
+          <mxGeometry height="680" width="860" x="180" y="80" as="geometry" />
         </mxCell>
-
-        <!-- Primary actor: User -->
-        <mxCell id="actorUser" value="User" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="70" y="380" width="40" height="80" as="geometry" />
+        <mxCell id="actorUser" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="User" vertex="1">
+          <mxGeometry height="80" width="40" x="60" y="250" as="geometry" />
         </mxCell>
-
-        <!-- Secondary actor: System Scheduler -->
-        <mxCell id="actorScheduler" value="System Scheduler" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fillColor=#B85042;strokeColor=#B85042;fontColor=#B85042;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="1080" y="380" width="40" height="80" as="geometry" />
+        <mxCell id="actorScheduler" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;html=1;outlineConnect=0;fillColor=#B85042;strokeColor=#B85042;fontColor=#B85042;fontSize=12;fontStyle=1;" value="System Scheduler" vertex="1">
+          <mxGeometry height="80" width="40" x="1080" y="380" as="geometry" />
         </mxCell>
-
-        <!-- Group label: Task management -->
-        <mxCell id="grpTaskMgmt" value="Task management" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="220" y="120" width="180" height="20" as="geometry" />
+        <mxCell id="grpTaskMgmt" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1E2761;" value="Task management" vertex="1">
+          <mxGeometry height="20" width="180" x="320" y="110" as="geometry" />
         </mxCell>
-
-        <!-- UC1: Create Task -->
-        <mxCell id="ucCreate" value="Create Task" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="150" width="160" height="60" as="geometry" />
+        <mxCell id="ucCreate" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="Create Task" vertex="1">
+          <mxGeometry height="60" width="160" x="340" y="140" as="geometry" />
         </mxCell>
-
-        <!-- UC2: Edit Task -->
-        <mxCell id="ucEdit" value="Edit Task" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="230" width="160" height="60" as="geometry" />
+        <mxCell id="ucEdit" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="Edit Task" vertex="1">
+          <mxGeometry height="60" width="160" x="340" y="240" as="geometry" />
         </mxCell>
-
-        <!-- UC3: Delete Task -->
-        <mxCell id="ucDelete" value="Delete Task" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="310" width="160" height="60" as="geometry" />
+        <mxCell id="ucDelete" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="Delete Task" vertex="1">
+          <mxGeometry height="60" width="160" x="340" y="330" as="geometry" />
         </mxCell>
-
-        <!-- UC4: Mark Task Complete -->
-        <mxCell id="ucComplete" value="Mark Task Complete" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="390" width="160" height="60" as="geometry" />
+        <mxCell id="ucComplete" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="Mark Task Complete" vertex="1">
+          <mxGeometry height="60" width="160" x="340" y="430" as="geometry" />
         </mxCell>
-
-        <!-- Group label: Viewing -->
-        <mxCell id="grpView" value="Viewing" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="500" y="120" width="180" height="20" as="geometry" />
+        <mxCell id="grpView" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1E2761;" value="Viewing" vertex="1">
+          <mxGeometry height="20" width="180" x="610" y="120" as="geometry" />
         </mxCell>
-
-        <!-- UC5: View Task List -->
-        <mxCell id="ucViewList" value="View Task List" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="150" width="160" height="60" as="geometry" />
+        <mxCell id="ucViewList" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="View Task List" vertex="1">
+          <mxGeometry height="60" width="160" x="610" y="160" as="geometry" />
         </mxCell>
-
-        <!-- UC6: View Dashboard -->
-        <mxCell id="ucViewDashboard" value="View Dashboard" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="230" width="160" height="60" as="geometry" />
+        <mxCell id="ucViewDashboard" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="View Dashboard" vertex="1">
+          <mxGeometry height="60" width="160" x="610" y="280" as="geometry" />
         </mxCell>
-
-        <!-- Group label: Organization -->
-        <mxCell id="grpOrg" value="Organization" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="500" y="350" width="180" height="20" as="geometry" />
+        <mxCell id="grpOrg" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1E2761;" value="Organization" vertex="1">
+          <mxGeometry height="20" width="180" x="600" y="350" as="geometry" />
         </mxCell>
-
-        <!-- UC7: Filter Tasks -->
-        <mxCell id="ucFilter" value="Filter Tasks" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="380" width="160" height="60" as="geometry" />
+        <mxCell id="ucFilter" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="Filter Tasks" vertex="1">
+          <mxGeometry height="60" width="160" x="610" y="390" as="geometry" />
         </mxCell>
-
-        <!-- UC8: Sort Tasks -->
-        <mxCell id="ucSort" value="Sort Tasks" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="520" y="460" width="160" height="60" as="geometry" />
+        <mxCell id="ucSort" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;fontColor=#1E2761;fontSize=12;fontStyle=1;" value="Sort Tasks" vertex="1">
+          <mxGeometry height="60" width="160" x="610" y="460" as="geometry" />
         </mxCell>
-
-        <!-- Group label: Notifications -->
-        <mxCell id="grpNotif" value="Notifications" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#B85042;" vertex="1" parent="1">
-          <mxGeometry x="780" y="200" width="180" height="20" as="geometry" />
+        <mxCell id="grpNotif" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#B85042;" value="Notifications" vertex="1">
+          <mxGeometry height="20" width="180" x="780" y="200" as="geometry" />
         </mxCell>
-
-        <!-- UC9: Receive Reminder -->
-        <mxCell id="ucReminder" value="Receive Reminder" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;fontColor=#6D2E46;fontSize=12;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="800" y="230" width="160" height="60" as="geometry" />
+        <mxCell id="ucReminder" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;fontColor=#6D2E46;fontSize=12;fontStyle=1;dashed=1;" value="Receive Reminder" vertex="1">
+          <mxGeometry height="60" width="160" x="750" y="530" as="geometry" />
         </mxCell>
-
-        <!-- UC10: Compute Overdue Status -->
-        <mxCell id="ucOverdue" value="Compute Overdue Status" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;fontColor=#6D2E46;fontSize=12;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="800" y="310" width="160" height="60" as="geometry" />
+        <mxCell id="ucOverdue" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;fontColor=#6D2E46;fontSize=12;fontStyle=1;" value="Compute Overdue Status" vertex="1">
+          <mxGeometry height="60" width="160" x="840" y="240" as="geometry" />
         </mxCell>
-
-        <!-- Legend -->
-        <mxCell id="legend" value="Legend&#10;━━━ solid: implemented or planned for v1&#10;┄┄┄ dashed: target-state, not yet built&#10;«extends» = optional behavior of base use case&#10;«include» = base use case always invokes this" style="text;html=1;strokeColor=#1E2761;fillColor=#F8F9FB;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=10;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="220" y="600" width="380" height="120" as="geometry" />
+        <mxCell id="legend" parent="1" style="text;html=1;strokeColor=#1E2761;fillColor=#F8F9FB;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=10;fontColor=#1E2761;" value="Legend&#xa;━━━ solid: implemented or planned for v1&#xa;┄┄┄ dashed: target-state, not yet built&#xa;«extends» = optional behavior of base use case&#xa;«include» = base use case always invokes this" vertex="1">
+          <mxGeometry height="120" width="380" x="220" y="600" as="geometry" />
         </mxCell>
-
-        <!-- ============ Associations: User -> use cases ============ -->
-        <mxCell id="lnkUserCreate" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.3;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucCreate">
+        <mxCell id="lnkUserCreate" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.3;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucCreate">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lnkUserEdit" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucEdit">
+        <mxCell id="lnkUserEdit" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucEdit">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lnkUserDelete" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.6;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucDelete">
+        <mxCell id="lnkUserDelete" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.6;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucDelete">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lnkUserComplete" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.7;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucComplete">
+        <mxCell id="lnkUserComplete" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucComplete">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="320" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnkUserViewList" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.4;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucViewList">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lnkUserViewList" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.4;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucViewList">
+        <mxCell id="lnkUserViewDashboard" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucViewDashboard">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="lnkUserViewDashboard" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucViewDashboard">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lnkUserFilter" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.6;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucFilter">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lnkUserSort" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.8;entryX=0;entryY=0.5;strokeColor=#1E2761;" edge="1" parent="1" source="actorUser" target="ucSort">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lnkUserReminder" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.4;entryX=0;entryY=0.5;strokeColor=#B85042;dashed=1;" edge="1" parent="1" source="actorUser" target="ucReminder">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- ============ Associations: System Scheduler -> use cases ============ -->
-        <mxCell id="lnkSchedReminder" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.4;entryX=1;entryY=0.5;strokeColor=#B85042;dashed=1;" edge="1" parent="1" source="actorScheduler" target="ucReminder">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="lnkSchedOverdue" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.6;entryX=1;entryY=0.5;strokeColor=#B85042;" edge="1" parent="1" source="actorScheduler" target="ucOverdue">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- ============ «extends»: Mark Task Complete extends View Task List ============ -->
-        <mxCell id="lnkExtends" value="«extends»" style="endArrow=open;html=1;rounded=0;dashed=1;startSize=12;endSize=12;strokeColor=#1E2761;fontColor=#1E2761;fontSize=10;fontStyle=2;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="ucComplete" target="ucViewList">
+        <mxCell id="lnkUserFilter" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.6;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucFilter">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="450" y="350" />
-              <mxPoint x="450" y="220" />
+              <mxPoint x="300" y="310" />
+              <mxPoint x="490" y="330" />
             </Array>
           </mxGeometry>
         </mxCell>
-
-        <!-- ============ «include»: View Dashboard includes Compute Overdue Status ============ -->
-        <mxCell id="lnkInclude" value="«include»" style="endArrow=open;html=1;rounded=0;dashed=1;startSize=12;endSize=12;strokeColor=#1E2761;fontColor=#1E2761;fontSize=10;fontStyle=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="ucViewDashboard" target="ucOverdue">
+        <mxCell id="lnkUserSort" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.8;entryX=0;entryY=0.5;strokeColor=#1E2761;" target="ucSort">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="740" y="260" />
-              <mxPoint x="740" y="340" />
+              <mxPoint x="290" y="360" />
+              <mxPoint x="490" y="430" />
             </Array>
           </mxGeometry>
         </mxCell>
-
+        <mxCell id="lnkUserReminder" edge="1" parent="1" source="actorUser" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=1;entryX=0;entryY=0.5;strokeColor=#B85042;dashed=1;exitDx=0;exitDy=0;exitPerimeter=0;" target="ucReminder">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnkSchedReminder" edge="1" parent="1" source="actorScheduler" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;strokeColor=#B85042;dashed=1;" target="ucReminder">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="440" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnkSchedOverdue" edge="1" parent="1" source="actorScheduler" style="endArrow=none;html=1;rounded=0;entryX=1;entryY=0.5;strokeColor=#B85042;" target="ucOverdue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lnkExtends" edge="1" parent="1" source="ucComplete" style="endArrow=open;html=1;rounded=0;dashed=1;startSize=12;endSize=12;strokeColor=#1E2761;fontColor=#1E2761;fontSize=10;fontStyle=2;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" target="ucViewList" value="«extends»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="520" y="400" />
+              <mxPoint x="590" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lnkInclude" edge="1" parent="1" source="ucViewDashboard" style="endArrow=open;html=1;rounded=0;dashed=1;startSize=12;endSize=12;strokeColor=#1E2761;fontColor=#1E2761;fontSize=10;fontStyle=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="ucOverdue" value="«include»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
