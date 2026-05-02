@@ -1,0 +1,163 @@
+<mxfile host="app.diagrams.net" modified="2026-05-02T00:00:00.000Z" agent="Team Echo" version="22.0.0" type="device">
+  <diagram name="Layered Architecture" id="layered-arch-1">
+    <mxGraphModel dx="1422" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Personal Task Management System — Layered Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="1280" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===== USER ===== -->
+        <mxCell id="user-icon" value="" style="shape=actor;html=1;fillColor=#1E2761;strokeColor=#1E2761;" vertex="1" parent="1">
+          <mxGeometry x="100" y="120" width="40" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="user-label" value="User&#10;(student / professional)" style="text;html=1;align=center;fontSize=11;fontColor=#1E2761;" vertex="1" parent="1">
+          <mxGeometry x="60" y="185" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===== CLOUDFLARE TUNNEL (ingress) ===== -->
+        <mxCell id="cf-tunnel" value="Cloudflare Tunnel&#10;(TLS termination, ingress; no inbound ports on host)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEEDD;strokeColor=#F38020;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#7A3E0E;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="80" width="780" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ENVIRONMENTS callout (right side) ===== -->
+        <mxCell id="envs" value="Environments&#10;━━━━━━━━━━━&#10;app.business-tempo.com  →  prod (main branch)&#10;dev.business-tempo.com  →  dev  (dev  branch)&#10;&#10;CI/CD: push to main/dev →&#10;GitHub Actions → SSH deploy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8F9FB;strokeColor=#1E2761;strokeWidth=1;fontSize=10;fontColor=#1E2761;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="80" width="280" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 1: PRESENTATION (browser) ===== -->
+        <mxCell id="layer1" value="Presentation Layer&#10;(Browser — React SPA)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F0FE;strokeColor=#1E2761;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#1E2761;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="150" width="780" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-sidebar" value="Sidebar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="260" y="200" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-header" value="Header" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="370" y="200" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-stats" value="StatsCards" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="480" y="200" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-table" value="TaskTable" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="590" y="200" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-add" value="AddTaskModal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=11;fontColor=#1E2761;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="700" y="200" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ui-search" value="SearchFilter&#10;(planned wiring)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1E2761;fontSize=10;fontColor=#1E2761;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="830" y="200" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="layer1-tag" value="React 19 + Vite + Tailwind. Calls /api/* on the backend over HTTPS." style="text;html=1;align=right;fontSize=10;fontColor=#1E2761;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="600" y="255" width="410" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Server-side bracket label -->
+        <mxCell id="server-bracket" value="↓  ↓  ↓     S E R V E R   ( F l a s k   p r o c e s s   o n   1 2 7 . 0 . 0 . 1 )     ↓  ↓  ↓" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#5B2C6F;" vertex="1" parent="1">
+          <mxGeometry x="240" y="290" width="780" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 2: APPLICATION (Flask) ===== -->
+        <mxCell id="layer2" value="Application Layer&#10;(Flask routes + planned service classes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2C5F2D;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#2C5F2D;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="320" width="780" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="app-routes" value="FlaskRoutes&#10;(app.py)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="260" y="375" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app-tm" value="TaskManager&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="430" y="375" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app-vs" value="ValidationService&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="600" y="375" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app-fs" value="FilterSortService&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=11;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="780" y="375" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app-rs" value="ReminderService&#10;(planned, w/ APScheduler)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2C5F2D;fontSize=10;fontColor=#2C5F2D;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="950" y="375" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="layer2-tag" value="Python 3.12 + Flask + gunicorn (3 workers prod, 2 dev)." style="text;html=1;align=right;fontSize=10;fontColor=#2C5F2D;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="660" y="438" width="350" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 3: DOMAIN ===== -->
+        <mxCell id="layer3" value="Domain Layer&#10;(SQLAlchemy models + enums)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#B85042;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="490" width="780" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-task" value="Task&#10;id, title, description, due_date,&#10;priority, category, status,&#10;created_at, updated_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="260" y="540" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-priority" value="Priority enum&#10;{Low(1), Medium(2), High(3)}&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="560" y="540" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dom-status" value="Status enum&#10;{Pending, Completed}&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#B85042;fontSize=10;fontColor=#B85042;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="800" y="540" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LAYER 4: DATA ACCESS ===== -->
+        <mxCell id="layer4" value="Data Access Layer&#10;(SQLAlchemy ORM)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#6D2E46;strokeWidth=2;fontSize=14;fontStyle=1;fontColor=#6D2E46;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="640" width="780" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="da-orm" value="Flask-SQLAlchemy session&#10;Task.query / session.commit / etc." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6D2E46;fontSize=11;fontColor=#6D2E46;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="260" y="680" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="da-alembic" value="Alembic migrations&#10;(planned)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6D2E46;fontSize=11;fontColor=#6D2E46;arcSize=20;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="600" y="680" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="da-tag" value="No StorageInterface abstraction — ORM is the abstraction." style="text;html=1;align=right;fontSize=10;fontColor=#6D2E46;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="650" y="715" width="360" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EXTERNAL: STORAGE ===== -->
+        <mxCell id="external" value="Persistence" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#36454F;strokeWidth=1;fontSize=12;fontStyle=1;fontColor=#36454F;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="770" width="780" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-sqlite" value="SQLite file&#10;/srv/task-manager/{env}/data/database.db" style="shape=cylinder3;html=1;fillColor=#ffffff;strokeColor=#36454F;fontSize=10;fontColor=#36454F;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="280" y="790" width="320" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-postgres" value="PostgreSQL (future, swap by URI)" style="shape=cylinder3;html=1;fillColor=#ffffff;strokeColor=#36454F;fontSize=10;fontColor=#36454F;boundedLbl=1;backgroundOutline=1;size=10;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="790" width="320" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ===== USER → cloudflared → presentation ===== -->
+        <mxCell id="e-user-cf" style="endArrow=classic;html=1;strokeColor=#F38020;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="user-icon" target="cf-tunnel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-cf-l1" style="endArrow=classic;html=1;strokeColor=#F38020;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="cf-tunnel" target="layer1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== INTER-LAYER ARROWS ===== -->
+        <mxCell id="e-1-2" value="HTTP /api/*" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer1" target="layer2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-2-3" value="uses" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer2" target="layer3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-3-4" value="persisted via" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer3" target="layer4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-4-ext" value="reads/writes" style="endArrow=open;endFill=0;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;strokeWidth=2;" edge="1" parent="1" source="layer4" target="external">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ===== LEGEND ===== -->
+        <mxCell id="legend-bg" value="Legend" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#36454F;fontSize=11;fontStyle=1;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="60" y="640" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-solid" value="solid border = currently&#10;implemented" style="text;html=1;align=left;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="68" y="665" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-dashed" value="dashed border = target-state,&#10;planned for sprint work" style="text;html=1;align=left;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="68" y="710" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-down" value="↓ arrows = downward&#10;dependency only" style="text;html=1;align=left;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="68" y="755" width="150" height="40" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
