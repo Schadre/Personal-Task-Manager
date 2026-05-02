@@ -1,289 +1,281 @@
-<mxfile host="app.diagrams.net" modified="2026-04-26T00:00:00.000Z" agent="Team Echo" version="22.0.0" type="device">
+<mxfile host="app.diagrams.net" agent="Team Echo">
   <diagram name="Data Model" id="data-model-1">
-    <mxGraphModel dx="1422" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
+    <mxGraphModel dx="1326" dy="852" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Title -->
-        <mxCell id="title" value="Personal Task Management System — Data Model" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="1">
-          <mxGeometry x="60" y="20" width="1050" height="40" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1E2761;" value="Personal Task Management System — Data Model" vertex="1">
+          <mxGeometry height="40" width="1050" x="60" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="Entities and attributes — what gets stored in the persistence layer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#36454F;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="60" y="55" width="1050" height="25" as="geometry" />
+        <mxCell id="subtitle" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#36454F;fontStyle=2;" value="Entities and attributes — what gets stored in the persistence layer" vertex="1">
+          <mxGeometry height="25" width="1050" x="60" y="55" as="geometry" />
         </mxCell>
-
-        <!-- ===== TASK ENTITY ===== -->
-        <mxCell id="task-entity" value="Task" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontSize=14;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="100" y="120" width="380" height="358" as="geometry" />
+        <mxCell id="task-entity" parent="1" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontSize=14;fillColor=#1E2761;strokeColor=#1E2761;fontColor=#ffffff;fontStyle=1;" value="Task" vertex="1">
+          <mxGeometry height="358" width="380" x="100" y="120" as="geometry" />
         </mxCell>
-
-        <!-- Task header row -->
-        <mxCell id="task-h" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" vertex="1" parent="task-entity">
-          <mxGeometry y="30" width="380" height="28" as="geometry" />
+        <mxCell id="task-h" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" value="" vertex="1">
+          <mxGeometry height="31" width="380" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="task-h-attr" value="Attribute" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#E8F0FE;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="task-h">
-          <mxGeometry width="140" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="task-h-type" value="Type" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#E8F0FE;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="task-h">
-          <mxGeometry x="140" width="100" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="task-h-cons" value="Constraints" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#E8F0FE;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#1E2761;" vertex="1" parent="task-h">
-          <mxGeometry x="240" width="140" height="28" as="geometry" />
-        </mxCell>
-
-        <!-- Task rows: id (PK) -->
-        <mxCell id="task-r1" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="58" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r1-c1" value="🔑 id" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#FFF4E6;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#6D2E46;fontStyle=1;align=left;spacingLeft=8;" vertex="1" parent="task-r1">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r1-c2" value="Integer" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r1">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r1-c3" value="PK, auto, NOT NULL" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r1">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- title -->
-        <mxCell id="task-r2" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="88" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r2-c1" value="title" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r2">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r2-c2" value="String(140)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r2">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r2-c3" value="NOT NULL" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r2">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- description -->
-        <mxCell id="task-r3" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="118" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r3-c1" value="description" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r3">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r3-c2" value="String(2000)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r3">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r3-c3" value="nullable" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r3">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- dueDate -->
-        <mxCell id="task-r4" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="148" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r4-c1" value="dueDate" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r4">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r4-c2" value="DateTime" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r4">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r4-c3" value="nullable, ISO-8601" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r4">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- priority FK -->
-        <mxCell id="task-r5" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="178" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r5-c1" value="priority 🔗" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r5">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r5-c2" value="Enum" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r5">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r5-c3" value="default 'Medium'" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r5">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- category -->
-        <mxCell id="task-r6" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="208" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r6-c1" value="category" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r6">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r6-c2" value="String(50)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r6">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r6-c3" value="nullable" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r6">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- status -->
-        <mxCell id="task-r7" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="238" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r7-c1" value="status 🔗" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r7">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r7-c2" value="Enum" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r7">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r7-c3" value="default 'Pending'" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r7">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- createdAt -->
-        <mxCell id="task-r8" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="268" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r8-c1" value="createdAt" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r8">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r8-c2" value="DateTime" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r8">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r8-c3" value="auto, NOT NULL" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r8">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- updatedAt -->
-        <mxCell id="task-r9" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="task-entity">
-          <mxGeometry y="298" width="380" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r9-c1" value="updatedAt" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r9">
-          <mxGeometry width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r9-c2" value="DateTime" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r9">
-          <mxGeometry x="140" width="100" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="task-r9-c3" value="auto, NOT NULL" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="task-r9">
-          <mxGeometry x="240" width="140" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- ===== PRIORITY ENUM ===== -->
-        <mxCell id="prio-entity" value="«enumeration»&#10;Priority" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#B85042;verticalAlign=top;spacingTop=4;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="600" y="120" width="200" height="160" as="geometry" />
-        </mxCell>
-        <mxCell id="prio-low" value="Low (1)" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#6D2E46;" vertex="1" parent="1">
-          <mxGeometry x="610" y="170" width="180" height="22" as="geometry" />
-        </mxCell>
-        <mxCell id="prio-med" value="Medium (2) — default" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#6D2E46;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="610" y="195" width="180" height="22" as="geometry" />
-        </mxCell>
-        <mxCell id="prio-high" value="High (3)" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#6D2E46;" vertex="1" parent="1">
-          <mxGeometry x="610" y="220" width="180" height="22" as="geometry" />
-        </mxCell>
-        <mxCell id="prio-note" value="sort order: 3 → 1" style="text;html=1;align=left;fontSize=10;fontStyle=2;spacingLeft=12;fontColor=#A26769;" vertex="1" parent="1">
-          <mxGeometry x="610" y="248" width="180" height="22" as="geometry" />
-        </mxCell>
-
-        <!-- ===== STATUS ENUM ===== -->
-        <mxCell id="status-entity" value="«enumeration»&#10;Status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2C5F2D;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#2C5F2D;verticalAlign=top;spacingTop=4;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="600" y="320" width="200" height="158" as="geometry" />
-        </mxCell>
-        <mxCell id="status-pending" value="Pending — default" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#2C5F2D;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="610" y="370" width="180" height="22" as="geometry" />
-        </mxCell>
-        <mxCell id="status-completed" value="Completed" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#2C5F2D;" vertex="1" parent="1">
-          <mxGeometry x="610" y="395" width="180" height="22" as="geometry" />
-        </mxCell>
-        <mxCell id="status-overdue" value="Overdue (derived)" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#2C5F2D;fontStyle=2;" vertex="1" parent="1">
-          <mxGeometry x="610" y="420" width="180" height="22" as="geometry" />
-        </mxCell>
-        <mxCell id="status-note" value="overdue = pending AND&#10;dueDate &lt; now()" style="text;html=1;align=left;fontSize=10;fontStyle=2;spacingLeft=12;fontColor=#69A297;" vertex="1" parent="1">
-          <mxGeometry x="610" y="448" width="180" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- ===== REMINDER ===== -->
-        <mxCell id="reminder-entity" value="Reminder (derived, in-memory)" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontSize=12;fillColor=#6D2E46;strokeColor=#6D2E46;fontColor=#ffffff;fontStyle=1;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="850" y="120" width="280" height="178" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-h" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="reminder-entity">
-          <mxGeometry y="30" width="280" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-h1" value="Attribute" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#FCE4EC;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#6D2E46;" vertex="1" parent="rem-h">
-          <mxGeometry width="120" height="28" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-h2" value="Type" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#FCE4EC;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#6D2E46;" vertex="1" parent="rem-h">
-          <mxGeometry x="120" width="160" height="28" as="geometry" />
-        </mxCell>
-
-        <mxCell id="rem-r1" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="reminder-entity">
-          <mxGeometry y="58" width="280" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-r1-c1" value="taskId 🔗" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="rem-r1">
-          <mxGeometry width="120" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-r1-c2" value="Integer (FK → Task.id)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="rem-r1">
-          <mxGeometry x="120" width="160" height="30" as="geometry" />
-        </mxCell>
-
-        <mxCell id="rem-r2" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="reminder-entity">
-          <mxGeometry y="88" width="280" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-r2-c1" value="triggerTime" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="rem-r2">
-          <mxGeometry width="120" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-r2-c2" value="DateTime" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="rem-r2">
-          <mxGeometry x="120" width="160" height="30" as="geometry" />
-        </mxCell>
-
-        <mxCell id="rem-r3" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" vertex="1" parent="reminder-entity">
-          <mxGeometry y="118" width="280" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-r3-c1" value="sent" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="rem-r3">
-          <mxGeometry width="120" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="rem-r3-c2" value="Boolean (default false)" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" vertex="1" parent="rem-r3">
-          <mxGeometry x="120" width="160" height="30" as="geometry" />
-        </mxCell>
-
-        <mxCell id="rem-note" value="Computed from Task.dueDate at runtime — not persisted in v1." style="text;html=1;align=left;fontSize=10;fontStyle=2;spacingLeft=8;fontColor=#A26769;" vertex="1" parent="reminder-entity">
-          <mxGeometry y="148" width="280" height="30" as="geometry" />
-        </mxCell>
-
-        <!-- ===== STORAGE FORMAT NOTE ===== -->
-        <mxCell id="storage-note" value="Persistence Format&#10;&#10;Engine:    SQLite via SQLAlchemy ORM&#10;Path:      /srv/task-manager/{env}/data/database.db (override TASKMGR_DB_PATH)&#10;Indexing:  none — full table scan acceptable up to 500 rows&#10;Migrations: Alembic (planned) — current code uses db.create_all()&#10;Portability: swap to PostgreSQL by changing SQLALCHEMY_DATABASE_URI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#36454F;strokeWidth=1;fontSize=11;fontColor=#36454F;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;fontFamily=Consolas,Courier New,monospace;" vertex="1" parent="1">
-          <mxGeometry x="100" y="500" width="700" height="140" as="geometry" />
-        </mxCell>
-
-        <!-- ===== CURRENT STATE CALLOUT ===== -->
-        <mxCell id="current-state" value="Current state (today's deployed schema)&#10;&#10;• id          Integer ✓ aligned&#10;• title       String(100) → bump to 140&#10;• description String(300) → bump to 2000&#10;• due_date    String(50) → convert to DateTime&#10;• priority    String(10) → replace with Enum(Priority)&#10;• category    String(50) ✓ aligned&#10;• status      String(10) → replace with Enum(Status)&#10;• created_at, updated_at  → not yet present, planned&#10;&#10;Each line is a Sprint 2 ticket; introduce Alembic first." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E0;strokeColor=#B8860B;strokeWidth=1;fontSize=10;fontColor=#6D4C00;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;fontFamily=Consolas,Courier New,monospace;" vertex="1" parent="1">
-          <mxGeometry x="100" y="660" width="700" height="200" as="geometry" />
-        </mxCell>
-
-        <!-- ===== LEGEND ===== -->
-        <mxCell id="legend-bg" value="Legend" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#36454F;fontSize=11;fontStyle=1;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;" vertex="1" parent="1">
-          <mxGeometry x="850" y="540" width="280" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="leg1" value="🔑 Primary key" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="858" y="565" width="270" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="leg2" value="🔗 Foreign key / enum reference" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="858" y="585" width="270" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="leg3" value="dashed border = derived / computed at runtime" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="858" y="605" width="270" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="leg4" value="« » = UML stereotype (e.g., enumeration)" style="text;html=1;align=left;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="858" y="625" width="270" height="20" as="geometry" />
-        </mxCell>
-
-        <!-- ===== RELATIONSHIPS ===== -->
-        <mxCell id="rel-task-prio" value="references" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;dashed=1;" edge="1" parent="1" source="task-entity" target="prio-entity">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="rel-task-status" value="references" style="endArrow=open;endFill=0;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;dashed=1;" edge="1" parent="1" source="task-entity" target="status-entity">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="rel-task-rem" value="0..1" style="endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;html=1;exitX=1;exitY=0.1;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;strokeColor=#36454F;fontSize=10;" edge="1" parent="1" source="task-entity" target="reminder-entity">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="500" y="100" />
-              <mxPoint x="830" y="100" />
-            </Array>
+        <mxCell id="task-h-attr" parent="task-h" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#E8F0FE;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#1E2761;" value="Attribute" vertex="1">
+          <mxGeometry height="31" width="140" as="geometry">
+            <mxRectangle height="31" width="140" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-
-      </root>
-    </mxGraphModel>
-  </diagram>
-</mxfile>
+        <mxCell id="task-h-type" parent="task-h" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#E8F0FE;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#1E2761;" value="Type" vertex="1">
+          <mxGeometry height="31" width="100" x="140" as="geometry">
+            <mxRectangle height="31" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-h-cons" parent="task-h" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#E8F0FE;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#1E2761;" value="Constraints" vertex="1">
+          <mxGeometry height="31" width="140" x="240" as="geometry">
+            <mxRectangle height="31" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r1" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="61" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r1-c1" parent="task-r1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#FFF4E6;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#6D2E46;fontStyle=1;align=left;spacingLeft=8;" value="id" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r1-c2" parent="task-r1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="Integer" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r1-c3" parent="task-r1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="PK, auto, NOT NULL" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r2" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="94" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r2-c1" parent="task-r2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="title" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r2-c2" parent="task-r2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="String(140)" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r2-c3" parent="task-r2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="NOT NULL" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r3" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="127" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r3-c1" parent="task-r3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="description" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r3-c2" parent="task-r3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="String(2000)" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r3-c3" parent="task-r3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="nullable" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r4" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r4-c1" parent="task-r4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="dueDate" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r4-c2" parent="task-r4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="DateTime" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r4-c3" parent="task-r4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="nullable, ISO-8601" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r5" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="193" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r5-c1" parent="task-r5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="priority (FK)" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r5-c2" parent="task-r5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="Enum" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r5-c3" parent="task-r5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="default &#39;Medium&#39;" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r6" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="226" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r6-c1" parent="task-r6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="category" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r6-c2" parent="task-r6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="String(50)" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r6-c3" parent="task-r6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="nullable" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r7" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="259" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r7-c1" parent="task-r7" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="status (FK)" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r7-c2" parent="task-r7" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="Enum" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r7-c3" parent="task-r7" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="default &#39;Pending&#39;" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r8" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="292" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r8-c1" parent="task-r8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="createdAt" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r8-c2" parent="task-r8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="DateTime" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r8-c3" parent="task-r8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="auto, NOT NULL" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r9" parent="task-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="33" width="380" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="task-r9-c1" parent="task-r9" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="updatedAt" vertex="1">
+          <mxGeometry height="33" width="140" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r9-c2" parent="task-r9" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="DateTime" vertex="1">
+          <mxGeometry height="33" width="100" x="140" as="geometry">
+            <mxRectangle height="33" width="100" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="task-r9-c3" parent="task-r9" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="auto, NOT NULL" vertex="1">
+          <mxGeometry height="33" width="140" x="240" as="geometry">
+            <mxRectangle height="33" width="140" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="prio-entity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF4E6;strokeColor=#B85042;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#B85042;verticalAlign=top;spacingTop=4;arcSize=10;" value="«enumeration»&#xa;Priority" vertex="1">
+          <mxGeometry height="160" width="200" x="600" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="prio-low" parent="1" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#6D2E46;" value="Low (1)" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="prio-med" parent="1" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#6D2E46;fontStyle=1;" value="Medium (2) — default" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="prio-high" parent="1" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#6D2E46;" value="High (3)" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="prio-note" parent="1" style="text;html=1;align=left;fontSize=10;fontStyle=2;spacingLeft=12;fontColor=#A26769;" value="sort order: 3 → 1" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="248" as="geometry" />
+        </mxCell>
+        <mxCell id="status-entity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2C5F2D;strokeWidth=2;fontSize=12;fontStyle=1;fontColor=#2C5F2D;verticalAlign=top;spacingTop=4;arcSize=10;" value="«enumeration»&#xa;Status" vertex="1">
+          <mxGeometry height="158" width="200" x="600" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="status-pending" parent="1" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#2C5F2D;fontStyle=1;" value="Pending — default" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="status-completed" parent="1" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#2C5F2D;" value="Completed" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="status-overdue" parent="1" style="text;html=1;align=left;fontSize=11;spacingLeft=12;fontColor=#2C5F2D;fontStyle=2;" value="Overdue (derived)" vertex="1">
+          <mxGeometry height="22" width="180" x="610" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="status-note" parent="1" style="text;html=1;align=left;fontSize=10;fontStyle=2;spacingLeft=12;fontColor=#69A297;" value="overdue = pending AND&#xa;dueDate &lt; now()" vertex="1">
+          <mxGeometry height="30" width="180" x="610" y="448" as="geometry" />
+        </mxCell>
+        <mxCell id="reminder-entity" parent="1" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fontSize=12;fillColor=#6D2E46;strokeColor=#6D2E46;fontColor=#ffffff;fontStyle=1;dashed=1;" value="Reminder (derived, in-memory)" vertex="1">
+          <mxGeometry height="178" width="280" x="850" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-h" parent="reminder-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="28" width="280" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-h1" parent="rem-h" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#FCE4EC;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#6D2E46;" value="Attribute" vertex="1">
+          <mxGeometry height="28" width="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-h2" parent="rem-h" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#FCE4EC;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontStyle=1;fontColor=#6D2E46;" value="Type" vertex="1">
+          <mxGeometry height="28" width="160" x="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r1" parent="reminder-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="30" width="280" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r1-c1" parent="rem-r1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="taskId (FK)" vertex="1">
+          <mxGeometry height="30" width="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r1-c2" parent="rem-r1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="Integer (FK → Task.id)" vertex="1">
+          <mxGeometry height="30" width="160" x="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r2" parent="reminder-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="30" width="280" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r2-c1" parent="rem-r2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="triggerTime" vertex="1">
+          <mxGeometry height="30" width="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r2-c2" parent="rem-r2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="DateTime" vertex="1">
+          <mxGeometry height="30" width="160" x="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r3" parent="reminder-entity" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" value="" vertex="1">
+          <mxGeometry height="30" width="280" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r3-c1" parent="rem-r3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="sent" vertex="1">
+          <mxGeometry height="30" width="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-r3-c2" parent="rem-r3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=#ffffff;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;fontColor=#36454F;align=left;spacingLeft=8;" value="Boolean (default false)" vertex="1">
+          <mxGeometry height="30" width="160" x="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rem-note" parent="reminder-entity" style="text;html=1;align=left;fontSize=10;fontStyle=2;spacingLeft=8;fontColor=#A26769;" value="Computed from Task.dueDate at runtime — not persisted in v1." vertex="1">
+          <mxGeometry height="30" width="280" y="148" as="geometry" />
+        </mxCell>
+        <mxCell id="storage-note" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#36454F;strokeWidth=1;fontSize=11;fontColor=#36454F;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;fontFamily=Consolas,Courier New,monospace;" value="Persistence Format&#xa;&#xa;Engine:    SQLite via SQLAlchemy ORM&#xa;Path:      /srv/task-manager/{env}/data/database.db (override TASKMGR_DB_PATH)&#xa;Indexing:  none — full table scan acceptable up to 500 rows&#xa;Migrations: Alembic (planned) — current code uses db.create_all()&#xa;Portability: swap to PostgreSQL by changing SQLALCHEMY_DATABASE_URI" vertex="1">
+          <mxGeometry height="140" width="700" x="100" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="current-state" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E0;strokeColor=#B8860B;strokeWidth=1;fontSize=10;fontColor=#6D4C00;verticalAlign=top;align=left;spacingTop=8;spacingLeft=12;arcSize=10;fontFamily=Consolas,Courier New,monospace;" value="Current state (today&#39;s deployed schema)&#xa;&#xa;• id          Integer — aligned&#xa;• title       String(100) → bump to 140&#xa;• description String(300) → bump to 2000&#xa;• due_date    String(50) → convert to DateTime&#xa;• priority    String(10) → replace with Enum(Priority)&#xa;• category    String(50) — aligned&#xa;• status      String(10) → replace with Enum(Status)&#xa;• created_at, updated_at  → not yet present, planned&#xa;&#xa;Each line is a Sprint 2 ticket; introduce Alembic first." vertex="1">
+          <mxGeometry height="200" width="700" x="100" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-bg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#36454F;fontSize=11;fontStyle=1;verticalAlign=top;align=left;spacingTop=4;spacingLeft=8;" value="Legend" vertex="1">
+          <mxGeometry height="120" width="280" x="850" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" parent="1" style="text;html=1;align=left;fontSize=10;" value="PK = Primary key" vertex="1">
+          <mxGeometry height="20" width="270" x="858" y="565" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" parent="1" style="text;html=1;align=left;fontSize=10;" value="FK = Foreign key / enum reference" vertex="1">
+          <m
