@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:5000";
+const API = import.meta.env.VITE_API_BASE || "/api";
 
 export const getTasks = async () => {
   const res = await fetch(`${API}/tasks`);
@@ -8,9 +8,7 @@ export const getTasks = async () => {
 export const createTask = async (task) => {
   await fetch(`${API}/tasks`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(task),
   });
 };
@@ -18,15 +16,11 @@ export const createTask = async (task) => {
 export const updateTask = async (id, data) => {
   await fetch(`${API}/tasks/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
 };
 
 export const deleteTask = async (id) => {
-  await fetch(`${API}/tasks/${id}`, {
-    method: "DELETE",
-  });
+  await fetch(`${API}/tasks/${id}`, { method: "DELETE" });
 };
