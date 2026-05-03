@@ -53,7 +53,7 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ## Testing
 
-The frontend uses [Jest](https://jestjs.io/) and React Testing Library for unit and integration tests.
+The frontend uses [Jest](https://jestjs.io/) for unit and integration tests.
 
 ### Running Frontend Tests (Jest)
 
