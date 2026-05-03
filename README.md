@@ -51,6 +51,42 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
+## Testing
+
+The frontend uses [Jest](https://jestjs.io/) and React Testing Library for unit and integration tests.
+
+### Running Frontend Tests
+
+1. Navigate to the frontend folder:
+   ```bash
+   cd FE_task_manager
+
+2. Install dependencies
+  ```bash
+  npm install
+
+3. npm test
+  ```bash
+  npm test
+
+### Running Backend Tests (Flask + pytest)
+
+The backend uses [pytest](https://docs.pytest.org/) and an in‑memory SQLite database for isolation.
+
+1. Navigate to the backend folder:
+   ```bash
+   cd BE_task_manager
+
+2. Install test dependencies
+  ```bash 
+  pip install pytest pytest-cov
+
+3. Run the test suite
+  ```bash
+  pytest
+
+---
+
 ## Future Improvements
 
 * Authentication (login/signup)
