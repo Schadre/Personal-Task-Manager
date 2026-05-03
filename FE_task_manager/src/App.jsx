@@ -21,15 +21,24 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar setShowModal={setShowModal} />
+    <div className="flex flex-col min-h-screen bg-slate-50">
+      <div className="flex flex-1">
+        <Sidebar setShowModal={setShowModal} />
 
-      <main className="flex-1 p-8">
-        <Header />
-        <StatsCards tasks={tasks} />
-        <SearchFilter />
-        <TaskTable tasks={tasks} reload={loadTasks} />
-      </main>
+        <main className="flex-1 p-8">
+          <Header />
+          <StatsCards tasks={tasks} />
+          <SearchFilter />
+          <TaskTable tasks={tasks} reload={loadTasks} />
+        </main>
+      </div>
+
+      <footer className="bg-white border-t border-slate-200 px-8 py-4 text-sm text-slate-500">
+        <div className="flex justify-between">
+          <span>© 2026 Echo Team — Personal Task Manager</span>
+          <span>v1 · CSC480A Capstone</span>
+        </div>
+      </footer>
 
       {showModal && (
         <AddTaskModal close={() => setShowModal(false)} reload={loadTasks} />
