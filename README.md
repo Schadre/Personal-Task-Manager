@@ -1,10 +1,10 @@
-# 📝 Task Manager (Full-Stack)
+# Task Manager (Full-Stack)
 
 A simple full-stack task management application built with **React (Vite)** on the frontend and **Flask + SQLite** on the backend.
 
 ---
 
-## 🚀 Features
+## Features
 
 * Create, update, and delete tasks
 * Mark tasks as completed
@@ -14,7 +14,7 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend**
 
@@ -29,7 +29,7 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
-## ⚠️ Important Notes
+## Important Notes
 
 * Make sure the Flask server is running before using the frontend
 * If Tailwind styles are not showing:
@@ -40,7 +40,7 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
-## 📌 API Endpoints
+## API Endpoints
 
 | Method | Endpoint     | Description       |
 | ------ | ------------ | ----------------- |
@@ -51,7 +51,7 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
-## 📷 Future Improvements
+## Future Improvements
 
 * Authentication (login/signup)
 * Task categories & tags
@@ -60,7 +60,7 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
-## 💡 About
+## About
 
 This project was built as part of a **full-stack learning journey**, focusing on connecting a React frontend with a Flask backend and handling real-world CRUD operations.
 
