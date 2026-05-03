@@ -74,7 +74,7 @@ The frontend uses [Jest](https://jestjs.io/) and React Testing Library for unit 
 The backend uses [pytest](https://docs.pytest.org/) and an in‑memory SQLite database for isolation.
 
 1. Navigate to the backend folder:
-   ```bash
+  ```bash
   cd BE_task_manager
 
 2. Install test dependencies:
