@@ -63,11 +63,11 @@ The frontend uses [Jest](https://jestjs.io/) and React Testing Library for unit 
 
 2. Install dependencies
     ```bash
-  npm install
+   npm install
 
 3. npm test
     ```bash
-  npm test
+   npm test
 
 ### Running Backend Tests (Flask + pytest)
 
@@ -75,15 +75,15 @@ The backend uses [pytest](https://docs.pytest.org/) and an in‑memory SQLite da
 
 1. Navigate to the backend folder:
     ```bash
-  cd BE_task_manager
+   cd BE_task_manager
 
 2. Install test dependencies:
     ```bash 
-  pip install pytest pytest-cov
+   pip install pytest pytest-cov
 
 3. Run the test suite:
     ```bash
-  pytest
+   pytest
 
 ---
 
