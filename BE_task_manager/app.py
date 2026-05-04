@@ -4,6 +4,7 @@ from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from sqlalchemy import event
 
 from models import Task, db
 
@@ -11,6 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent
 REPO_ROOT = BASE_DIR.parent
 FRONTEND_DIST = REPO_ROOT / "FE_task_manager" / "dist"
 DB_PATH = os.environ.get("TASKMGR_DB_PATH", str(BASE_DIR / "database.db"))
+
+# Make sure the directory exists before SQLite tries to open the file
+Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder=None)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
@@ -20,6 +24,15 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 db.init_app(app)
 with app.app_context():
+    @event.listens_for(db.engine, "connect")
+    def _set_sqlite_pragma(dbapi_connection, connection_record):
+        cursor = dbapi_connection.cursor()
+        try:
+            cursor.execute("PRAGMA journal_mode=WAL")
+            cursor.execute("PRAGMA synchronous=NORMAL")
+        finally:
+            cursor.close()
+
     db.create_all()
 
 
