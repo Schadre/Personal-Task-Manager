@@ -34,12 +34,20 @@ def create_task():
     if not data.get("title"):
         return jsonify({"error": "Title is required"}), 400
 
+    due_date_str = data.get("due_date")
+    due_date = None
+    if due_date_str:
+        try:
+            due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+        except ValueError:
+            return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
+
     task = Task(
         title=data["title"],
-        description=data.get("description"),
-        due_date=data.get("due_date"),
-        priority=data.get("priority"),
-        category=data.get("category"),
+        description=data.get("description", ""),
+        due_date=due_date,
+        priority=data.get("priority", "medium"),
+        category=data.get("category", "Uncategorized"),
         status="pending",
     )
     db.session.add(task)
@@ -49,23 +57,24 @@ def create_task():
 
 @app.route("/api/tasks", methods=["GET"])
 def get_tasks():
-    return jsonify(
-        [
-            {
-                "id": t.id,
-                "title": t.title,
-                "status": t.status,
-                "priority": t.priority,
-                "due_date": t.due_date,
-            }
-            for t in Task.query.all()
-        ]
-    )
+    tasks = Task.query.all()
+    result = []
+    for t in tasks:
+        result.append({
+            "id": t.id,
+            "title": t.title,
+            "status": t.status,
+            "priority": t.priority,
+            "due_date": t.due_date.strftime("%Y-%m-%d") if t.due_date else None,
+            "description": t.description or "",
+            "category": t.category or "",
+        })
+    return jsonify(result)
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["PUT"])
 def update_task(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
     if not task:
         return jsonify({"error": "Task not found"}), 404
 
@@ -73,13 +82,26 @@ def update_task(task_id):
     task.title = data.get("title", task.title)
     task.status = data.get("status", task.status)
     task.priority = data.get("priority", task.priority)
+    task.description = data.get("description", task.description)
+    task.category = data.get("category", task.category)
+
+    if "due_date" in data:
+        due_str = data["due_date"]
+        if due_str:
+            try:
+                task.due_date = datetime.strptime(due_str, "%Y-%m-%d")
+            except ValueError:
+                return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
+        else:
+            task.due_date = None
+
     db.session.commit()
     return jsonify({"message": "Task updated"})
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
     if not task:
         return jsonify({"error": "Task not found"}), 404
 
@@ -90,17 +112,19 @@ def delete_task(task_id):
 
 @app.route("/api/dashboard")
 def dashboard():
-    pending, completed, overdue = [], [], []
+    pending = []
+    completed = []
+    overdue = []
     today = datetime.today().date()
 
     for t in Task.query.all():
         if t.status == "completed":
             completed.append(t.title)
         elif t.due_date:
-            try:
-                due = datetime.strptime(t.due_date, "%Y-%m-%d").date()
-                (overdue if due < today else pending).append(t.title)
-            except ValueError:
+            due_date = t.due_date.date()
+            if due_date < today:
+                overdue.append(t.title)
+            else:
                 pending.append(t.title)
         else:
             pending.append(t.title)
@@ -111,7 +135,10 @@ def dashboard():
 @app.route("/api/tasks/filter")
 def filter_tasks():
     priority = request.args.get("priority")
-    return jsonify([t.title for t in Task.query.filter_by(priority=priority).all()])
+    if not priority:
+        return jsonify([])
+    tasks = Task.query.filter_by(priority=priority).all()
+    return jsonify([{"id": t.id, "title": t.title} for t in tasks])
 
 
 @app.route("/", defaults={"path": ""})
@@ -127,4 +154,5 @@ def serve_frontend(path):
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=int(os.environ.get("PORT", "5000")), debug=True)
+    app.run(host="127.0.0.1", port=int(
+        os.environ.get("PORT", "5000")), debug=True)
