@@ -2,7 +2,8 @@ import pytest
 import tempfile
 import os
 from app import app as flask_app
-from models import db, Task
+from models import db, Task, Priority, Status
+
 
 @pytest.fixture(scope='function')
 def app():
@@ -27,8 +28,10 @@ def client(app):
 @pytest.fixture
 def init_database(app):
     with app.app_context():
-        task1 = Task(title='Write tests', status='pending', priority='high')
-        task2 = Task(title='Review PR', status='completed', priority='medium')
+        task1 = Task(title='Write tests', status=Status.PENDING,
+                     priority=Priority.HIGH)
+        task2 = Task(title='Review PR', status=Status.COMPLETED,
+                     priority=Priority.MEDIUM)
         db.session.add_all([task1, task2])
         db.session.commit()
         yield db

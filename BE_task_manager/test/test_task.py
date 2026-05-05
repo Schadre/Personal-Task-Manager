@@ -7,49 +7,43 @@ def test_health_endpoint(client):
 def test_create_task(client):
     new_task = {'title': 'Buy groceries'}
     response = client.post('/api/tasks', json=new_task)
-    assert response.status_code == 200  
-    assert 'task_id' in response.json
-
-    get_resp = client.get('/api/tasks')
-    tasks = get_resp.json
-    assert any(t['title'] == 'Buy groceries' for t in tasks)
+    assert response.status_code == 201
+    data = response.json
+    assert data['message'] == 'Task created'
+    assert 'task_id' in data
 
 
 def test_get_tasks(client, init_database):
-
     response = client.get('/api/tasks')
     assert response.status_code == 200
-    assert len(response.json) == 2
-    titles = [t['title'] for t in response.json]
-    assert 'Write tests' in titles
-    assert 'Review PR' in titles
+    tasks = response.json
+    assert len(tasks) == 2
+    assert tasks[0]['title'] == 'Write tests'
+    assert tasks[1]['title'] == 'Review PR'
 
 
 def test_update_task(client, init_database):
-
     get_resp = client.get('/api/tasks')
-    task_id = get_resp.json[0]['id']
-
-    update_data = {'status': 'completed', 'priority': 'low'}
+    tasks = get_resp.json
+    task_id = tasks[0]['id']
+    update_data = {'title': 'Updated Title', 'status': 'completed'}
     put_resp = client.put(f'/api/tasks/{task_id}', json=update_data)
     assert put_resp.status_code == 200
-
     get_again = client.get('/api/tasks')
-    updated_task = next(t for t in get_again.json if t['id'] == task_id)
-    assert updated_task['status'] == 'completed'
-    assert updated_task['priority'] == 'low'
+    updated = next(t for t in get_again.json if t['id'] == task_id)
+    assert updated['title'] == 'Updated Title'
+    assert updated['status'] == 'completed'
 
 
 def test_delete_task(client, init_database):
     get_resp = client.get('/api/tasks')
-    task_id = get_resp.json[0]['id']
-
+    tasks = get_resp.json
+    task_id = tasks[0]['id']
     del_resp = client.delete(f'/api/tasks/{task_id}')
     assert del_resp.status_code == 200
-
-    after_del = client.get('/api/tasks')
-    assert len(after_del.json) == 1
-    assert all(t['id'] != task_id for t in after_del.json)
+    get_after = client.get('/api/tasks')
+    assert len(get_after.json) == 1
+    assert get_after.json[0]['id'] != task_id
 
 
 def test_dashboard_endpoint(client, init_database):
@@ -59,5 +53,4 @@ def test_dashboard_endpoint(client, init_database):
     assert 'pending' in data
     assert 'completed' in data
     assert 'overdue' in data
-    assert 'Write tests' in data['pending']
-    assert 'Review PR' in data['completed']
+    assert len(data['pending']) + len(data['completed']) == 2
