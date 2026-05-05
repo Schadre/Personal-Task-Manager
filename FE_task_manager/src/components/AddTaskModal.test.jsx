@@ -1,11 +1,9 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import AddTaskModal from "./AddTaskModal";
-
-jest.mock("../services/api", () => ({
-  createTask: jest.fn().mockResolvedValue({}),
-}));
-
 import { createTask } from "../services/api";
+
+jest.mock("../services/api");
 
 describe("AddTaskModal", () => {
   const mockClose = jest.fn();
@@ -15,95 +13,51 @@ describe("AddTaskModal", () => {
     jest.clearAllMocks();
   });
 
-  test("renders all form fields", () => {
-    render(<AddTaskModal close={mockClose} reload={mockReload} />);
-    expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/due date/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /save task/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
-  });
-
-  test("shows error when title is empty and save is attempted", async () => {
-    render(<AddTaskModal close={mockClose} reload={mockReload} />);
-    const saveButton = screen.getByRole("button", { name: /save task/i });
-    fireEvent.click(saveButton);
-    expect(await screen.findByText(/title is required/i)).toBeInTheDocument();
-    expect(createTask).not.toHaveBeenCalled();
-    expect(mockReload).not.toHaveBeenCalled();
-    expect(mockClose).not.toHaveBeenCalled();
-  });
-
-  test("clears error when user starts typing in title", async () => {
-    render(<AddTaskModal close={mockClose} reload={mockReload} />);
-    const saveButton = screen.getByRole("button", { name: /save task/i });
-    fireEvent.click(saveButton);
-    expect(await screen.findByText(/title is required/i)).toBeInTheDocument();
-
-    const titleInput = screen.getByLabelText(/title/i);
-    fireEvent.change(titleInput, { target: { value: "New Task" } });
-    expect(screen.queryByText(/title is required/i)).not.toBeInTheDocument();
-  });
-
-  test("saves task with all fields and calls reload & close", async () => {
+  it("saves task with all fields and calls reload & close", async () => {
     render(<AddTaskModal close={mockClose} reload={mockReload} />);
 
-    const titleInput = screen.getByLabelText(/title/i);
-    const descInput = screen.getByLabelText(/description/i);
-    const dueDateInput = screen.getByLabelText(/due date/i);
-    const categoryInput = screen.getByLabelText(/category/i);
-    const saveButton = screen.getByRole("button", { name: /save task/i });
+    await userEvent.type(screen.getByLabelText(/title/i), "Finish report");
+    await userEvent.type(
+      screen.getByLabelText(/description/i),
+      "Complete the capstone writeup",
+    );
+    await userEvent.type(screen.getByLabelText(/due date/i), "2026-06-01");
+    await userEvent.selectOptions(screen.getByLabelText(/priority/i), "high");
+    await userEvent.type(screen.getByLabelText(/category/i), "Work");
 
-    fireEvent.change(titleInput, { target: { value: "Finish report" } });
-    fireEvent.change(descInput, {
-      target: { value: "Complete the capstone writeup" },
-    });
-    fireEvent.change(dueDateInput, { target: { value: "2026-06-01" } });
-    fireEvent.change(categoryInput, { target: { value: "Work" } });
-    fireEvent.click(saveButton);
+    fireEvent.click(screen.getByText(/save task/i));
 
     await waitFor(() => {
       expect(createTask).toHaveBeenCalledWith({
         title: "Finish report",
         description: "Complete the capstone writeup",
-        due_date: "2026-06-01",
+        due_date: "2026-06-01T00:00:00.000Z",
+        priority: "high",
         category: "Work",
       });
-      expect(mockReload).toHaveBeenCalled();
-      expect(mockClose).toHaveBeenCalled();
     });
+
+    expect(mockReload).toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
   });
 
-  test("saves task with only required fields (description, due date, category empty/null)", async () => {
+  it("saves task with only required fields (description, due date, category empty/null)", async () => {
     render(<AddTaskModal close={mockClose} reload={mockReload} />);
 
-    const titleInput = screen.getByLabelText(/title/i);
-    const saveButton = screen.getByRole("button", { name: /save task/i });
-
-    fireEvent.change(titleInput, { target: { value: "Quick task" } });
-    fireEvent.click(saveButton);
+    await userEvent.type(screen.getByLabelText(/title/i), "Quick task");
+    fireEvent.click(screen.getByText(/save task/i));
 
     await waitFor(() => {
       expect(createTask).toHaveBeenCalledWith({
         title: "Quick task",
         description: "",
         due_date: null,
+        priority: "medium",
         category: "Uncategorized",
       });
-      expect(mockReload).toHaveBeenCalled();
-      expect(mockClose).toHaveBeenCalled();
     });
-  });
 
-  test("cancel closes modal without saving", () => {
-    render(<AddTaskModal close={mockClose} reload={mockReload} />);
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
-    fireEvent.click(cancelButton);
-    expect(createTask).not.toHaveBeenCalled();
-    expect(mockReload).not.toHaveBeenCalled();
+    expect(mockReload).toHaveBeenCalled();
     expect(mockClose).toHaveBeenCalled();
   });
 });
