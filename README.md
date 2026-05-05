@@ -112,5 +112,3 @@ The backend uses [pytest](https://docs.pytest.org/) and an in‑memory SQLite da
 ## About
 
 This project was built as part of a **full-stack learning journey**, focusing on connecting a React frontend with a Flask backend and handling real-world CRUD operations.
-
----
