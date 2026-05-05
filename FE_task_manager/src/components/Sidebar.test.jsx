@@ -5,7 +5,7 @@ test("renders title and Add Task button", () => {
   const mockSetShowModal = jest.fn();
   render(<Sidebar setShowModal={mockSetShowModal} />);
 
-  expect(screen.getByText("TaskManager")).toBeInTheDocument();
+  expect(screen.getByText("Task Manager")).toBeInTheDocument();
   const addButton = screen.getByText("+ Add Task");
   expect(addButton).toBeInTheDocument();
 
