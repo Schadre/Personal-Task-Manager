@@ -4,7 +4,7 @@ from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
-
+from flask_migrate import Migrate
 from models import Task, db
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -19,9 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 db.init_app(app)
-with app.app_context():
-    db.create_all()
-
+migrate = Migrate(app, db)
 
 @app.route("/api/health")
 def health():

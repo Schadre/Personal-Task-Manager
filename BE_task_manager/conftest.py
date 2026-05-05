@@ -1,6 +1,7 @@
 import pytest
 import tempfile
 import os
+from flask_migrate import upgrade
 from app import app as flask_app
 from models import db, Task
 
@@ -12,7 +13,7 @@ def app():
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     with flask_app.app_context():
-        db.create_all()
+        upgrade()
         yield flask_app
         db.drop_all()
         os.close(fd)
