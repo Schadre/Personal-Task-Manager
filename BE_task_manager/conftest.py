@@ -4,7 +4,6 @@ import os
 from app import app as flask_app
 from models import db, Task
 
-
 @pytest.fixture(scope='function')
 def app():
     fd, db_path = tempfile.mkstemp(suffix='.db')
