@@ -12,6 +12,9 @@ REPO_ROOT = BASE_DIR.parent
 FRONTEND_DIST = REPO_ROOT / "FE_task_manager" / "dist"
 DB_PATH = os.environ.get("TASKMGR_DB_PATH", str(BASE_DIR / "database.db"))
 
+# Make sure the directory exists before SQLite tries to open the file
+Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
+
 app = Flask(__name__, static_folder=None)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
