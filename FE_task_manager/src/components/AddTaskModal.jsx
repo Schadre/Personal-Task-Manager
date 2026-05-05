@@ -6,20 +6,38 @@ export default function AddTaskModal({ close, reload }) {
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [category, setCategory] = useState("");
+  const [priority, setPriority] = useState("medium");
   const [titleError, setTitleError] = useState("");
+  const [descError, setDescError] = useState("");
 
   const handleSave = async () => {
     if (!title.trim()) {
       setTitleError("Title is required");
       return;
     }
+    if (title.length > 140) {
+      setTitleError("Title must be 140 characters or less");
+      return;
+    }
+    if (description.length > 2000) {
+      setDescError("Description must be 2000 characters or less");
+      return;
+    }
     setTitleError("");
+    setDescError("");
+
+    // Convert date picker value (YYYY-MM-DD) to ISO-8601
+    let dueDateISO = null;
+    if (dueDate) {
+      dueDateISO = new Date(dueDate).toISOString(); // e.g., 2025-12-31T00:00:00.000Z
+    }
 
     const newTask = {
       title: title.trim(),
       description: description.trim(),
-      due_date: dueDate || null,
+      due_date: dueDateISO,
       category: category.trim() || "Uncategorized",
+      priority: priority,
     };
 
     await createTask(newTask);
@@ -52,6 +70,7 @@ export default function AddTaskModal({ close, reload }) {
               if (titleError) setTitleError("");
             }}
             placeholder="e.g., Finish capstone report"
+            maxLength={140}
             className={`w-full border px-4 py-3 rounded-xl ${
               titleError ? "border-red-500" : "border-slate-300"
             }`}
@@ -59,6 +78,9 @@ export default function AddTaskModal({ close, reload }) {
           {titleError && (
             <p className="text-red-500 text-sm mt-1">{titleError}</p>
           )}
+          <div className="text-right text-xs text-slate-400 mt-1">
+            {title.length}/140
+          </div>
         </div>
 
         <div className="mb-4">
@@ -71,11 +93,21 @@ export default function AddTaskModal({ close, reload }) {
           <textarea
             id="description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              if (descError) setDescError("");
+            }}
             placeholder="Add details (optional)"
             rows="3"
+            maxLength={2000}
             className="w-full border border-slate-300 px-4 py-3 rounded-xl"
           />
+          {descError && (
+            <p className="text-red-500 text-sm mt-1">{descError}</p>
+          )}
+          <div className="text-right text-xs text-slate-400 mt-1">
+            {description.length}/2000
+          </div>
         </div>
 
         <div className="mb-4">
@@ -92,6 +124,25 @@ export default function AddTaskModal({ close, reload }) {
             onChange={(e) => setDueDate(e.target.value)}
             className="w-full border border-slate-300 px-4 py-3 rounded-xl"
           />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="priority"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            Priority
+          </label>
+          <select
+            id="priority"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="w-full border border-slate-300 px-4 py-3 rounded-xl"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
         </div>
 
         <div className="mb-6">

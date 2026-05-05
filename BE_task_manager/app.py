@@ -5,28 +5,48 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import Task, db
+
+from models import Task, db, Priority, Status
+from config import Config, DevelopmentConfig, ProductionConfig
 
 BASE_DIR = Path(__file__).resolve().parent
 REPO_ROOT = BASE_DIR.parent
 FRONTEND_DIST = REPO_ROOT / "FE_task_manager" / "dist"
-DB_PATH = os.environ.get("TASKMGR_DB_PATH", str(BASE_DIR / "database.db"))
 
-# Make sure the directory exists before SQLite tries to open the file
-Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
+env = os.environ.get('TASKMGR_ENV', 'development')
+if env == 'production':
+    app_config = ProductionConfig()
+else:
+    app_config = DevelopmentConfig()
+
+Path(app_config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder=None)
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config.from_object(app_config)
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 db.init_app(app)
 migrate = Migrate(app, db)
 
+
+def parse_iso_datetime(date_str):
+    if not date_str:
+        return None
+    try:
+        if date_str.endswith('Z'):
+            date_str = date_str[:-1] + '+00:00'
+        return datetime.fromisoformat(date_str)
+    except ValueError:
+        try:
+            return datetime.strptime(date_str, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("Invalid ISO-8601 date format")
+
+
 @app.route("/api/health")
 def health():
-    return jsonify({"status": "ok", "env": os.environ.get("TASKMGR_ENV", "dev")})
+    return jsonify({"status": "ok", "env": env})
 
 
 @app.route("/api/tasks", methods=["POST"])
@@ -35,42 +55,42 @@ def create_task():
     if not data.get("title"):
         return jsonify({"error": "Title is required"}), 400
 
-    due_date_str = data.get("due_date")
     due_date = None
-    if due_date_str:
+    if data.get("due_date"):
         try:
-            due_date = datetime.strptime(due_date_str, "%Y-%m-%d")
+            due_date = parse_iso_datetime(data["due_date"])
         except ValueError:
-            return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
+            return jsonify({"error": "Invalid due_date format, use ISO-8601"}), 400
+
+    priority_str = data.get("priority", "medium").lower()
+    try:
+        priority_enum = Priority[priority_str.upper()]
+    except KeyError:
+        return jsonify({"error": "priority must be low, medium, or high"}), 400
+
+    status_str = data.get("status", "pending").lower()
+    try:
+        status_enum = Status[status_str.upper()]
+    except KeyError:
+        return jsonify({"error": "status must be pending or completed"}), 400
 
     task = Task(
         title=data["title"],
         description=data.get("description", ""),
         due_date=due_date,
-        priority=data.get("priority", "medium"),
+        priority=priority_enum,
         category=data.get("category", "Uncategorized"),
-        status="pending",
+        status=status_enum,
     )
     db.session.add(task)
     db.session.commit()
-    return jsonify({"message": "Task created", "task_id": task.id})
+    return jsonify({"message": "Task created", "task_id": task.id}), 201
 
 
 @app.route("/api/tasks", methods=["GET"])
 def get_tasks():
     tasks = Task.query.all()
-    result = []
-    for t in tasks:
-        result.append({
-            "id": t.id,
-            "title": t.title,
-            "status": t.status,
-            "priority": t.priority,
-            "due_date": t.due_date.strftime("%Y-%m-%d") if t.due_date else None,
-            "description": t.description or "",
-            "category": t.category or "",
-        })
-    return jsonify(result)
+    return jsonify([task.to_dict() for task in tasks])
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["PUT"])
@@ -80,21 +100,36 @@ def update_task(task_id):
         return jsonify({"error": "Task not found"}), 404
 
     data = request.json or {}
-    task.title = data.get("title", task.title)
-    task.status = data.get("status", task.status)
-    task.priority = data.get("priority", task.priority)
-    task.description = data.get("description", task.description)
-    task.category = data.get("category", task.category)
+
+    if "title" in data:
+        task.title = data["title"]
+    if "description" in data:
+        task.description = data["description"]
+    if "category" in data:
+        task.category = data["category"]
 
     if "due_date" in data:
-        due_str = data["due_date"]
-        if due_str:
-            try:
-                task.due_date = datetime.strptime(due_str, "%Y-%m-%d")
-            except ValueError:
-                return jsonify({"error": "Invalid date format, use YYYY-MM-DD"}), 400
-        else:
+        if data["due_date"] is None:
             task.due_date = None
+        else:
+            try:
+                task.due_date = parse_iso_datetime(data["due_date"])
+            except ValueError:
+                return jsonify({"error": "Invalid due_date format, use ISO-8601"}), 400
+
+    if "priority" in data:
+        priority_str = data["priority"].lower()
+        try:
+            task.priority = Priority[priority_str.upper()]
+        except KeyError:
+            return jsonify({"error": "priority must be low, medium, or high"}), 400
+
+    if "status" in data:
+        status_str = data["status"].lower()
+        try:
+            task.status = Status[status_str.upper()]
+        except KeyError:
+            return jsonify({"error": "status must be pending or completed"}), 400
 
     db.session.commit()
     return jsonify({"message": "Task updated"})
@@ -113,32 +148,42 @@ def delete_task(task_id):
 
 @app.route("/api/dashboard")
 def dashboard():
-    pending = []
-    completed = []
-    overdue = []
+    pending_tasks = []
+    completed_tasks = []
+    overdue_tasks = []
     today = datetime.today().date()
 
-    for t in Task.query.all():
-        if t.status == "completed":
-            completed.append(t.title)
-        elif t.due_date:
-            due_date = t.due_date.date()
+    for task in Task.query.all():
+        if task.status == Status.COMPLETED:
+            completed_tasks.append(task.title)
+        elif task.due_date:
+            due_date = task.due_date.date()
             if due_date < today:
-                overdue.append(t.title)
+                overdue_tasks.append(task.title)
             else:
-                pending.append(t.title)
+                pending_tasks.append(task.title)
         else:
-            pending.append(t.title)
+            pending_tasks.append(task.title)
 
-    return jsonify({"pending": pending, "completed": completed, "overdue": overdue})
+    return jsonify({
+        "pending": pending_tasks,
+        "completed": completed_tasks,
+        "overdue": overdue_tasks
+    })
 
 
 @app.route("/api/tasks/filter")
 def filter_tasks():
-    priority = request.args.get("priority")
-    if not priority:
+    priority_str = request.args.get("priority")
+    if not priority_str:
         return jsonify([])
-    tasks = Task.query.filter_by(priority=priority).all()
+
+    try:
+        priority_enum = Priority[priority_str.upper()]
+    except KeyError:
+        return jsonify({"error": "Invalid priority"}), 400
+
+    tasks = Task.query.filter_by(priority=priority_enum).all()
     return jsonify([{"id": t.id, "title": t.title} for t in tasks])
 
 
@@ -156,4 +201,4 @@ def serve_frontend(path):
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=int(
-        os.environ.get("PORT", "5000")), debug=True)
+        os.environ.get("PORT", "5000")), debug=app.debug)
