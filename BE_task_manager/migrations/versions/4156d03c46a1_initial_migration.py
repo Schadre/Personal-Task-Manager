@@ -1,8 +1,8 @@
-"""add timestamps, widen title/description, convert due_date to datetime, priority enum, status enum
+"""initial migration
 
-Revision ID: 5b4f44308c1d
-Revises: aa698e108f8f
-Create Date: 2026-05-05 00:30:25.325665
+Revision ID: 4156d03c46a1
+Revises: 
+Create Date: 2026-05-05 02:28:57.638215
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5b4f44308c1d'
-down_revision = 'aa698e108f8f'
+revision = '4156d03c46a1'
+down_revision = None
 branch_labels = None
 depends_on = None
 
