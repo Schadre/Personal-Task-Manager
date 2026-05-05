@@ -51,6 +51,19 @@ A simple full-stack task management application built with **React (Vite)** on t
 
 ---
 
+## Database Migrations
+
+We use Alembic (via Flask-Migrate) to manage schema changes without data loss.
+
+### Creating a new migration after changing `models.py`
+
+```bash
+cd BE_task_manager
+export FLASK_APP=app.py
+flask db migrate -m "description of change"
+flask db upgrade head
+```
+
 ## Testing
 
 The frontend uses [Jest](https://jestjs.io/) for unit and integration tests.

@@ -13,7 +13,7 @@ def app():
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with flask_app.app_context():
-        db.create_all()          # creates tables from models (fast, no migrations needed)
+        db.create_all()        
         yield flask_app
 
         db.drop_all()
