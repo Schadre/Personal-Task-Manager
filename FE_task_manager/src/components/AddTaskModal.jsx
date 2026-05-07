@@ -16,7 +16,7 @@ export default function AddTaskModal({ close, reload }) {
       return;
     }
     if (title.length > 140) {
-      setTitleError("Title must be 140 characters or less test");
+      setTitleError("Title must be 140 characters or less");
       return;
     }
     if (description.length > 2000) {
