@@ -31,7 +31,6 @@ npm run build --silent
 log "syncing python venv"
 cd "$TARGET/BE_task_manager"
 [ -d "$TARGET/.venv" ] || python3 -m venv "$TARGET/.venv"
-"$TARGET/.venv/bin/pip" install --quiet --upgrade pip
 "$TARGET/.venv/bin/pip" install --quiet -r requirements.txt
 
 if [ -d "$TARGET/BE_task_manager/migrations" ]; then
