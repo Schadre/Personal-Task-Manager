@@ -9,8 +9,10 @@ def test_create_task(client):
     response = client.post('/api/tasks', json=new_task)
     assert response.status_code == 201
     data = response.json
-    assert data['message'] == 'Task created'
-    assert 'task_id' in data
+    assert 'id' in data
+    assert data['title'] == 'Buy groceries'
+    assert 'created_at' in data
+    assert 'updated_at' in data
 
 
 def test_get_tasks(client, init_database):
@@ -26,9 +28,19 @@ def test_update_task(client, init_database):
     get_resp = client.get('/api/tasks')
     tasks = get_resp.json
     task_id = tasks[0]['id']
+    before = tasks[0]
+
+    import time
+    time.sleep(0.01) 
+
     update_data = {'title': 'Updated Title', 'status': 'completed'}
     put_resp = client.put(f'/api/tasks/{task_id}', json=update_data)
     assert put_resp.status_code == 200
+    after = put_resp.json 
+
+    assert after['created_at'] == before['created_at']
+    assert after['updated_at'] > before['updated_at']
+
     get_again = client.get('/api/tasks')
     updated = next(t for t in get_again.json if t['id'] == task_id)
     assert updated['title'] == 'Updated Title'
