@@ -9,3 +9,6 @@ __pycache__/
 .env.local
 .DS_Store
 coverage/*.db
+database.db
+
+database.db
