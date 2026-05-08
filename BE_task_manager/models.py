@@ -1,25 +1,49 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import enum
+from enum import Enum as PyEnum
 
 db = SQLAlchemy()
 
 
-class Priority(enum.Enum):
+class Priority(PyEnum):
     LOW = 1
     MEDIUM = 2
     HIGH = 3
 
-    def __str__(self):
+    @classmethod
+    def from_string(cls, value: str):
+        if not value:
+            return cls.MEDIUM
+        value_lower = value.lower()
+        if value_lower == 'low':
+            return cls.LOW
+        if value_lower == 'medium':
+            return cls.MEDIUM
+        if value_lower == 'high':
+            return cls.HIGH
+        raise ValueError(f"Invalid priority: {value}")
+
+    def to_string(self) -> str:
         return self.name.lower()
 
 
-class Status(enum.Enum):
-    PENDING = 1
-    COMPLETED = 2
+class Status(PyEnum):
+    PENDING = 'pending'
+    COMPLETED = 'completed'
 
-    def __str__(self):
-        return self.name.lower()
+    @classmethod
+    def from_string(cls, value: str):
+        if not value:
+            return cls.PENDING
+        value_lower = value.lower()
+        if value_lower == 'pending':
+            return cls.PENDING
+        if value_lower == 'completed':
+            return cls.COMPLETED
+        raise ValueError(f"Invalid status: {value}")
+
+    def to_string(self) -> str:
+        return self.value
 
 
 class Task(db.Model):
@@ -27,29 +51,30 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140), nullable=False)
-    description = db.Column(db.String(2000), nullable=True)
+    description = db.Column(db.Text)
+    # CHANGED from String
     due_date = db.Column(db.DateTime, nullable=True)
-    priority = db.Column(db.Enum(Priority), nullable=False,
-                         default=Priority.MEDIUM)
+    priority = db.Column(
+        db.Enum(Priority), default=Priority.MEDIUM, nullable=False)
     category = db.Column(db.String(50), default='Uncategorized')
-    status = db.Column(db.Enum(Status), nullable=False, default=Status.PENDING)
-    created_at = db.Column(db.DateTime, nullable=False,
-                           default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, nullable=False,
-                           default=datetime.utcnow, onupdate=datetime.utcnow)
+    status = db.Column(db.Enum(Status), default=Status.PENDING, nullable=False)
+    created_at = db.Column(
+        db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow,
+                           onupdate=datetime.utcnow, nullable=False)
 
     def to_dict(self):
         return {
             'id': self.id,
             'title': self.title,
-            'description': self.description or '',
+            'description': self.description,
             'due_date': self.due_date.isoformat() if self.due_date else None,
-            'priority': self.priority.name.lower() if self.priority else 'medium',
-            'category': self.category or '',
-            'status': self.status.name.lower() if self.status else 'pending',
+            'priority': self.priority.to_string() if self.priority else 'medium',
+            'category': self.category,
+            'status': self.status.to_string() if self.status else 'pending',
             'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
         }
 
     def __repr__(self):
-        return f'<Task {self.id}: {self.title[:20]}>'
+        return f'<Task {self.id} {self.title}>'

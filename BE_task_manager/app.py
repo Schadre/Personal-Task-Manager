@@ -31,12 +31,16 @@ migrate = Migrate(app, db)
 
 
 def parse_iso_datetime(date_str):
+    """Parse ISO-8601 string to naive UTC datetime."""
     if not date_str:
         return None
     try:
         if date_str.endswith('Z'):
             date_str = date_str[:-1] + '+00:00'
-        return datetime.fromisoformat(date_str)
+        dt = datetime.fromisoformat(date_str)
+        if dt.tzinfo is not None:
+            dt = dt.astimezone(timezone.utc).replace(tzinfo=None)
+        return dt
     except ValueError:
         try:
             return datetime.strptime(date_str, "%Y-%m-%d")
@@ -62,17 +66,18 @@ def create_task():
         except ValueError:
             return jsonify({"error": "Invalid due_date format, use ISO-8601"}), 400
 
-    priority_str = data.get("priority", "medium").lower()
+    priority_str = data.get("priority", "medium")
     try:
-        priority_enum = Priority[priority_str.upper()]
-    except KeyError:
-        return jsonify({"error": "priority must be low, medium, or high"}), 400
+        priority_enum = Priority.from_string(priority_str)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
 
-    status_str = data.get("status", "pending").lower()
+
+    status_str = data.get("status", "pending")
     try:
-        status_enum = Status[status_str.upper()]
-    except KeyError:
-        return jsonify({"error": "status must be pending or completed"}), 400
+        status_enum = Status.from_string(status_str)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
 
     task = Task(
         title=data["title"],
@@ -84,7 +89,7 @@ def create_task():
     )
     db.session.add(task)
     db.session.commit()
-    return jsonify({"message": "Task created", "task_id": task.id}), 201
+    return jsonify(task.to_dict()), 201
 
 
 @app.route("/api/tasks", methods=["GET"])
@@ -118,21 +123,19 @@ def update_task(task_id):
                 return jsonify({"error": "Invalid due_date format, use ISO-8601"}), 400
 
     if "priority" in data:
-        priority_str = data["priority"].lower()
         try:
-            task.priority = Priority[priority_str.upper()]
-        except KeyError:
-            return jsonify({"error": "priority must be low, medium, or high"}), 400
+            task.priority = Priority.from_string(data["priority"])
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
 
     if "status" in data:
-        status_str = data["status"].lower()
         try:
-            task.status = Status[status_str.upper()]
-        except KeyError:
-            return jsonify({"error": "status must be pending or completed"}), 400
+            task.status = Status.from_string(data["status"])
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
 
     db.session.commit()
-    return jsonify({"message": "Task updated"})
+    return jsonify(task.to_dict())
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["DELETE"])
@@ -179,8 +182,8 @@ def filter_tasks():
         return jsonify([])
 
     try:
-        priority_enum = Priority[priority_str.upper()]
-    except KeyError:
+        priority_enum = Priority.from_string(priority_str)
+    except ValueError:
         return jsonify({"error": "Invalid priority"}), 400
 
     tasks = Task.query.filter_by(priority=priority_enum).all()
