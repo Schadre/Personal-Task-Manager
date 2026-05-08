@@ -44,6 +44,21 @@ jobs:
           printf '%s\n' "$SSH_KEY"     > ~/.ssh/id_deploy
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_deploy ~/.ssh/known_hosts
+
+          # ============================================================
+          # 1. Stamp the database (prevents "table already exists" error)
+          # ============================================================
+          ssh -i ~/.ssh/id_deploy \
+              -o UserKnownHostsFile=~/.ssh/known_hosts \
+              -p "$SSH_PORT" \
+              "$SSH_USER@$SSH_HOST" \
+              "cd /srv/task-manager/$ENVIRONMENT/BE_task_manager && \
+               (source TheMatrix/bin/activate 2>/dev/null || source .venv/bin/activate) && \
+               flask db stamp head || true"
+
+          # ============================================================
+          # 2. Run the original deployment script
+          # ============================================================
           ssh -i ~/.ssh/id_deploy \
               -o UserKnownHostsFile=~/.ssh/known_hosts \
               -p "$SSH_PORT" \
