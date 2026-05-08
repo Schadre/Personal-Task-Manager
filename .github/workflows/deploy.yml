@@ -30,20 +30,39 @@ jobs:
             echo "env=dev" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Deploy via SSH
+      - name: Prepare SSH key and known_hosts
         env:
           SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
           SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
-          ENVIRONMENT: ${{ steps.target.outputs.env }}
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           printf '%s\n' "$SSH_KEY"     > ~/.ssh/id_deploy
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_deploy ~/.ssh/known_hosts
+
+      - name: Remove stale database on remote server
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/id_deploy \
+              -o UserKnownHostsFile=~/.ssh/known_hosts \
+              -p "$SSH_PORT" \
+              "$SSH_USER@$SSH_HOST" \
+              "rm -f /srv/task-manager/BE_task_manager/database.db"
+
+      - name: Deploy via SSH
+        env:
+          SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEPLOY_SSH_USER }}
+          ENVIRONMENT: ${{ steps.target.outputs.env }}
+        run: |
           ssh -i ~/.ssh/id_deploy \
               -o UserKnownHostsFile=~/.ssh/known_hosts \
               -p "$SSH_PORT" \
