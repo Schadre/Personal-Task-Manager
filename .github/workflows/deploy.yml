@@ -44,7 +44,7 @@ jobs:
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_deploy ~/.ssh/known_hosts
 
-      - name: Remove stale database on remote server
+      - name: Stamp database to current head (fix Alembic revision mismatch)
         env:
           SSH_HOST: ${{ secrets.DEPLOY_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
@@ -54,7 +54,7 @@ jobs:
               -o UserKnownHostsFile=~/.ssh/known_hosts \
               -p "$SSH_PORT" \
               "$SSH_USER@$SSH_HOST" \
-              "rm -f /srv/task-manager/BE_task_manager/database.db"
+              "cd /srv/task-manager/BE_task_manager && source ../venv/bin/activate && flask db stamp head"
 
       - name: Deploy via SSH
         env:
