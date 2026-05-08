@@ -17,7 +17,7 @@ log() { printf '[deploy %s] %s\n' "$ENV" "$*"; }
 
 log "building frontend"
 cd "$TARGET/FE_task_manager"
-npm install --no-audit --no-fund --silent
+npm ci --no-audit --no-fund --silent
 
 # rolldown linux binding sometimes gets skipped by npm
 if [ ! -d "node_modules/@rolldown/binding-linux-x64-gnu" ]; then
