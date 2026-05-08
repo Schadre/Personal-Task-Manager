@@ -45,7 +45,7 @@ if [ -d "$TARGET/BE_task_manager/migrations" ]; then
     "$TARGET/.venv/bin/python" -m flask --app app db upgrade
 fi
 
-if systemctl list-unit-files "$SERVICE.service" >/dev/null 2>&1; then
+if [ "$(systemctl show --property=LoadState --value "$SERVICE.service" 2>/dev/null)" = "loaded" ]; then
   log "restarting $SERVICE"
   sudo /bin/systemctl restart "$SERVICE"
 fi
