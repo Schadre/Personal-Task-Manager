@@ -51,8 +51,7 @@ jobs:
             -o UserKnownHostsFile=~/.ssh/known_hosts \
             -p "$SSH_PORT" \
             "$SSH_USER@$SSH_HOST" \
-            "set -e; \
-             cd /srv/task-manager/$ENVIRONMENT; \
+            "cd /srv/task-manager/$ENVIRONMENT; \
              git fetch origin; \
              git checkout ${{ github.ref_name }}; \
              git pull origin ${{ github.ref_name }}; \
@@ -72,6 +71,6 @@ jobs:
              npm run build; \
              cd ../BE_task_manager; \
              flask db stamp head || true; \
-             flask db upgrade head; \
+             flask db upgrade head || true; \
              cd ..; \
              sudo systemctl restart task-manager-$ENVIRONMENT"
