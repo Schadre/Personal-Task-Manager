@@ -60,6 +60,7 @@ jobs:
              source .venv/bin/activate; \
              pip install --upgrade pip; \
              pip install -r BE_task_manager/requirements.txt; \
+             pip install requests; \
              cd FE_task_manager; \
              echo 'VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}' > .env; \
              export NVM_DIR=\"\$HOME/.nvm\"; \
