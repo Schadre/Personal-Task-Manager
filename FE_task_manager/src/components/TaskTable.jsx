@@ -1,6 +1,6 @@
 import { deleteTask, updateTask } from "../services/api";
 
-export default function TaskTable({ tasks, reload }) {
+export default function TaskTable({ tasks, reload, onEditTask }) {
   const toggleComplete = async (task) => {
     const newStatus = task.status === "completed" ? "pending" : "completed";
     await updateTask(task.id, { status: newStatus });
@@ -69,6 +69,13 @@ export default function TaskTable({ tasks, reload }) {
                 {task.status === "completed" ? "✅ Done" : "⏳ Pending"}
               </td>
               <td className="px-6 py-4 text-right space-x-2">
+                <button
+                  onClick={() => onEditTask?.(task)}
+                  className="text-blue-600 hover:text-blue-800"
+                  aria-label="Edit task"
+                >
+                  ✏️
+                </button>
                 <button
                   onClick={() => toggleComplete(task)}
                   className="text-green-600 hover:text-green-800"

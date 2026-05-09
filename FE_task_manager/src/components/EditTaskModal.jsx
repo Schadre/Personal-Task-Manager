@@ -1,43 +1,40 @@
-import { useState, useEffect } from "react";
-import { createTask } from "../services/api";
+import { useState, useEffect } from 'react';
+import { updateTask } from '../services/api';
 
-export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
+const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    due_date: "",
-    priority: "medium",
-    category: "",
+    title: '',
+    description: '',
+    due_date: '',
+    priority: 'medium',
+    category: ''
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
+    if (task && isOpen) {
       setFormData({
-        title: "",
-        description: "",
-        due_date: "",
-        priority: "medium",
-        category: "",
+        title: task.title || '',
+        description: task.description || '',
+        due_date: task.due_date ? task.due_date.split('T')[0] : '',
+        priority: task.priority || 'medium',
+        category: task.category || 'Uncategorized'
       });
-      setErrors({});
     }
-  }, [isOpen]);
+  }, [task, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (formData.title.length > 140)
-      newErrors.title = "Title must be ≤ 140 characters";
-    if (formData.description.length > 2000)
-      newErrors.description = "Description must be ≤ 2000 characters";
+    if (!formData.title.trim()) newErrors.title = 'Title is required';
+    if (formData.title.length > 140) newErrors.title = 'Title must be ≤ 140 characters';
+    if (formData.description.length > 2000) newErrors.description = 'Description must be ≤ 2000 characters';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -53,19 +50,20 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
         isoDueDate = new Date(formData.due_date).toISOString();
       }
 
-      await createTask({
+      const updatedTask = {
         title: formData.title.trim(),
         description: formData.description.trim() || null,
         due_date: isoDueDate,
         priority: formData.priority,
-        category: formData.category.trim() || "Uncategorized",
-      });
+        category: formData.category.trim() || 'Uncategorized'
+      };
 
-      onTaskAdded();
+      await updateTask(task.id, updatedTask);
+      onTaskUpdated();
       onClose();
     } catch (error) {
-      console.error("Failed to create task:", error);
-      setErrors({ form: "Creation failed. Please try again." });
+      console.error('Failed to update task:', error);
+      setErrors({ form: 'Update failed. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -74,15 +72,9 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white rounded-lg shadow-xl w-full max-w-md p-6"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-xl font-bold mb-4">Add New Task</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={onClose}>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+        <h2 className="text-xl font-bold mb-4">Edit Task</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Title *</label>
@@ -93,14 +85,11 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
             />
-            {errors.title && (
-              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
-            )}
+            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
           </div>
+
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
-              Description
-            </label>
+            <label className="block text-sm font-medium mb-1">Description</label>
             <textarea
               name="description"
               value={formData.description}
@@ -108,10 +97,9 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               rows="3"
               className="w-full border rounded px-3 py-2"
             />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
-            )}
+            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
           </div>
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Due Date</label>
             <input
@@ -122,6 +110,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               className="w-full border rounded px-3 py-2"
             />
           </div>
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Priority</label>
             <select
@@ -135,6 +124,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               <option value="high">High</option>
             </select>
           </div>
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Category</label>
             <input
@@ -145,27 +135,21 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               className="w-full border rounded px-3 py-2"
             />
           </div>
-          {errors.form && (
-            <p className="text-red-500 text-sm mb-4">{errors.form}</p>
-          )}
+
+          {errors.form && <p className="text-red-500 text-sm mb-4">{errors.form}</p>}
+
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-100"
-            >
+            <button type="button" onClick={onClose} className="px-4 py-2 border rounded hover:bg-gray-100">
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-            >
-              {isSubmitting ? "Creating..." : "Create Task"}
+            <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-}
+};
+
+export default EditTaskModal;

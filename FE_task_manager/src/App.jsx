@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
+import { useState, useEffect } from "react";
+import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
-import SearchFilter from "./components/SearchFilter";
+import Sidebar from "./components/Sidebar";
 import TaskTable from "./components/TaskTable";
 import AddTaskModal from "./components/AddTaskModal";
-import { getTasks } from "./services/api";
+import EditTaskModal from "./components/EditTaskModal";
 
-export default function App() {
+function App() {
   const [tasks, setTasks] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const loadTasks = async () => {
     const data = await getTasks();
@@ -20,29 +22,41 @@ export default function App() {
     loadTasks();
   }, []);
 
-  return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
-      <div className="flex flex-1">
-        <Sidebar setShowModal={setShowModal} />
+  const handleEditTask = (task) => {
+    setSelectedTask(task);
+    setIsEditModalOpen(true);
+  };
 
-        <main className="flex-1 p-8">
-          <Header />
-          <StatsCards tasks={tasks} />
-          <SearchFilter />
-          <TaskTable tasks={tasks} reload={loadTasks} />
-        </main>
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
+      <div className="flex-1 p-6 overflow-auto">
+        <Header />
+        <StatsCards tasks={tasks} />
+        <TaskTable
+          tasks={tasks}
+          reload={loadTasks}
+          onEditTask={handleEditTask}
+        />
       </div>
 
-      <footer className="bg-white border-t border-slate-200 px-8 py-4 text-sm text-slate-500">
-        <div className="flex justify-between">
-          <span>© 2026 Echo Team — Personal Task Manager</span>
-          <span>v1 · CSC480A Capstone</span>
-        </div>
-      </footer>
+      <AddTaskModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onTaskAdded={loadTasks}
+      />
 
-      {showModal && (
-        <AddTaskModal close={() => setShowModal(false)} reload={loadTasks} />
-      )}
+      <EditTaskModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedTask(null);
+        }}
+        task={selectedTask}
+        onTaskUpdated={loadTasks}
+      />
     </div>
   );
 }
+
+export default App;
