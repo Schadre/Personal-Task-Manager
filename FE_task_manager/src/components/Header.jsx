@@ -5,11 +5,18 @@ function getGreeting() {
   return "Good Evening";
 }
 
-export default function Header() {
+export default function Header({ user }) {
   return (
     <div className="mb-8">
-      <h2 className="text-4xl font-bold">{getGreeting()} 👋</h2>
-      <p className="text-slate-500 mt-2">Stay organized and get things done.</p>
+      <h2 className="text-4xl font-bold">
+        {getGreeting()}
+        {user?.name ? `, ${user.name}` : ""} 👋
+      </h2>
+      <p className="text-slate-500 mt-2">
+        {user?.name
+          ? "Stay organized and get things done."
+          : "Sign in to manage your tasks."}
+      </p>
     </div>
   );
 }

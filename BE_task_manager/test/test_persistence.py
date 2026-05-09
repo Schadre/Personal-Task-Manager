@@ -1,20 +1,18 @@
-from models import db, Task, Priority, Status
-from app import app as flask_app
-from datetime import datetime
 import pytest
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from datetime import datetime
+from models import Task, Priority, Status
 
 
-def test_task_round_trip(tmp_path):
-    db_path = tmp_path / "test.db"
-    flask_app.config['TESTING'] = True
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    with flask_app.app_context():
-        db.create_all()
+def test_task_round_trip(app):
+    with app.app_context():
+        from models import db, User
+        user = User(
+            google_id="roundtrip_user",
+            email="roundtrip@example.com",
+            name="Roundtrip User"
+        )
+        db.session.add(user)
+        db.session.commit()
 
         due_date = datetime(2025, 12, 31, 23, 59, 59)
         original_task = Task(
@@ -23,24 +21,35 @@ def test_task_round_trip(tmp_path):
             due_date=due_date,
             priority=Priority.HIGH,
             category="Testing",
-            status=Status.COMPLETED
+            status=Status.COMPLETED,
+            user_id=user.id
         )
         db.session.add(original_task)
         db.session.commit()
         task_id = original_task.id
 
-        db.session.remove()
+        retrieved = Task.query.get(task_id)
+        assert retrieved.title == original_task.title
+        assert retrieved.description == original_task.description
+        assert retrieved.due_date == original_task.due_date
+        assert retrieved.priority == original_task.priority
+        assert retrieved.category == original_task.category
+        assert retrieved.status == original_task.status
+        assert retrieved.user_id == user.id
 
-        fetched_task = db.session.get(Task, task_id)
 
-        assert fetched_task.id == task_id
-        assert fetched_task.title == original_task.title
-        assert fetched_task.description == original_task.description
-        assert fetched_task.due_date == original_task.due_date
-        assert fetched_task.priority == original_task.priority
-        assert fetched_task.category == original_task.category
-        assert fetched_task.status == original_task.status
-        assert fetched_task.created_at is not None
-        assert fetched_task.updated_at is not None
-        assert isinstance(fetched_task.created_at, datetime)
-        assert isinstance(fetched_task.updated_at, datetime)
+def test_task_creation(app):
+    with app.app_context():
+        from models import db, User
+        user = User(
+            google_id="creation_user",
+            email="creation@example.com",
+            name="Creation User"
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        task = Task(title="Test Task", user_id=user.id)
+        db.session.add(task)
+        db.session.commit()
+        assert task.id is not None

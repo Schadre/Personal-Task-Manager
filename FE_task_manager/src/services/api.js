@@ -1,9 +1,22 @@
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
-export const getTasks = async () => {
-  const res = await fetch(`${API_BASE}/tasks`);
-  if (!res.ok) throw new Error("Failed to fetch tasks");
+async function handleResponse(res) {
+  if (res.status === 401) {
+    localStorage.removeItem("user");
+    window.location.href = "/";
+    throw new Error("Session expired");
+  }
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
   return res.json();
+}
+
+export const getTasks = async () => {
+  const res = await fetch(`${API_BASE}/tasks`, {
+    credentials: "include",
+  });
+  return handleResponse(res);
 };
 
 export const createTask = async (taskData) => {
@@ -11,9 +24,9 @@ export const createTask = async (taskData) => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(taskData),
+    credentials: "include",
   });
-  if (!res.ok) throw new Error("Failed to create task");
-  return res.json();
+  return handleResponse(res);
 };
 
 export const updateTask = async (id, taskData) => {
@@ -21,15 +34,43 @@ export const updateTask = async (id, taskData) => {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(taskData),
+    credentials: "include",
   });
-  if (!res.ok) throw new Error("Failed to update task");
-  return res.json();
+  return handleResponse(res);
 };
 
 export const deleteTask = async (id) => {
   const res = await fetch(`${API_BASE}/tasks/${id}`, {
     method: "DELETE",
+    credentials: "include",
   });
-  if (!res.ok) throw new Error("Failed to delete task");
+  return handleResponse(res);
+};
+
+export const loginWithGoogle = async (token) => {
+  const res = await fetch("/auth/google/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+    credentials: "include",
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Login failed");
+  return data;
+};
+
+export const logout = async () => {
+  const res = await fetch("/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  });
+  return handleResponse(res);
+};
+
+export const getCurrentUser = async () => {
+  const res = await fetch("/auth/me", {
+    credentials: "include",
+  });
+  if (res.status === 401) return null;
   return res.json();
 };
