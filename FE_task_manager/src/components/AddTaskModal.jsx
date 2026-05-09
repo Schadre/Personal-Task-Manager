@@ -1,3 +1,4 @@
+// FE_task_manager/src/components/AddTaskModal.jsx
 import { useState, useEffect } from "react";
 import { createTask } from "../services/api";
 
@@ -85,8 +86,11 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
         <h2 className="text-xl font-bold mb-4">Add New Task</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Title *</label>
+            <label htmlFor="title" className="block text-sm font-medium mb-1">
+              Title *
+            </label>
             <input
+              id="title"
               type="text"
               name="title"
               value={formData.title}
@@ -98,10 +102,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
             )}
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium mb-1"
+            >
               Description
             </label>
             <textarea
+              id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
@@ -113,8 +121,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
             )}
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Due Date</label>
+            <label
+              htmlFor="due_date"
+              className="block text-sm font-medium mb-1"
+            >
+              Due Date
+            </label>
             <input
+              id="due_date"
               type="date"
               name="due_date"
               value={formData.due_date}
@@ -123,8 +137,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Priority</label>
+            <label
+              htmlFor="priority"
+              className="block text-sm font-medium mb-1"
+            >
+              Priority
+            </label>
             <select
+              id="priority"
               name="priority"
               value={formData.priority}
               onChange={handleChange}
@@ -136,8 +156,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Category</label>
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium mb-1"
+            >
+              Category
+            </label>
             <input
+              id="category"
               type="text"
               name="category"
               value={formData.category}

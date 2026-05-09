@@ -6,58 +6,99 @@ import { createTask } from "../services/api";
 jest.mock("../services/api");
 
 describe("AddTaskModal", () => {
-  const mockClose = jest.fn();
-  const mockReload = jest.fn();
+  const mockOnClose = jest.fn();
+  const mockOnTaskAdded = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("saves task with all fields and calls reload & close", async () => {
-    render(<AddTaskModal close={mockClose} reload={mockReload} />);
-
-    await userEvent.type(screen.getByLabelText(/title/i), "Finish report");
-    await userEvent.type(
-      screen.getByLabelText(/description/i),
-      "Complete the capstone writeup",
+  test("renders when open", () => {
+    render(
+      <AddTaskModal
+        isOpen={true}
+        onClose={mockOnClose}
+        onTaskAdded={mockOnTaskAdded}
+      />,
     );
-    await userEvent.type(screen.getByLabelText(/due date/i), "2026-06-01");
-    await userEvent.selectOptions(screen.getByLabelText(/priority/i), "high");
-    await userEvent.type(screen.getByLabelText(/category/i), "Work");
-
-    fireEvent.click(screen.getByText(/save task/i));
-
-    await waitFor(() => {
-      expect(createTask).toHaveBeenCalledWith({
-        title: "Finish report",
-        description: "Complete the capstone writeup",
-        due_date: "2026-06-01T00:00:00.000Z",
-        priority: "high",
-        category: "Work",
-      });
-    });
-
-    expect(mockReload).toHaveBeenCalled();
-    expect(mockClose).toHaveBeenCalled();
+    expect(screen.getByText("Add New Task")).toBeInTheDocument();
+    expect(screen.getByLabelText("Title *")).toBeInTheDocument();
   });
 
-  it("saves task with only required fields (description, due date, category empty/null)", async () => {
-    render(<AddTaskModal close={mockClose} reload={mockReload} />);
+  test("saves task with all fields and calls onTaskAdded & onClose", async () => {
+    createTask.mockResolvedValueOnce({});
+    render(
+      <AddTaskModal
+        isOpen={true}
+        onClose={mockOnClose}
+        onTaskAdded={mockOnTaskAdded}
+      />,
+    );
 
-    await userEvent.type(screen.getByLabelText(/title/i), "Quick task");
-    fireEvent.click(screen.getByText(/save task/i));
+    await userEvent.type(screen.getByLabelText("Title *"), "Finish report");
+    await userEvent.type(
+      screen.getByLabelText("Description"),
+      "Complete the capstone writeup",
+    );
+    await userEvent.type(screen.getByLabelText("Due Date"), "2025-12-31");
+    await userEvent.selectOptions(screen.getByLabelText("Priority"), "high");
+    await userEvent.type(screen.getByLabelText("Category"), "School");
+
+    fireEvent.click(screen.getByText("Create Task"));
 
     await waitFor(() => {
-      expect(createTask).toHaveBeenCalledWith({
-        title: "Quick task",
-        description: "",
-        due_date: null,
-        priority: "medium",
-        category: "Uncategorized",
-      });
+      expect(createTask).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Finish report",
+          description: "Complete the capstone writeup",
+          due_date: "2025-12-31T00:00:00.000Z",
+          priority: "high",
+          category: "School",
+        }),
+      );
+      expect(mockOnTaskAdded).toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalled();
     });
+  });
 
-    expect(mockReload).toHaveBeenCalled();
-    expect(mockClose).toHaveBeenCalled();
+  test("saves task with only required fields", async () => {
+    createTask.mockResolvedValueOnce({});
+    render(
+      <AddTaskModal
+        isOpen={true}
+        onClose={mockOnClose}
+        onTaskAdded={mockOnTaskAdded}
+      />,
+    );
+
+    await userEvent.type(screen.getByLabelText("Title *"), "Quick task");
+    fireEvent.click(screen.getByText("Create Task"));
+
+    await waitFor(() => {
+      expect(createTask).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: "Quick task",
+          description: null,
+          due_date: null,
+          priority: "medium",
+          category: "Uncategorized",
+        }),
+      );
+      expect(mockOnTaskAdded).toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalled();
+    });
+  });
+
+  test("shows validation error when title is empty", async () => {
+    render(
+      <AddTaskModal
+        isOpen={true}
+        onClose={mockOnClose}
+        onTaskAdded={mockOnTaskAdded}
+      />,
+    );
+    fireEvent.click(screen.getByText("Create Task"));
+    expect(await screen.findByText("Title is required")).toBeInTheDocument();
+    expect(createTask).not.toHaveBeenCalled();
   });
 });
