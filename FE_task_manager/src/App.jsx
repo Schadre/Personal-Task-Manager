@@ -6,9 +6,10 @@ import Sidebar from "./components/Sidebar";
 import TaskTable from "./components/TaskTable";
 import AddTaskModal from "./components/AddTaskModal";
 import EditTaskModal from "./components/EditTaskModal";
-
+import SearchFilter from "./components/SearchFilter";
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -16,11 +17,16 @@ function App() {
   const loadTasks = async () => {
     const data = await getTasks();
     setTasks(data);
+    setFilteredTasks(data);
   };
 
   useEffect(() => {
     loadTasks();
   }, []);
+
+  useEffect(() => {
+    setFilteredTasks(tasks);
+  }, [tasks]);
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
@@ -32,9 +38,10 @@ function App() {
       <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
       <div className="flex-1 p-6 overflow-auto">
         <Header />
-        <StatsCards tasks={tasks} />
+        <StatsCards tasks={filteredTasks} /> 
+        <SearchFilter tasks={tasks} setFilteredTasks={setFilteredTasks} />
         <TaskTable
-          tasks={tasks}
+          tasks={filteredTasks} 
           reload={loadTasks}
           onEditTask={handleEditTask}
         />
@@ -45,7 +52,6 @@ function App() {
         onClose={() => setIsAddModalOpen(false)}
         onTaskAdded={loadTasks}
       />
-
       <EditTaskModal
         isOpen={isEditModalOpen}
         onClose={() => {
