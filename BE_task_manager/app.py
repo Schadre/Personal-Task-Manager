@@ -3,10 +3,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
+from flask_login import LoginManager, login_required, current_user
+from auth import auth_bp
 from flask_cors import CORS
 from flask_migrate import Migrate
+from authlib.integrations.flask_client import OAuth
 
-from models import Task, db, Priority, Status
+from models import Task, db, Priority, Status, User
 from config import Config, DevelopmentConfig, ProductionConfig
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -19,15 +22,42 @@ if env == 'production':
 else:
     app_config = DevelopmentConfig()
 
+app_config.validate() 
+
 Path(app_config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder=None)
 app.config.from_object(app_config)
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+allowed_origin = os.environ.get('CORS_ORIGIN', 'http://localhost:5173')
+CORS(app, resources={
+    r"/api/*": {"origins": allowed_origin},
+    r"/auth/*": {"origins": allowed_origin}
+}, supports_credentials=True)
 
 db.init_app(app)
 migrate = Migrate(app, db)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.query.get(int(user_id))
+
+
+oauth = OAuth(app)
+oauth.register(
+    name='google',
+    client_id=app.config['GOOGLE_CLIENT_ID'],
+    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'}
+)
+
+app.register_blueprint(auth_bp)
 
 
 def parse_iso_datetime(date_str):
@@ -54,6 +84,7 @@ def health():
 
 
 @app.route("/api/tasks", methods=["POST"])
+@login_required
 def create_task():
     data = request.json or {}
     if not data.get("title"):
@@ -72,7 +103,6 @@ def create_task():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
-
     status_str = data.get("status", "pending")
     try:
         status_enum = Status.from_string(status_str)
@@ -86,6 +116,7 @@ def create_task():
         priority=priority_enum,
         category=data.get("category", "Uncategorized"),
         status=status_enum,
+        user_id=current_user.id
     )
     db.session.add(task)
     db.session.commit()
@@ -93,14 +124,16 @@ def create_task():
 
 
 @app.route("/api/tasks", methods=["GET"])
+@login_required
 def get_tasks():
-    tasks = Task.query.all()
+    tasks = Task.query.filter_by(user_id=current_user.id).all()
     return jsonify([task.to_dict() for task in tasks])
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["PUT"])
+@login_required
 def update_task(task_id):
-    task = db.session.get(Task, task_id)
+    task = Task.query.filter_by(id=task_id, user_id=current_user.id).first()
     if not task:
         return jsonify({"error": "Task not found"}), 404
 
@@ -139,8 +172,9 @@ def update_task(task_id):
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["DELETE"])
+@login_required
 def delete_task(task_id):
-    task = db.session.get(Task, task_id)
+    task = Task.query.filter_by(id=task_id, user_id=current_user.id).first()
     if not task:
         return jsonify({"error": "Task not found"}), 404
 
@@ -150,13 +184,14 @@ def delete_task(task_id):
 
 
 @app.route("/api/dashboard")
+@login_required
 def dashboard():
     pending_tasks = []
     completed_tasks = []
     overdue_tasks = []
     today = datetime.today().date()
 
-    for task in Task.query.all():
+    for task in Task.query.filter_by(user_id=current_user.id).all():
         if task.status == Status.COMPLETED:
             completed_tasks.append(task.title)
         elif task.due_date:
@@ -176,6 +211,7 @@ def dashboard():
 
 
 @app.route("/api/tasks/filter")
+@login_required
 def filter_tasks():
     priority_str = request.args.get("priority")
     if not priority_str:
@@ -186,7 +222,8 @@ def filter_tasks():
     except ValueError:
         return jsonify({"error": "Invalid priority"}), 400
 
-    tasks = Task.query.filter_by(priority=priority_enum).all()
+    tasks = Task.query.filter_by(
+        priority=priority_enum, user_id=current_user.id).all()
     return jsonify([{"id": t.id, "title": t.title} for t in tasks])
 
 

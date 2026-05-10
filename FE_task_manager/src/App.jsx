@@ -1,48 +1,117 @@
-import { useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
+import { useState, useEffect } from "react";
+import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
-import SearchFilter from "./components/SearchFilter";
+import Sidebar from "./components/Sidebar";
 import TaskTable from "./components/TaskTable";
 import AddTaskModal from "./components/AddTaskModal";
-import { getTasks } from "./services/api";
+import EditTaskModal from "./components/EditTaskModal";
+import SearchFilter from "./components/SearchFilter";
+import Login from "./components/Login";
 
-export default function App() {
+function App() {
+  const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const loadTasks = async () => {
-    const data = await getTasks();
-    setTasks(data);
+    try {
+      const data = await getTasks();
+      setTasks(data);
+      setFilteredTasks(data);
+    } catch (err) {
+      console.error("Failed to load tasks", err);
+
+      if (
+        err.message.includes("401") ||
+        err.message.includes("Failed to fetch")
+      ) {
+        handleLogout();
+      }
+    }
   };
 
-  useEffect(() => {
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
     loadTasks();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/auth/logout", { method: "POST", credentials: "include" });
+    } catch (err) {
+      console.error("Logout error", err);
+    }
+    localStorage.removeItem("user");
+    setUser(null);
+    setTasks([]);
+    setFilteredTasks([]);
+  };
+
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      loadTasks();
+    }
   }, []);
 
-  return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
-      <div className="flex flex-1">
-        <Sidebar setShowModal={setShowModal} />
+  useEffect(() => {
+    setFilteredTasks(tasks);
+  }, [tasks]);
 
-        <main className="flex-1 p-8">
-          <Header />
-          <StatsCards tasks={tasks} />
-          <SearchFilter />
-          <TaskTable tasks={tasks} reload={loadTasks} />
-        </main>
+  const handleEditTask = (task) => {
+    setSelectedTask(task);
+    setIsEditModalOpen(true);
+  };
+
+
+  if (!user) {
+    return <Login onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
+      <div className="flex-1 p-6 overflow-auto">
+        <div className="flex justify-between items-center">
+          <Header user={user} />
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
+        <StatsCards tasks={filteredTasks} />
+        <SearchFilter tasks={tasks} setFilteredTasks={setFilteredTasks} />
+        <TaskTable
+          tasks={filteredTasks}
+          reload={loadTasks}
+          onEditTask={handleEditTask}
+        />
       </div>
 
-      <footer className="bg-white border-t border-slate-200 px-8 py-4 text-sm text-slate-500">
-        <div className="flex justify-between">
-          <span>© 2026 Echo Team — Personal Task Manager</span>
-          <span>v1 · CSC480A Capstone</span>
-        </div>
-      </footer>
-
-      {showModal && (
-        <AddTaskModal close={() => setShowModal(false)} reload={loadTasks} />
-      )}
+      <AddTaskModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onTaskAdded={loadTasks}
+      />
+      <EditTaskModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedTask(null);
+        }}
+        task={selectedTask}
+        onTaskUpdated={loadTasks}
+      />
     </div>
   );
 }
+
+export default App;

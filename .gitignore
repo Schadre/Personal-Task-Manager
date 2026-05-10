@@ -10,5 +10,5 @@ __pycache__/
 .DS_Store
 coverage/*.db
 database.db
-
-database.db
+.env.*.local
+secrets/
