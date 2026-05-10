@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from models import db, User
-from authlib.integrations.flask_client import OAuth
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 
@@ -57,12 +56,29 @@ def google_token():
             }
         }), 200
 
+    except ValueError as e:
+        current_app.logger.error(f'Google token validation error: {str(e)}')
+        return jsonify({'error': 'Invalid or expired token'}), 401
+
     except Exception as e:
+        current_app.logger.error(
+            f'Unexpected error during Google login: {str(e)}', exc_info=True)
+        return jsonify({'error': 'Internal server error'}), 500
 
-        current_app.logger.error(f'Unexpected error: {e}', exc_info=True)
 
-        return jsonify({
-            'error': 'Internal server error',
-            'debug': str(e),
-            'debug_type': type(e).__name__
-        }), 500
+@auth_bp.route('/auth/logout', methods=['POST'])
+@login_required
+def logout():
+    logout_user()
+    return jsonify({'message': 'Logged out successfully'})
+
+
+@auth_bp.route('/auth/me')
+@login_required
+def get_current_user():
+    return jsonify({
+        'id': current_user.id,
+        'email': current_user.email,
+        'name': current_user.name,
+        'profile_pic': current_user.profile_pic
+    })
