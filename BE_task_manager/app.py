@@ -22,6 +22,8 @@ if env == 'production':
 else:
     app_config = DevelopmentConfig()
 
+app_config.validate() 
+
 Path(app_config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder=None)

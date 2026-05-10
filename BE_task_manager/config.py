@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -16,8 +16,22 @@ class Config:
 
     GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
     GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
-    SECRET_KEY = os.environ.get(
-        'SECRET_KEY', '4fc10d5230d08595a20c385017cb82655dae63afff035a7d87152a6dee5eb883')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
+    @classmethod
+    def validate(cls):
+        missing = []
+        if not cls.SECRET_KEY:
+            missing.append('SECRET_KEY')
+        if not cls.GOOGLE_CLIENT_ID:
+            missing.append('GOOGLE_CLIENT_ID')
+        if not cls.GOOGLE_CLIENT_SECRET:
+            missing.append('GOOGLE_CLIENT_SECRET')
+        if missing:
+            raise ValueError(
+                f"Missing required environment variables: {', '.join(missing)}\n"
+                "Please set them in your .env file or environment."
+            )
 
 
 class DevelopmentConfig(Config):
