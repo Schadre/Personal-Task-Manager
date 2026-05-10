@@ -24,10 +24,17 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "env=${{ inputs.environment }}" >> "$GITHUB_OUTPUT"
+            if [ "${{ inputs.environment }}" = "prod" ]; then
+              echo "branch=main" >> "$GITHUB_OUTPUT"
+            else
+              echo "branch=dev" >> "$GITHUB_OUTPUT"
+            fi
           elif [ "${{ github.ref_name }}" = "main" ]; then
             echo "env=prod" >> "$GITHUB_OUTPUT"
+            echo "branch=main" >> "$GITHUB_OUTPUT"
           else
             echo "env=dev" >> "$GITHUB_OUTPUT"
+            echo "branch=dev" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Deploy via SSH
@@ -38,6 +45,7 @@ jobs:
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
           ENVIRONMENT: ${{ steps.target.outputs.env }}
+          BRANCH: ${{ steps.target.outputs.branch }}
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
         run: |
           mkdir -p ~/.ssh
@@ -47,30 +55,12 @@ jobs:
           chmod 600 ~/.ssh/id_deploy ~/.ssh/known_hosts
 
           ssh -i ~/.ssh/id_deploy \
-            -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile=~/.ssh/known_hosts \
-            -p "$SSH_PORT" \
-            "$SSH_USER@$SSH_HOST" \
-            "cd /srv/task-manager/$ENVIRONMENT; \
-             git fetch origin; \
-             git checkout ${{ github.ref_name }}; \
-             git pull origin ${{ github.ref_name }}; \
-             if [ ! -d .venv ]; then python3 -m venv .venv; fi; \
-             source .venv/bin/activate; \
-             pip install --upgrade pip; \
-             pip install -r BE_task_manager/requirements.txt; \
-             pip install requests; \
-             cd FE_task_manager; \
-             echo 'VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}' > .env; \
-             export NVM_DIR=\"\$HOME/.nvm\"; \
-             if [ ! -s \"\$NVM_DIR/nvm.sh\" ]; then curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash; fi; \
-             . \"\$NVM_DIR/nvm.sh\"; \
-             nvm install 22; \
-             nvm use 22; \
-             npm install; \
-             npm run build; \
-             cd ../BE_task_manager; \
-             flask db stamp head || true; \
-             flask db upgrade head || true; \
-             cd ..; \
-             sudo systemctl restart task-manager-$ENVIRONMENT"
+              -o UserKnownHostsFile=~/.ssh/known_hosts \
+              -p "$SSH_PORT" \
+              "$SSH_USER@$SSH_HOST" \
+              "set -e; \
+               cd /srv/task-manager/$ENVIRONMENT; \
+               git fetch origin $BRANCH; \
+               git reset --hard origin/$BRANCH; \
+               VITE_GOOGLE_CLIENT_ID='$VITE_GOOGLE_CLIENT_ID' \
+                 bash scripts/deploy.sh $ENVIRONMENT"

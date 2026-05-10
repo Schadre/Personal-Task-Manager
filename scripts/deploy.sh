@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Build, migrate, restart. Called from /srv/task-manager/bin/deploy.
+# Build, migrate, restart. Called from .github/workflows/deploy.yml after
+# the workflow has reset the working tree to origin/<branch>.
 
 set -euo pipefail
 
@@ -15,9 +16,13 @@ export PATH="/opt/node-20/bin:$PATH"
 
 log() { printf '[deploy %s] %s\n' "$ENV" "$*"; }
 
+log "writing FE env from VITE_GOOGLE_CLIENT_ID"
+: "${VITE_GOOGLE_CLIENT_ID:?VITE_GOOGLE_CLIENT_ID must be set}"
+printf 'VITE_GOOGLE_CLIENT_ID=%s\n' "$VITE_GOOGLE_CLIENT_ID" > "$TARGET/FE_task_manager/.env"
+
 log "building frontend"
 cd "$TARGET/FE_task_manager"
-npm ci --no-audit --no-fund --silent
+npm install --no-audit --no-fund --silent
 
 # rolldown linux binding sometimes gets skipped by npm
 if [ ! -d "node_modules/@rolldown/binding-linux-x64-gnu" ]; then
@@ -31,6 +36,7 @@ npm run build --silent
 log "syncing python venv"
 cd "$TARGET/BE_task_manager"
 [ -d "$TARGET/.venv" ] || python3 -m venv "$TARGET/.venv"
+"$TARGET/.venv/bin/pip" install --quiet --upgrade pip
 "$TARGET/.venv/bin/pip" install --quiet -r requirements.txt
 
 if [ -d "$TARGET/BE_task_manager/migrations" ]; then
