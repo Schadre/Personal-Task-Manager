@@ -28,7 +28,7 @@ def test_task_round_trip(app):
         db.session.commit()
         task_id = original_task.id
 
-        retrieved = Task.query.get(task_id)
+        retrieved = db.session.get(Task, task_id)
         assert retrieved.title == original_task.title
         assert retrieved.description == original_task.description
         assert retrieved.due_date == original_task.due_date
