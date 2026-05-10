@@ -1,4 +1,3 @@
-// FE_task_manager/src/components/AddTaskModal.jsx
 import { useState, useEffect } from "react";
 import { createTask } from "../services/api";
 

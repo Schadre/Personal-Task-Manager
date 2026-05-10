@@ -28,8 +28,10 @@ app = Flask(__name__, static_folder=None)
 app.config.from_object(app_config)
 
 allowed_origin = os.environ.get('CORS_ORIGIN', 'http://localhost:5173')
-CORS(app, resources={r"/api/*": {"origins": allowed_origin}},
-     supports_credentials=True)
+CORS(app, resources={
+    r"/api/*": {"origins": allowed_origin},
+    r"/auth/*": {"origins": allowed_origin}
+}, supports_credentials=True)
 
 db.init_app(app)
 migrate = Migrate(app, db)
