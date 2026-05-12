@@ -11,3 +11,4 @@ Nice=10
 ProtectSystem=full
 PrivateTmp=true
 NoNewPrivileges=true
+UMask=0077

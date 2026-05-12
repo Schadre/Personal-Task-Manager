@@ -12,8 +12,8 @@ venv, runs `flask db upgrade`, restarts the relevant service.
 ## backup-sqlite.sh
 
 Nightly backup of the prod SQLite database to `/srv/task-manager/backups/`,
-using `sqlite3 .backup` (safe with WAL writers active). Keeps the last 7
-files; older ones are deleted.
+using `sqlite3 .backup` (safe with WAL writers active). Keeps backups for 7
+days; older files are deleted.
 
 Defaults: source `/srv/task-manager/prod/data/database.db`, destination
 `/srv/task-manager/backups/`, retention 7 days. Override by passing args or

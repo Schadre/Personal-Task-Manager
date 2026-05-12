@@ -22,7 +22,13 @@ DST="$DST_DIR/database-$STAMP.db"
 sqlite3 "$SRC" ".backup '$DST'"
 chmod 600 "$DST"
 
-find "$DST_DIR" -maxdepth 1 -type f -name 'database-*.db' \
-  -mtime "+$RETAIN_DAYS" -delete
+if [[ "$RETAIN_DAYS" =~ ^[1-9][0-9]*$ ]]; then
+  if ! find "$DST_DIR" -maxdepth 1 -type f -name 'database-*.db' \
+    -mtime "+$RETAIN_DAYS" -delete; then
+    echo "warning: failed to prune backups older than $RETAIN_DAYS days in $DST_DIR" >&2
+  fi
+else
+  echo "warning: invalid RETAIN_DAYS value '$RETAIN_DAYS'; skipping backup pruning" >&2
+fi
 
 echo "backup ok: $DST"
