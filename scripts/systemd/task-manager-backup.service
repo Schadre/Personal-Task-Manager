@@ -1,0 +1,14 @@
+[Unit]
+Description=Personal Task Manager SQLite backup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/srv/task-manager/prod/scripts/backup-sqlite.sh
+User=deploy
+Group=deploy
+Nice=10
+ProtectSystem=full
+PrivateTmp=true
+NoNewPrivileges=true
+UMask=0077
