@@ -8,8 +8,16 @@ set -euo pipefail
 SRC="${1:?usage: restore-sqlite.sh <backup-file> [target-db]}"
 DST="${2:-/srv/task-manager/prod/data/database.db}"
 SERVICE="${SERVICE:-task-manager-prod}"
-DB_OWNER="${DB_OWNER:-deploy:deploy}"
-DB_MODE="${DB_MODE:-0644}"
+EXISTING_DB_OWNER=""
+EXISTING_DB_MODE=""
+
+if [ -f "$DST" ]; then
+  EXISTING_DB_OWNER="$(stat -c '%U:%G' "$DST")"
+  EXISTING_DB_MODE="$(stat -c '%a' "$DST")"
+fi
+
+DB_OWNER="${DB_OWNER:-${EXISTING_DB_OWNER:-deploy:deploy}}"
+DB_MODE="${DB_MODE:-${EXISTING_DB_MODE:-0644}}"
 
 if [ ! -f "$SRC" ]; then
   echo "backup file not found: $SRC" >&2
