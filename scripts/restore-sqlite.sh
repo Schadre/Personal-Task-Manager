@@ -8,6 +8,8 @@ set -euo pipefail
 SRC="${1:?usage: restore-sqlite.sh <backup-file> [target-db]}"
 DST="${2:-/srv/task-manager/prod/data/database.db}"
 SERVICE="${SERVICE:-task-manager-prod}"
+DB_OWNER="${DB_OWNER:-deploy:deploy}"
+DB_MODE="${DB_MODE:-0644}"
 
 if [ ! -f "$SRC" ]; then
   echo "backup file not found: $SRC" >&2
@@ -23,6 +25,11 @@ if [ -f "$DST" ]; then
 fi
 
 sudo cp "$SRC" "$DST"
+# Backups are written 0600 root-owned via sudo, so reset ownership/mode to
+# what the service user expects before bringing the service back up.
+sudo chown "$DB_OWNER" "$DST"
+sudo chmod "$DB_MODE" "$DST"
+
 sudo systemctl start "$SERVICE"
 
 echo "restored from $SRC"
