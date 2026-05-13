@@ -11,6 +11,7 @@ import Login from "./components/Login";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); 
   const [tasks, setTasks] = useState([]);
   const [queryString, setQueryString] = useState("");
   const [quickFilter, setQuickFilter] = useState(null);
@@ -18,7 +19,7 @@ function App() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  // ---------- Sort state ----------
+  // Sort state
   const [sortColumn, setSortColumn] = useState("created_at");
   const [sortDir, setSortDir] = useState("desc");
 
@@ -34,39 +35,32 @@ function App() {
 
   const loadTasks = useCallback(
     async (baseQuery = queryString) => {
+      if (!user) return; 
       const query = buildFinalQuery(baseQuery);
       try {
         const data = await getTasks(query);
         setTasks(data);
       } catch (err) {
         console.error("Failed to load tasks", err);
+
         if (
-          err.message.includes("401") ||
-          err.message.includes("Session expired")
+          user &&
+          (err.message.includes("401") ||
+            err.message.includes("Session expired"))
         ) {
           handleLogout();
         }
       }
     },
-    [queryString, buildFinalQuery],
+    [queryString, buildFinalQuery, user],
   );
 
   const handleFilterChange = useCallback((newQuery) => {
     setQueryString(newQuery);
-
   }, []);
-
-  useEffect(() => {
-    loadTasks(queryString);
-  }, [queryString, loadTasks]);
-
-  useEffect(() => {
-    loadTasks(queryString);
-  }, [sortColumn, sortDir]); 
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    loadTasks();
   };
 
   const handleLogout = async () => {
@@ -86,11 +80,16 @@ function App() {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-      loadTasks();
     }
+    setLoading(false);
   }, []);
 
-  // ---------- Client‑side quick filtering ----------
+  useEffect(() => {
+    if (user) {
+      loadTasks(queryString);
+    }
+  }, [queryString, sortColumn, sortDir, user, loadTasks]);
+
   const filteredTasks = useMemo(() => {
     if (!quickFilter) return tasks;
 
@@ -102,15 +101,12 @@ function App() {
     );
     const todayEnd = new Date(todayStart);
     todayEnd.setDate(todayEnd.getDate() + 1);
-
     const weekEnd = new Date(todayStart);
     weekEnd.setDate(weekEnd.getDate() + 7);
 
     return tasks.filter((task) => {
       if (!task.due_date) return false;
-
       const due = new Date(task.due_date);
-
       switch (quickFilter) {
         case "today":
           return due >= todayStart && due < todayEnd;
@@ -128,15 +124,12 @@ function App() {
     setQuickFilter((prev) => (prev === filterName ? null : filterName));
   };
 
-  // ---------- Sort handler (called from TaskTable) ----------
   const handleSortChange = useCallback((column) => {
     setSortColumn((prevCol) => {
       if (prevCol === column) {
-
         setSortDir((prevDir) => (prevDir === "asc" ? "desc" : "asc"));
         return column;
       }
-
       setSortDir("asc");
       return column;
     });
@@ -147,10 +140,19 @@ function App() {
     setIsEditModalOpen(true);
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
+
   if (!user) {
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
+  // Main app (authenticated)
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
@@ -167,18 +169,16 @@ function App() {
 
         <StatsCards tasks={filteredTasks} />
 
-        {/* Quick filter buttons */}
         <div className="flex gap-2 mb-3">
           {["today", "overdue", "this_week"].map((name) => (
             <button
               key={name}
               onClick={() => handleQuickFilter(name)}
-              className={`px-3 py-1 rounded text-sm font-medium capitalize
-                ${
-                  quickFilter === name
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
+              className={`px-3 py-1 rounded text-sm font-medium capitalize ${
+                quickFilter === name
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
             >
               {name.replace("_", " ")}
             </button>

@@ -1,15 +1,25 @@
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
 async function handleResponse(res) {
+  const contentType = res.headers.get("content-type");
+
   if (res.status === 401) {
     localStorage.removeItem("user");
     window.location.href = "/";
     throw new Error("Session expired");
   }
+
+  const text = await res.text();
+
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status}`);
+    throw new Error(`HTTP ${res.status}: ${text}`);
   }
-  return res.json();
+
+  if (!contentType || !contentType.includes("application/json")) {
+    throw new Error(`Expected JSON but got: ${text}`);
+  }
+
+  return JSON.parse(text);
 }
 
 export const getTasks = async (queryString = "") => {
