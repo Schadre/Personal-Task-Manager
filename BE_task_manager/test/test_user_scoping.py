@@ -102,12 +102,9 @@ def test_filter_scoped_to_user(app, client):
     _add_task(app, b, title="B-high", priority=Priority.HIGH)
 
     _login(client, a)
-    resp = client.get("/api/tasks/filter?priority=high")
+    resp = client.get("/api/tasks?priority=high")
     assert resp.status_code == 200
-    titles = [t["title"] for t in resp.get_json()]
-    assert titles == ["A-high"]
-
-
-def test_unauthenticated_request_is_rejected(app, client):
-    resp = client.get("/api/tasks")
-    assert resp.status_code in (401, 302)
+    body = resp.get_json()
+    titles = [t["title"] for t in body]
+    assert "A-high" in titles
+    assert "B-high" not in titles

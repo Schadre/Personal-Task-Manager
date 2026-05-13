@@ -1,6 +1,7 @@
 import os
 import logging
 import atexit
+import sys
 from datetime import datetime, date, timedelta
 
 from flask import Flask, jsonify, request
@@ -23,10 +24,9 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 # -------------------------------------------------------------------
-# Scheduler setup – module level (only one per Python process)
+# Scheduler setup – module level (only one per process)
 # -------------------------------------------------------------------
 scheduler = BackgroundScheduler()
-
 
 
 def _shutdown_scheduler():
@@ -46,9 +46,11 @@ def heartbeat_job():
 
 
 def start_scheduler(app):
-    """Start the scheduler unless we are in testing, or we're the reloader parent, or we're a non-designated worker."""
+    """Start the scheduler unless we are in testing, a CLI command, reloader parent, or non-designated worker."""
     if app.config.get('TESTING'):
         logger.info("Testing mode – scheduler not started.")
+        return
+    if 'flask' in sys.argv[0] and len(sys.argv) > 1:
         return
     if os.environ.get('APSCHEDULER_RUN') == '1':
         _start(app)
@@ -111,7 +113,7 @@ def _run_with_context(app, func):
 config_map = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
-    'testing': TestingConfig 
+    'testing': TestingConfig
 }
 
 task_manager = TaskManager()
@@ -144,17 +146,52 @@ def create_app(config_name='development'):
     start_scheduler(app)
 
     # -------------------------------------------------------------
-    # CRUD routes – thin controllers
+    # Health‑check
     # -------------------------------------------------------------
-
     @app.route('/')
     def index():
         return {'status': 'ok', 'service': 'Personal Task Manager API'}
 
+    # -------------------------------------------------------------
+    # CRUD routes – thin controllers
+    # -------------------------------------------------------------
     @app.route('/api/tasks', methods=['GET'])
     @login_required
     def get_tasks():
-        tasks = task_manager.list(user_id=current_user.id)
+        filters = {}
+        priority = request.args.get('priority')
+        status = request.args.get('status')
+        category = request.args.get('category')
+        if priority:
+            filters['priority'] = priority
+        if status:
+            filters['status'] = status
+        if category:
+            filters['category'] = category
+
+        sort = request.args.get('sort', 'created_at')
+        direction = request.args.get('dir', 'desc')
+
+        search = request.args.get('q')
+
+        valid_sorts = ['created_at', 'due_date', 'priority', 'title', 'status']
+        if sort not in valid_sorts:
+            return jsonify({'error': f"Invalid sort field. Must be one of {valid_sorts}"}), 400
+        if direction not in ['asc', 'desc']:
+            return jsonify({'error': 'Invalid direction. Must be asc or desc'}), 400
+
+        if priority and not ValidationService._is_valid_priority(priority):
+            return jsonify({'error': f"Invalid priority value: {priority}"}), 400
+        if status and not ValidationService._is_valid_status(status):
+            return jsonify({'error': f"Invalid status value: {status}"}), 400
+
+        tasks = task_manager.list(
+            user_id=current_user.id,
+            filters=filters,
+            sort=sort,
+            direction=direction,
+            search=search
+        )
         return jsonify([t.to_dict() for t in tasks])
 
     @app.route('/api/tasks', methods=['POST'])
@@ -164,6 +201,7 @@ def create_app(config_name='development'):
         errors = validator.validate_create(data)
         if errors:
             return jsonify({'error': 'Validation failed', 'fields': errors}), 400
+
         task = task_manager.create(user_id=current_user.id, data=data)
         return jsonify(task.to_dict()), 201
 
@@ -174,6 +212,7 @@ def create_app(config_name='development'):
         errors = validator.validate_update(data)
         if errors:
             return jsonify({'error': 'Validation failed', 'fields': errors}), 400
+
         task = task_manager.update(task_id, user_id=current_user.id, data=data)
         if task is None:
             return jsonify({'error': 'Task not found'}), 404
@@ -187,6 +226,9 @@ def create_app(config_name='development'):
             return jsonify({'error': 'Task not found'}), 404
         return '', 204
 
+    # -------------------------------------------------------------
+    # Dashboard 
+    # -------------------------------------------------------------
     @app.route('/api/tasks/dashboard', methods=['GET'])
     @login_required
     def dashboard():
@@ -207,22 +249,29 @@ def create_app(config_name='development'):
             'due_today': due_today
         })
 
-    @app.route('/api/tasks/filter', methods=['GET'])
+    # -------------------------------------------------------------
+    # Notifications 
+    # -------------------------------------------------------------
+    from services.reminder import notification_queue
+
+    @app.route('/api/notifications', methods=['GET'])
     @login_required
-    def filter_tasks():
-        priority = request.args.get('priority')
-        if priority:
-            try:
-                priority_enum = Priority.from_string(priority)
-            except ValueError:
-                return jsonify({'error': 'Invalid priority'}), 400
-            tasks = Task.query.filter_by(
-                user_id=current_user.id, priority=priority_enum
-            ).order_by(Task.created_at.desc()).all()
-        else:
-            tasks = Task.query.filter_by(user_id=current_user.id).order_by(
-                Task.created_at.desc()).all()
-        return jsonify([t.to_dict() for t in tasks])
+    def get_notifications():
+        user_id = current_user.id
+        user_notifs = [n for n in notification_queue
+                       if n['user_id'] == user_id and not n['seen']]
+        user_notifs.sort(key=lambda n: n['id'], reverse=True)
+        return jsonify(user_notifs)
+
+    @app.route('/api/notifications/<int:notification_id>/seen', methods=['PUT'])
+    @login_required
+    def mark_notification_seen(notification_id):
+        user_id = current_user.id
+        for notif in notification_queue:
+            if notif['id'] == notification_id and notif['user_id'] == user_id:
+                notif['seen'] = True
+                return jsonify({'success': True})
+        return jsonify({'error': 'Notification not found'}), 404
 
     return app
 
