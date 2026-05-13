@@ -12,8 +12,10 @@ async function handleResponse(res) {
   return res.json();
 }
 
-export const getTasks = async () => {
-  const res = await fetch(`${API_BASE}/tasks`, {
+
+export const getTasks = async (queryString = "") => {
+  const url = `${API_BASE}/tasks${queryString ? `?${queryString}` : ""}`;
+  const res = await fetch(url, {
     credentials: "include",
   });
   return handleResponse(res);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
@@ -12,27 +12,36 @@ import Login from "./components/Login";
 function App() {
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [queryString, setQueryString] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const loadTasks = async () => {
-    try {
-      const data = await getTasks();
-      setTasks(data);
-      setFilteredTasks(data);
-    } catch (err) {
-      console.error("Failed to load tasks", err);
-
-      if (
-        err.message.includes("401") ||
-        err.message.includes("Failed to fetch")
-      ) {
-        handleLogout();
+  const loadTasks = useCallback(
+    async (query = queryString) => {
+      try {
+        const data = await getTasks(query);
+        setTasks(data);
+      } catch (err) {
+        console.error("Failed to load tasks", err);
+        if (
+          err.message.includes("401") ||
+          err.message.includes("Session expired")
+        ) {
+          handleLogout();
+        }
       }
-    }
-  };
+    },
+    [queryString],
+  );
+
+  const handleFilterChange = useCallback(
+    (newQuery) => {
+      setQueryString(newQuery);
+      loadTasks(newQuery);
+    },
+    [loadTasks],
+  );
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
@@ -48,27 +57,21 @@ function App() {
     localStorage.removeItem("user");
     setUser(null);
     setTasks([]);
-    setFilteredTasks([]);
+    setQueryString("");
   };
-
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-      loadTasks();
+      loadTasks(); 
     }
   }, []);
-
-  useEffect(() => {
-    setFilteredTasks(tasks);
-  }, [tasks]);
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
     setIsEditModalOpen(true);
   };
-
 
   if (!user) {
     return <Login onLoginSuccess={handleLoginSuccess} />;
@@ -87,11 +90,11 @@ function App() {
             Logout
           </button>
         </div>
-        <StatsCards tasks={filteredTasks} />
-        <SearchFilter tasks={tasks} setFilteredTasks={setFilteredTasks} />
+        <StatsCards tasks={tasks} />
+        <SearchFilter onFilterChange={handleFilterChange} />
         <TaskTable
-          tasks={filteredTasks}
-          reload={loadTasks}
+          tasks={tasks}
+          reload={() => loadTasks(queryString)}
           onEditTask={handleEditTask}
         />
       </div>
@@ -99,7 +102,7 @@ function App() {
       <AddTaskModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onTaskAdded={loadTasks}
+        onTaskAdded={() => loadTasks(queryString)}
       />
       <EditTaskModal
         isOpen={isEditModalOpen}
@@ -108,7 +111,7 @@ function App() {
           setSelectedTask(null);
         }}
         task={selectedTask}
-        onTaskUpdated={loadTasks}
+        onTaskUpdated={() => loadTasks(queryString)}
       />
     </div>
   );
