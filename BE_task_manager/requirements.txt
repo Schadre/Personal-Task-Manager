@@ -12,3 +12,4 @@ python-dotenv==1.0.0
 python-dateutil==2.9.0.post0
 pytest==7.4.4
 pytest-cov==4.1.0
+APScheduler==3.10.4

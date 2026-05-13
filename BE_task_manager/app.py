@@ -1,10 +1,13 @@
 import os
+import logging
 from datetime import datetime, date, timedelta
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_login import current_user, login_required
-from flask_migrate import Migrate          
+from flask_migrate import Migrate
 from dateutil import parser
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from models import db, login_manager, Task, Priority, Status
 from auth import auth_bp
@@ -13,6 +16,53 @@ from services.validation import ValidationService
 
 from config import Config, DevelopmentConfig, ProductionConfig
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# -------------------------------------------------------------------
+# Scheduler setup
+# -------------------------------------------------------------------
+scheduler = BackgroundScheduler()
+
+
+def heartbeat_job():
+    """Simple heartbeat to confirm the scheduler is alive."""
+    logger.info("Scheduler heartbeat – alive and ticking.")
+
+
+def start_scheduler(app):
+    """Start the scheduler unless we are in testing, or we're the reloader parent, or we're a non-designated worker."""
+    if app.config.get('TESTING'):
+        logger.info("Testing mode – scheduler not started.")
+        return
+
+    if os.environ.get('APSCHEDULER_RUN') == '1':
+        _start()
+        return
+
+    if os.environ.get('WERKZEUG_RUN_MAIN') != 'false':
+        _start()
+        return
+
+    logger.info("Scheduler not started in this worker.")
+
+
+def _start():
+    scheduler.add_job(
+        func=heartbeat_job,
+        trigger='interval',
+        seconds=60,
+        id='heartbeat',
+        replace_existing=True
+    )
+    scheduler.start()
+    logger.info("APScheduler started (heartbeat every 60s).")
+
+
+# -------------------------------------------------------------------
+# App factory
+# -------------------------------------------------------------------
 config_map = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
@@ -21,7 +71,7 @@ config_map = {
 
 task_manager = TaskManager()
 validator = ValidationService()
-migrate = Migrate()                      
+migrate = Migrate()
 
 
 def parse_iso_datetime(date_str):
@@ -36,7 +86,7 @@ def create_app(config_name='development'):
     app.config.from_object(config_map[config_name])
 
     db.init_app(app)
-    migrate.init_app(app, db)            
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     CORS(app, resources={
@@ -46,15 +96,28 @@ def create_app(config_name='development'):
 
     app.register_blueprint(auth_bp)
 
+
+    start_scheduler(app)
+
+    @app.teardown_appcontext
+    def shutdown_scheduler(exception=None):
+        if scheduler.running:
+            scheduler.shutdown()
+            logger.info("Scheduler shut down.")
+
     # -------------------------------------------------------------
     # CRUD routes – thin controllers
     # -------------------------------------------------------------
+
+    @app.route('/')
+    def index():
+        return {'status': 'ok', 'service': 'Personal Task Manager API'}
+
     @app.route('/api/tasks', methods=['GET'])
     @login_required
     def get_tasks():
         tasks = task_manager.list(user_id=current_user.id)
         return jsonify([t.to_dict() for t in tasks])
-    
 
     @app.route('/api/tasks', methods=['POST'])
     @login_required
@@ -65,7 +128,7 @@ def create_app(config_name='development'):
             return jsonify({'error': 'Validation failed', 'fields': errors}), 400
 
         task = task_manager.create(user_id=current_user.id, data=data)
-        return jsonify(task.to_dict()), 201    
+        return jsonify(task.to_dict()), 201
 
     @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
     @login_required
@@ -88,9 +151,6 @@ def create_app(config_name='development'):
             return jsonify({'error': 'Task not found'}), 404
         return '', 204
 
-    # -------------------------------------------------------------
-    # Dashboard & filter – unchanged for now
-    # -------------------------------------------------------------
     @app.route('/api/tasks/dashboard', methods=['GET'])
     @login_required
     def dashboard():
