@@ -9,6 +9,7 @@ from dateutil import parser
 from models import db, login_manager, Task, Priority, Status
 from auth import auth_bp
 from services.task_manager import TaskManager
+from services.validation import ValidationService
 
 from config import Config, DevelopmentConfig, ProductionConfig
 
@@ -19,6 +20,7 @@ config_map = {
 }
 
 task_manager = TaskManager()
+validator = ValidationService()
 migrate = Migrate()                      
 
 
@@ -52,24 +54,27 @@ def create_app(config_name='development'):
     def get_tasks():
         tasks = task_manager.list(user_id=current_user.id)
         return jsonify([t.to_dict() for t in tasks])
+    
 
     @app.route('/api/tasks', methods=['POST'])
     @login_required
     def create_task():
         data = request.get_json() or {}
-        if not data.get('title'):
-            return jsonify({'error': 'Title is required'}), 400
+        errors = validator.validate_create(data)
+        if errors:
+            return jsonify({'error': 'Validation failed', 'fields': errors}), 400
 
-        try:
-            task = task_manager.create(user_id=current_user.id, data=data)
-        except Exception as e:
-            return jsonify({'error': str(e)}), 400
-        return jsonify(task.to_dict()), 201
+        task = task_manager.create(user_id=current_user.id, data=data)
+        return jsonify(task.to_dict()), 201    
 
     @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
     @login_required
     def update_task(task_id):
         data = request.get_json() or {}
+        errors = validator.validate_update(data)
+        if errors:
+            return jsonify({'error': 'Validation failed', 'fields': errors}), 400
+
         task = task_manager.update(task_id, user_id=current_user.id, data=data)
         if task is None:
             return jsonify({'error': 'Task not found'}), 404
