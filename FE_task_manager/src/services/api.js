@@ -12,7 +12,6 @@ async function handleResponse(res) {
   return res.json();
 }
 
-
 export const getTasks = async (queryString = "") => {
   const url = `${API_BASE}/tasks${queryString ? `?${queryString}` : ""}`;
   const res = await fetch(url, {
@@ -75,4 +74,19 @@ export const getCurrentUser = async () => {
   });
   if (res.status === 401) return null;
   return res.json();
+};
+
+export const getNotifications = async () => {
+  const res = await fetch(`${API_BASE}/notifications`, {
+    credentials: "include",
+  });
+  return handleResponse(res);
+};
+
+export const markNotificationSeen = async (id) => {
+  const res = await fetch(`${API_BASE}/notifications/${id}/seen`, {
+    method: "PUT",
+    credentials: "include",
+  });
+  return handleResponse(res);
 };
