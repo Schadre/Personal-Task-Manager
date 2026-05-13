@@ -1,5 +1,6 @@
 import os
 import logging
+import atexit
 from datetime import datetime, date, timedelta
 
 from flask import Flask, jsonify, request
@@ -8,22 +9,35 @@ from flask_login import current_user, login_required
 from flask_migrate import Migrate
 from dateutil import parser
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers import SchedulerAlreadyRunningError
 
 from models import db, login_manager, Task, Priority, Status
 from auth import auth_bp
 from services.task_manager import TaskManager
 from services.validation import ValidationService
 
-from config import Config, DevelopmentConfig, ProductionConfig
+from config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 # -------------------------------------------------------------------
-# Scheduler setup
+# Scheduler setup – module level (only one per Python process)
 # -------------------------------------------------------------------
 scheduler = BackgroundScheduler()
+
+
+
+def _shutdown_scheduler():
+    try:
+        if scheduler.running:
+            scheduler.shutdown(wait=False)
+    except Exception:
+        pass
+
+
+atexit.register(_shutdown_scheduler)
 
 
 def heartbeat_job():
@@ -36,28 +50,59 @@ def start_scheduler(app):
     if app.config.get('TESTING'):
         logger.info("Testing mode – scheduler not started.")
         return
-
     if os.environ.get('APSCHEDULER_RUN') == '1':
-        _start()
+        _start(app)
         return
-
     if os.environ.get('WERKZEUG_RUN_MAIN') != 'false':
-        _start()
+        _start(app)
         return
-
     logger.info("Scheduler not started in this worker.")
 
 
-def _start():
+def _start(app):
+    """Add scheduler jobs – only if not already running."""
+    if scheduler.running:
+        return
+
+    # Heartbeat
     scheduler.add_job(
-        func=heartbeat_job,
+        func=lambda: app.app_context().push() or heartbeat_job(),
         trigger='interval',
         seconds=60,
         id='heartbeat',
         replace_existing=True
     )
-    scheduler.start()
-    logger.info("APScheduler started (heartbeat every 60s).")
+
+    from services.reminder import scan_reminders
+    scheduler.add_job(
+        func=lambda: _run_with_context(app, scan_reminders),
+        trigger='interval',
+        minutes=1,
+        id='scan_reminders',
+        replace_existing=True
+    )
+
+    from services.reminder import clear_notified_cache
+    scheduler.add_job(
+        func=lambda: _run_with_context(app, clear_notified_cache),
+        trigger='cron',
+        hour=0,
+        minute=0,
+        id='clear_notified_cache',
+        replace_existing=True
+    )
+
+    try:
+        scheduler.start()
+        logger.info("APScheduler started (heartbeat + reminder scanner).")
+    except SchedulerAlreadyRunningError:
+        logger.info("APScheduler already running – skipping.")
+
+
+def _run_with_context(app, func):
+    """Push an application context, call the function, and pop the context."""
+    with app.app_context():
+        func()
 
 
 # -------------------------------------------------------------------
@@ -66,7 +111,7 @@ def _start():
 config_map = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
-    'testing': Config
+    'testing': TestingConfig 
 }
 
 task_manager = TaskManager()
@@ -96,14 +141,7 @@ def create_app(config_name='development'):
 
     app.register_blueprint(auth_bp)
 
-
     start_scheduler(app)
-
-    @app.teardown_appcontext
-    def shutdown_scheduler(exception=None):
-        if scheduler.running:
-            scheduler.shutdown()
-            logger.info("Scheduler shut down.")
 
     # -------------------------------------------------------------
     # CRUD routes – thin controllers
@@ -126,7 +164,6 @@ def create_app(config_name='development'):
         errors = validator.validate_create(data)
         if errors:
             return jsonify({'error': 'Validation failed', 'fields': errors}), 400
-
         task = task_manager.create(user_id=current_user.id, data=data)
         return jsonify(task.to_dict()), 201
 
@@ -137,7 +174,6 @@ def create_app(config_name='development'):
         errors = validator.validate_update(data)
         if errors:
             return jsonify({'error': 'Validation failed', 'fields': errors}), 400
-
         task = task_manager.update(task_id, user_id=current_user.id, data=data)
         if task is None:
             return jsonify({'error': 'Task not found'}), 404
