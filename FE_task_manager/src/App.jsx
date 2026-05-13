@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
@@ -13,10 +13,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [queryString, setQueryString] = useState("");
+  const [quickFilter, setQuickFilter] = useState(null); 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
+ 
   const loadTasks = useCallback(
     async (query = queryString) => {
       try {
@@ -35,6 +37,7 @@ function App() {
     [queryString],
   );
 
+
   const handleFilterChange = useCallback(
     (newQuery) => {
       setQueryString(newQuery);
@@ -45,7 +48,7 @@ function App() {
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    loadTasks();
+    loadTasks(); 
   };
 
   const handleLogout = async () => {
@@ -58,6 +61,7 @@ function App() {
     setUser(null);
     setTasks([]);
     setQueryString("");
+    setQuickFilter(null);
   };
 
   useEffect(() => {
@@ -67,6 +71,43 @@ function App() {
       loadTasks(); 
     }
   }, []);
+
+  const filteredTasks = useMemo(() => {
+    if (!quickFilter) return tasks;
+
+    const now = new Date();
+    const todayStart = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    );
+    const todayEnd = new Date(todayStart);
+    todayEnd.setDate(todayEnd.getDate() + 1); 
+
+    const weekEnd = new Date(todayStart);
+    weekEnd.setDate(weekEnd.getDate() + 7);
+
+    return tasks.filter((task) => {
+      if (!task.due_date) return false; 
+
+      const due = new Date(task.due_date);
+
+      switch (quickFilter) {
+        case "today":
+          return due >= todayStart && due < todayEnd;
+        case "overdue":
+          return due < todayStart && task.status === "pending";
+        case "this_week":
+          return due >= todayStart && due <= weekEnd;
+        default:
+          return true;
+      }
+    });
+  }, [tasks, quickFilter]);
+
+  const handleQuickFilter = (filterName) => {
+    setQuickFilter((prev) => (prev === filterName ? null : filterName));
+  };
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
@@ -90,10 +131,30 @@ function App() {
             Logout
           </button>
         </div>
-        <StatsCards tasks={tasks} />
+
+        <StatsCards tasks={filteredTasks} />
+
+        {/* Quick filter buttons */}
+        <div className="flex gap-2 mb-3">
+          {["today", "overdue", "this_week"].map((name) => (
+            <button
+              key={name}
+              onClick={() => handleQuickFilter(name)}
+              className={`px-3 py-1 rounded text-sm font-medium capitalize
+                ${
+                  quickFilter === name
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+            >
+              {name.replace("_", " ")}
+            </button>
+          ))}
+        </div>
+
         <SearchFilter onFilterChange={handleFilterChange} />
         <TaskTable
-          tasks={tasks}
+          tasks={filteredTasks}
           reload={() => loadTasks(queryString)}
           onEditTask={handleEditTask}
         />
