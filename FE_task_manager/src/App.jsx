@@ -13,14 +13,28 @@ function App() {
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [queryString, setQueryString] = useState("");
-  const [quickFilter, setQuickFilter] = useState(null); 
+  const [quickFilter, setQuickFilter] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
- 
+  // ---------- Sort state ----------
+  const [sortColumn, setSortColumn] = useState("created_at");
+  const [sortDir, setSortDir] = useState("desc");
+
+  const buildFinalQuery = useCallback(
+    (baseQuery) => {
+      const params = new URLSearchParams(baseQuery);
+      params.set("sort", sortColumn);
+      params.set("dir", sortDir);
+      return params.toString();
+    },
+    [sortColumn, sortDir],
+  );
+
   const loadTasks = useCallback(
-    async (query = queryString) => {
+    async (baseQuery = queryString) => {
+      const query = buildFinalQuery(baseQuery);
       try {
         const data = await getTasks(query);
         setTasks(data);
@@ -34,21 +48,25 @@ function App() {
         }
       }
     },
-    [queryString],
+    [queryString, buildFinalQuery],
   );
 
+  const handleFilterChange = useCallback((newQuery) => {
+    setQueryString(newQuery);
 
-  const handleFilterChange = useCallback(
-    (newQuery) => {
-      setQueryString(newQuery);
-      loadTasks(newQuery);
-    },
-    [loadTasks],
-  );
+  }, []);
+
+  useEffect(() => {
+    loadTasks(queryString);
+  }, [queryString, loadTasks]);
+
+  useEffect(() => {
+    loadTasks(queryString);
+  }, [sortColumn, sortDir]); 
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    loadTasks(); 
+    loadTasks();
   };
 
   const handleLogout = async () => {
@@ -68,10 +86,11 @@ function App() {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-      loadTasks(); 
+      loadTasks();
     }
   }, []);
 
+  // ---------- Client‑side quick filtering ----------
   const filteredTasks = useMemo(() => {
     if (!quickFilter) return tasks;
 
@@ -82,13 +101,13 @@ function App() {
       now.getDate(),
     );
     const todayEnd = new Date(todayStart);
-    todayEnd.setDate(todayEnd.getDate() + 1); 
+    todayEnd.setDate(todayEnd.getDate() + 1);
 
     const weekEnd = new Date(todayStart);
     weekEnd.setDate(weekEnd.getDate() + 7);
 
     return tasks.filter((task) => {
-      if (!task.due_date) return false; 
+      if (!task.due_date) return false;
 
       const due = new Date(task.due_date);
 
@@ -108,6 +127,20 @@ function App() {
   const handleQuickFilter = (filterName) => {
     setQuickFilter((prev) => (prev === filterName ? null : filterName));
   };
+
+  // ---------- Sort handler (called from TaskTable) ----------
+  const handleSortChange = useCallback((column) => {
+    setSortColumn((prevCol) => {
+      if (prevCol === column) {
+
+        setSortDir((prevDir) => (prevDir === "asc" ? "desc" : "asc"));
+        return column;
+      }
+
+      setSortDir("asc");
+      return column;
+    });
+  }, []);
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
@@ -157,6 +190,9 @@ function App() {
           tasks={filteredTasks}
           reload={() => loadTasks(queryString)}
           onEditTask={handleEditTask}
+          sortColumn={sortColumn}
+          sortDir={sortDir}
+          onSortChange={handleSortChange}
         />
       </div>
 
