@@ -3,8 +3,9 @@ import logging
 import atexit
 import sys
 from datetime import datetime, date, timedelta
+from pathlib import Path
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_login import current_user, login_required
 from flask_migrate import Migrate
@@ -22,6 +23,10 @@ from config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+BASE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASE_DIR.parent
+FRONTEND_DIST = REPO_ROOT / 'FE_task_manager' / 'dist'
 
 # -------------------------------------------------------------------
 # Scheduler setup – module level (only one per process)
@@ -145,12 +150,21 @@ def create_app(config_name='development'):
 
     start_scheduler(app)
 
-    # -------------------------------------------------------------
-    # Health‑check
-    # -------------------------------------------------------------
-    @app.route('/')
-    def index():
+    @app.route('/api/health')
+    def health():
         return {'status': 'ok', 'service': 'Personal Task Manager API'}
+
+    # Catch-all that serves the built React SPA. /api/* and /auth/* are
+    # matched first by Flask's router, so they still hit their own handlers.
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_frontend(path):
+        if not FRONTEND_DIST.exists():
+            return jsonify({'error': 'frontend not built'}), 503
+        target = FRONTEND_DIST / path
+        if path and target.is_file():
+            return send_from_directory(FRONTEND_DIST, path)
+        return send_from_directory(FRONTEND_DIST, 'index.html')
 
     # -------------------------------------------------------------
     # CRUD routes – thin controllers
