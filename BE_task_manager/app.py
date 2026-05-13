@@ -3,6 +3,7 @@ from datetime import datetime, date, timedelta
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_login import current_user, login_required
+from flask_migrate import Migrate          
 from dateutil import parser
 
 from models import db, login_manager, Task, Priority, Status
@@ -18,6 +19,7 @@ config_map = {
 }
 
 task_manager = TaskManager()
+migrate = Migrate()                      
 
 
 def parse_iso_datetime(date_str):
@@ -32,6 +34,7 @@ def create_app(config_name='development'):
     app.config.from_object(config_map[config_name])
 
     db.init_app(app)
+    migrate.init_app(app, db)            
     login_manager.init_app(app)
 
     CORS(app, resources={
