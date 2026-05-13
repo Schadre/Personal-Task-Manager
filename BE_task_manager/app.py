@@ -276,6 +276,20 @@ def create_app(config_name='development'):
     return app
 
 
+# WSGI entry point. Gunicorn imports `app:app`, so bind a module-level Flask
+# app here. The systemd units set TASKMGR_ENV=dev|prod; map those onto the
+# config_map keys.
+_ENV_ALIASES = {
+    'dev': 'development',
+    'development': 'development',
+    'prod': 'production',
+    'production': 'production',
+    'testing': 'testing',
+}
+_env_name = _ENV_ALIASES.get(
+    os.environ.get('TASKMGR_ENV', 'development'), 'development')
+app = create_app(_env_name)
+
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
