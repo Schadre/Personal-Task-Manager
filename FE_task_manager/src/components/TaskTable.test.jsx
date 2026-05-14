@@ -46,7 +46,7 @@ describe("TaskTable", () => {
     expect(screen.getByText("Task Two")).toBeInTheDocument();
     expect(screen.getByText("Work")).toBeInTheDocument();
     expect(screen.getByText("Uncategorized")).toBeInTheDocument();
-    expect(screen.getByText("—")).toBeInTheDocument(); 
+    expect(screen.getAllByText("—").length).toBe(2);
     expect(screen.getByText("High")).toBeInTheDocument();
     expect(screen.getByText("Medium")).toBeInTheDocument();
     expect(screen.getByText("Overdue")).toBeInTheDocument();
