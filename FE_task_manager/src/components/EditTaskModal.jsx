@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { updateTask } from '../services/api';
+import { useState, useEffect } from "react";
+import { updateTask } from "../services/api";
 
 const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    due_date: '',
-    priority: 'medium',
-    category: ''
+    title: "",
+    description: "",
+    due_date: "",
+    priority: "medium",
+    category: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,26 +15,29 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
   useEffect(() => {
     if (task && isOpen) {
       setFormData({
-        title: task.title || '',
-        description: task.description || '',
-        due_date: task.due_date ? task.due_date.split('T')[0] : '',
-        priority: task.priority || 'medium',
-        category: task.category || 'Uncategorized'
+        title: task.title || "",
+        description: task.description || "",
+        due_date: task.due_date ? task.due_date.split("T")[0] : "",
+        priority: task.priority || "medium",
+        category: task.category || "Uncategorized",
       });
+      setErrors({});
     }
   }, [task, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = 'Title is required';
-    if (formData.title.length > 140) newErrors.title = 'Title must be ≤ 140 characters';
-    if (formData.description.length > 2000) newErrors.description = 'Description must be ≤ 2000 characters';
+    if (!formData.title.trim()) newErrors.title = "Title is required";
+    else if (formData.title.length > 140)
+      newErrors.title = "Title must be ≤ 140 characters";
+    if (formData.description.length > 2000)
+      newErrors.description = "Description must be ≤ 2000 characters";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -55,15 +58,15 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
         description: formData.description.trim() || null,
         due_date: isoDueDate,
         priority: formData.priority,
-        category: formData.category.trim() || 'Uncategorized'
+        category: formData.category.trim() || "Uncategorized",
       };
 
       await updateTask(task.id, updatedTask);
       onTaskUpdated();
       onClose();
     } catch (error) {
-      console.error('Failed to update task:', error);
-      setErrors({ form: 'Update failed. Please try again.' });
+      console.error("Failed to update task:", error);
+      setErrors({ form: "Update failed. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -72,52 +75,92 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={onClose}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg shadow-xl w-full max-w-md p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 className="text-xl font-bold mb-4">Edit Task</h2>
         <form onSubmit={handleSubmit}>
+          {/* Title field with red border on error */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Title *</label>
+            <label
+              htmlFor="edit-title"
+              className="block text-sm font-medium mb-1"
+            >
+              Title *
+            </label>
             <input
+              id="edit-title"
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className={`w-full border rounded px-3 py-2 ${
+                errors.title ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            )}
           </div>
 
+          {/* Description field with red border on error */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label
+              htmlFor="edit-description"
+              className="block text-sm font-medium mb-1"
+            >
+              Description
+            </label>
             <textarea
+              id="edit-description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               rows="3"
-              className="w-full border rounded px-3 py-2"
+              className={`w-full border rounded px-3 py-2 ${
+                errors.description ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+            )}
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Due Date</label>
+            <label
+              htmlFor="edit-due-date"
+              className="block text-sm font-medium mb-1"
+            >
+              Due Date
+            </label>
             <input
+              id="edit-due-date"
               type="date"
               name="due_date"
               value={formData.due_date}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 border-gray-300"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Priority</label>
+            <label
+              htmlFor="edit-priority"
+              className="block text-sm font-medium mb-1"
+            >
+              Priority
+            </label>
             <select
+              id="edit-priority"
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 border-gray-300"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -126,24 +169,40 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Category</label>
+            <label
+              htmlFor="edit-category"
+              className="block text-sm font-medium mb-1"
+            >
+              Category
+            </label>
             <input
+              id="edit-category"
               type="text"
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 border-gray-300"
             />
           </div>
 
-          {errors.form && <p className="text-red-500 text-sm mb-4">{errors.form}</p>}
+          {errors.form && (
+            <p className="text-red-500 text-sm mb-4">{errors.form}</p>
+          )}
 
           <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 border rounded hover:bg-gray-100">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 border rounded hover:bg-gray-100"
+            >
               Cancel
             </button>
-            <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
-              {isSubmitting ? 'Saving...' : 'Save Changes'}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+            >
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>

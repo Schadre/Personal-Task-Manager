@@ -102,8 +102,6 @@ The backend uses [pytest](https://docs.pytest.org/) and an in‑memory SQLite da
 
 ## Future Improvements
 
-* Authentication (login/signup)
-* Task categories & tags
 * Drag-and-drop task management
 * Deployment (Render)
 
