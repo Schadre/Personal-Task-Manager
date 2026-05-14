@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { getTasks } from "./services/api";
+import { getTasks } from "./services/api"; 
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
 import Sidebar from "./components/Sidebar";
@@ -11,7 +11,7 @@ import Login from "./components/Login";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [queryString, setQueryString] = useState("");
   const [quickFilter, setQuickFilter] = useState(null);
@@ -35,14 +35,13 @@ function App() {
 
   const loadTasks = useCallback(
     async (baseQuery = queryString) => {
-      if (!user) return; 
+      if (!user) return;
       const query = buildFinalQuery(baseQuery);
       try {
         const data = await getTasks(query);
         setTasks(data);
       } catch (err) {
         console.error("Failed to load tasks", err);
-
         if (
           user &&
           (err.message.includes("401") ||
@@ -152,13 +151,12 @@ function App() {
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
-  // Main app (authenticated)
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
       <div className="flex-1 p-6 overflow-auto">
         <div className="flex justify-between items-center">
-          <Header user={user} />
+          <Header user={user} />{" "}
           <button
             onClick={handleLogout}
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"

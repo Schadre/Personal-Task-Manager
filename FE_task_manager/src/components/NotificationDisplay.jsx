@@ -12,7 +12,7 @@ const NotificationDisplay = () => {
       const data = await getNotifications();
       setNotifications(Array.isArray(data) ? data : []);
     } catch {
-    
+
     }
   };
 
@@ -34,7 +34,7 @@ const NotificationDisplay = () => {
 
   const handleBellClick = () => {
     setOpen((prev) => !prev);
-    if (!open) fetchNotifications(); 
+    if (!open) fetchNotifications();
   };
 
   const handleMarkSeen = async (id) => {
