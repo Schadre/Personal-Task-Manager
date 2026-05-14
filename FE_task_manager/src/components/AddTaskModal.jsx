@@ -34,7 +34,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
   const validate = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (formData.title.length > 140)
+    else if (formData.title.length > 140)
       newErrors.title = "Title must be ≤ 140 characters";
     if (formData.description.length > 2000)
       newErrors.description = "Description must be ≤ 2000 characters";
@@ -94,12 +94,15 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className={`w-full border rounded px-3 py-2 ${
+                errors.title ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.title && (
               <p className="text-red-500 text-sm mt-1">{errors.title}</p>
             )}
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="description"
@@ -113,12 +116,15 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               value={formData.description}
               onChange={handleChange}
               rows="3"
-              className="w-full border rounded px-3 py-2"
+              className={`w-full border rounded px-3 py-2 ${
+                errors.description ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.description && (
               <p className="text-red-500 text-sm mt-1">{errors.description}</p>
             )}
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="due_date"
@@ -132,9 +138,10 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="due_date"
               value={formData.due_date}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 border-gray-300"
             />
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="priority"
@@ -147,13 +154,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 border-gray-300"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </select>
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="category"
@@ -167,12 +175,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 border-gray-300"
             />
           </div>
+
           {errors.form && (
             <p className="text-red-500 text-sm mb-4">{errors.form}</p>
           )}
+
           <div className="flex justify-end gap-2">
             <button
               type="button"

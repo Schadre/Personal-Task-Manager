@@ -167,8 +167,6 @@ def create_app(config_name='development'):
     def health():
         return {'status': 'ok', 'service': 'Personal Task Manager API'}
 
-    # Catch-all that serves the built React SPA. /api/* and /auth/* are
-    # matched first by Flask's router, so they still hit their own handlers.
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
     def serve_frontend(path):
@@ -254,7 +252,7 @@ def create_app(config_name='development'):
         return '', 204
 
     # -------------------------------------------------------------
-    # Dashboard 
+    # Dashboard
     # -------------------------------------------------------------
     @app.route('/api/tasks/dashboard', methods=['GET'])
     @login_required
@@ -277,7 +275,7 @@ def create_app(config_name='development'):
         })
 
     # -------------------------------------------------------------
-    # Notifications 
+    # Notifications
     # -------------------------------------------------------------
     from services.reminder import notification_queue
 
@@ -300,12 +298,19 @@ def create_app(config_name='development'):
                 return jsonify({'success': True})
         return jsonify({'error': 'Notification not found'}), 404
 
+    @app.route('/api/notifications/<int:notification_id>/dismiss', methods=['POST'])
+    @login_required
+    def dismiss_notification(notification_id):
+        user_id = current_user.id
+        for notif in notification_queue:
+            if notif['id'] == notification_id and notif['user_id'] == user_id:
+                notif['seen'] = True
+                return jsonify({'success': True, 'message': 'Notification dismissed'}), 200
+        return jsonify({'error': 'Notification not found'}), 404
+
     return app
 
 
-# WSGI entry point. Gunicorn imports `app:app`, so bind a module-level Flask
-# app here. The systemd units set TASKMGR_ENV=dev|prod; map those onto the
-# config_map keys.
 _ENV_ALIASES = {
     'dev': 'development',
     'development': 'development',

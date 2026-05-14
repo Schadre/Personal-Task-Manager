@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { getTasks } from "./services/api"; 
+import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
 import Sidebar from "./components/Sidebar";
@@ -60,6 +60,9 @@ function App() {
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
+    setQueryString("");
+    setQuickFilter(null);
+    loadTasks("");
   };
 
   const handleLogout = async () => {
@@ -156,7 +159,7 @@ function App() {
       <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
       <div className="flex-1 p-6 overflow-auto">
         <div className="flex justify-between items-center">
-          <Header user={user} />{" "}
+          <Header user={user} />
           <button
             onClick={handleLogout}
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"

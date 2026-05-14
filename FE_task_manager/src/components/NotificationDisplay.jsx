@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell } from "lucide-react";
-import { getNotifications, markNotificationSeen } from "../services/api";
+import { Bell, X } from "lucide-react";
+import { getNotifications, dismissNotification } from "../services/api";
 
 const NotificationDisplay = () => {
   const [notifications, setNotifications] = useState([]);
@@ -11,14 +11,14 @@ const NotificationDisplay = () => {
     try {
       const data = await getNotifications();
       setNotifications(Array.isArray(data) ? data : []);
-    } catch {
-
+    } catch (err) {
+  
     }
   };
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30_000);
+    const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -32,16 +32,20 @@ const NotificationDisplay = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
+  const handleDismiss = async (id) => {
+    const original = [...notifications];
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    try {
+      await dismissNotification(id);
+    } catch (err) {
+      console.error("Failed to dismiss notification", err);
+      setNotifications(original);
+    }
+  };
+
   const handleBellClick = () => {
     setOpen((prev) => !prev);
     if (!open) fetchNotifications();
-  };
-
-  const handleMarkSeen = async (id) => {
-    try {
-      await markNotificationSeen(id);
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-    } catch {}
   };
 
   const unreadCount = notifications.length;
@@ -56,7 +60,7 @@ const NotificationDisplay = () => {
         <Bell size={22} />
         {unreadCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-            {unreadCount}
+            {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
       </button>
@@ -75,18 +79,26 @@ const NotificationDisplay = () => {
               </p>
             ) : (
               notifications.map((n) => (
-                <button
+                <div
                   key={n.id}
-                  onClick={() => handleMarkSeen(n.id)}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                  className="flex items-start justify-between px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
                 >
-                  <p className="text-sm font-medium text-gray-900">
-                    {n.task_title}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Due: {new Date(n.due_date).toLocaleString()}
-                  </p>
-                </button>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-900">
+                      {n.task_title}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Due: {new Date(n.due_date).toLocaleString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleDismiss(n.id)}
+                    className="ml-2 text-gray-400 hover:text-red-500 focus:outline-none"
+                    aria-label="Dismiss"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
               ))
             )}
           </div>

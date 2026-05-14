@@ -66,7 +66,13 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
       onClose();
     } catch (error) {
       console.error("Failed to update task:", error);
-      setErrors({ form: "Update failed. Please try again." });
+      if (error.message.includes("404")) {
+        setErrors({ form: "Task no longer exists. Refreshing list..." });
+        onTaskUpdated();
+        setTimeout(() => onClose(), 1500);
+      } else {
+        setErrors({ form: "Update failed. Please try again." });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -85,7 +91,6 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
       >
         <h2 className="text-xl font-bold mb-4">Edit Task</h2>
         <form onSubmit={handleSubmit}>
-          {/* Title field with red border on error */}
           <div className="mb-4">
             <label
               htmlFor="edit-title"
@@ -108,7 +113,6 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
             )}
           </div>
 
-          {/* Description field with red border on error */}
           <div className="mb-4">
             <label
               htmlFor="edit-description"

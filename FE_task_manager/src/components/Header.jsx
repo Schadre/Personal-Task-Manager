@@ -1,7 +1,6 @@
 import NotificationDisplay from "./NotificationDisplay";
 
-export default function Header({ user, notifications }) {
-
+export default function Header({ user }) {
   const hour = new Date().getHours();
 
   const greeting =
@@ -22,7 +21,7 @@ export default function Header({ user, notifications }) {
               : "Sign in to manage your tasks."}
           </p>
         </div>
-        {user && <NotificationDisplay notifications={notifications} />}{" "}
+        {user && <NotificationDisplay />}
       </div>
     </div>
   );

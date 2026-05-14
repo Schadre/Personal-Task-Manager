@@ -9,6 +9,10 @@ async function handleResponse(res) {
     throw new Error("Session expired");
   }
 
+  if (res.status === 204) {
+    return null;
+  }
+
   const text = await res.text();
 
   if (!res.ok) {
@@ -96,6 +100,14 @@ export const getNotifications = async () => {
 export const markNotificationSeen = async (id) => {
   const res = await fetch(`${API_BASE}/notifications/${id}/seen`, {
     method: "PUT",
+    credentials: "include",
+  });
+  return handleResponse(res);
+};
+
+export const dismissNotification = async (id) => {
+  const res = await fetch(`${API_BASE}/notifications/${id}/dismiss`, {
+    method: "POST",
     credentials: "include",
   });
   return handleResponse(res);
