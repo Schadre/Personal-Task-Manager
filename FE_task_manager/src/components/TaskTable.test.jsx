@@ -50,8 +50,11 @@ describe("TaskTable", () => {
     expect(screen.getAllByText("Work").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Uncategorized").length).toBeGreaterThan(0);
 
-    // Due date placeholder "—" appears twice (once in desktop, once in mobile for task 2)
-    expect(screen.getAllByText("—").length).toBe(2);
+    // Due date placeholder "—" appears three times:
+    // - 1x in desktop due date column for task 2
+    // - 1x in mobile due date for task 2
+    // - 1x in desktop description column for task 2 (null description)
+    expect(screen.getAllByText("—").length).toBe(3);
 
     // Priority badges appear in both views
     expect(screen.getAllByText("High").length).toBeGreaterThan(0);
