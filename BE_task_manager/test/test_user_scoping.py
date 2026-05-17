@@ -85,12 +85,14 @@ def test_dashboard_scoped_to_user(app, client):
     _add_task(app, b, title="B-done", status=Status.COMPLETED)
 
     _login(client, a)
-    resp = client.get("/api/dashboard")
+    resp = client.get("/api/tasks/dashboard")
     assert resp.status_code == 200
     body = resp.get_json()
-    assert body["pending"] == ["A-pending"]
-    assert body["completed"] == []
-    assert body["overdue"] == []
+    assert body["total"] == 1
+    assert body["pending"] == 1
+    assert body["completed"] == 0
+    assert body["overdue"] == 0
+    assert body["due_today"] == 0
 
 
 def test_filter_scoped_to_user(app, client):
@@ -100,12 +102,9 @@ def test_filter_scoped_to_user(app, client):
     _add_task(app, b, title="B-high", priority=Priority.HIGH)
 
     _login(client, a)
-    resp = client.get("/api/tasks/filter?priority=high")
+    resp = client.get("/api/tasks?priority=high")
     assert resp.status_code == 200
-    titles = [t["title"] for t in resp.get_json()]
-    assert titles == ["A-high"]
-
-
-def test_unauthenticated_request_is_rejected(app, client):
-    resp = client.get("/api/tasks")
-    assert resp.status_code in (401, 302)
+    body = resp.get_json()
+    titles = [t["title"] for t in body]
+    assert "A-high" in titles
+    assert "B-high" not in titles

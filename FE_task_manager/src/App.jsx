@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
@@ -11,32 +11,58 @@ import Login from "./components/Login";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [queryString, setQueryString] = useState("");
+  const [quickFilter, setQuickFilter] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const loadTasks = async () => {
-    try {
-      const data = await getTasks();
-      setTasks(data);
-      setFilteredTasks(data);
-    } catch (err) {
-      console.error("Failed to load tasks", err);
+  // Sort state
+  const [sortColumn, setSortColumn] = useState("created_at");
+  const [sortDir, setSortDir] = useState("desc");
 
-      if (
-        err.message.includes("401") ||
-        err.message.includes("Failed to fetch")
-      ) {
-        handleLogout();
+  const buildFinalQuery = useCallback(
+    (baseQuery) => {
+      const params = new URLSearchParams(baseQuery);
+      params.set("sort", sortColumn);
+      params.set("dir", sortDir);
+      return params.toString();
+    },
+    [sortColumn, sortDir],
+  );
+
+  const loadTasks = useCallback(
+    async (baseQuery = queryString) => {
+      if (!user) return;
+      const query = buildFinalQuery(baseQuery);
+      try {
+        const data = await getTasks(query);
+        setTasks(data);
+      } catch (err) {
+        console.error("Failed to load tasks", err);
+        if (
+          user &&
+          (err.message.includes("401") ||
+            err.message.includes("Session expired"))
+        ) {
+          handleLogout();
+        }
       }
-    }
-  };
+    },
+    [queryString, buildFinalQuery, user],
+  );
+
+  const handleFilterChange = useCallback((newQuery) => {
+    setQueryString(newQuery);
+  }, []);
 
   const handleLoginSuccess = (userData) => {
     setUser(userData);
-    loadTasks();
+    setQueryString("");
+    setQuickFilter(null);
+    loadTasks("");
   };
 
   const handleLogout = async () => {
@@ -48,27 +74,81 @@ function App() {
     localStorage.removeItem("user");
     setUser(null);
     setTasks([]);
-    setFilteredTasks([]);
+    setQueryString("");
+    setQuickFilter(null);
   };
-
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-      loadTasks();
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    setFilteredTasks(tasks);
-  }, [tasks]);
+    if (user) {
+      loadTasks(queryString);
+    }
+  }, [queryString, sortColumn, sortDir, user, loadTasks]);
+
+  const filteredTasks = useMemo(() => {
+    if (!quickFilter) return tasks;
+
+    const now = new Date();
+    const todayStart = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    );
+    const todayEnd = new Date(todayStart);
+    todayEnd.setDate(todayEnd.getDate() + 1);
+    const weekEnd = new Date(todayStart);
+    weekEnd.setDate(weekEnd.getDate() + 7);
+
+    return tasks.filter((task) => {
+      if (!task.due_date) return false;
+      const due = new Date(task.due_date);
+      switch (quickFilter) {
+        case "today":
+          return due >= todayStart && due < todayEnd;
+        case "overdue":
+          return due < todayStart && task.status === "pending";
+        case "this_week":
+          return due >= todayStart && due <= weekEnd;
+        default:
+          return true;
+      }
+    });
+  }, [tasks, quickFilter]);
+
+  const handleQuickFilter = (filterName) => {
+    setQuickFilter((prev) => (prev === filterName ? null : filterName));
+  };
+
+  const handleSortChange = useCallback((column) => {
+    setSortColumn((prevCol) => {
+      if (prevCol === column) {
+        setSortDir((prevDir) => (prevDir === "asc" ? "desc" : "asc"));
+        return column;
+      }
+      setSortDir("asc");
+      return column;
+    });
+  }, []);
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
     setIsEditModalOpen(true);
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   if (!user) {
     return <Login onLoginSuccess={handleLoginSuccess} />;
@@ -87,19 +167,40 @@ function App() {
             Logout
           </button>
         </div>
+
         <StatsCards tasks={filteredTasks} />
-        <SearchFilter tasks={tasks} setFilteredTasks={setFilteredTasks} />
+
+        <div className="flex gap-2 mb-3">
+          {["today", "overdue", "this_week"].map((name) => (
+            <button
+              key={name}
+              onClick={() => handleQuickFilter(name)}
+              className={`px-3 py-1 rounded text-sm font-medium capitalize ${
+                quickFilter === name
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {name.replace("_", " ")}
+            </button>
+          ))}
+        </div>
+
+        <SearchFilter onFilterChange={handleFilterChange} />
         <TaskTable
           tasks={filteredTasks}
-          reload={loadTasks}
+          reload={() => loadTasks(queryString)}
           onEditTask={handleEditTask}
+          sortColumn={sortColumn}
+          sortDir={sortDir}
+          onSortChange={handleSortChange}
         />
       </div>
 
       <AddTaskModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onTaskAdded={loadTasks}
+        onTaskAdded={() => loadTasks(queryString)}
       />
       <EditTaskModal
         isOpen={isEditModalOpen}
@@ -108,7 +209,7 @@ function App() {
           setSelectedTask(null);
         }}
         task={selectedTask}
-        onTaskUpdated={loadTasks}
+        onTaskUpdated={() => loadTasks(queryString)}
       />
     </div>
   );

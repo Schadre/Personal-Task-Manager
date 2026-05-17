@@ -1,26 +1,28 @@
 import pytest
 import tempfile
 import os
-from app import app as flask_app
+from app import create_app
 from models import db, User, Task, Priority, Status
-
-flask_app.config['SECRET_KEY'] = 'test-secret-key'
 
 
 @pytest.fixture(scope='function')
 def app():
     fd, db_path = tempfile.mkstemp(suffix='.db')
-    flask_app.config['TESTING'] = True
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    flask_app.config['WTF_CSRF_ENABLED'] = False
+    app = create_app('testing')
 
-    with flask_app.app_context():
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['WTF_CSRF_ENABLED'] = False
+
+    with app.app_context():
         db.create_all()
-        yield flask_app
+        yield app
+        db.session.remove()
         db.drop_all()
-        os.close(fd)
-        os.unlink(db_path)
+
+    os.close(fd)
+    os.unlink(db_path)
 
 
 @pytest.fixture
@@ -45,17 +47,18 @@ def test_user(app):
 @pytest.fixture
 def init_database(app, test_user):
     with app.app_context():
+        user = db.session.merge(test_user)
         task1 = Task(
             title='Write tests',
             status=Status.PENDING,
             priority=Priority.HIGH,
-            user_id=test_user.id
+            user_id=user.id
         )
         task2 = Task(
             title='Review PR',
             status=Status.COMPLETED,
             priority=Priority.MEDIUM,
-            user_id=test_user.id
+            user_id=user.id
         )
         db.session.add_all([task1, task2])
         db.session.commit()
@@ -64,8 +67,7 @@ def init_database(app, test_user):
 
 @pytest.fixture
 def auth_client(client, test_user):
-    user_id = test_user.id
     with client.session_transaction() as sess:
-        sess['_user_id'] = str(user_id)
+        sess['_user_id'] = str(test_user.id)
         sess['_fresh'] = True
     return client

@@ -1,10 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from enum import Enum as PyEnum
-from flask_login import UserMixin
+from flask_login import UserMixin, LoginManager
 from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
+login_manager = LoginManager()
 
 
 class Priority(PyEnum):
@@ -77,7 +78,7 @@ class Task(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow,
                            onupdate=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(
-        "users.id"), nullable=False)   # NEW column
+        "users.id"), nullable=False)
 
     user = relationship("User", back_populates="tasks")
 
@@ -96,3 +97,8 @@ class Task(db.Model):
 
     def __repr__(self):
         return f'<Task {self.id} {self.title}>'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))

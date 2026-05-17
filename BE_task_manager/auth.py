@@ -67,10 +67,10 @@ def google_token():
 
 
 @auth_bp.route('/auth/logout', methods=['POST'])
-@login_required
 def logout():
-    logout_user()
-    return jsonify({'message': 'Logged out successfully'})
+    if current_user.is_authenticated:
+        logout_user()
+    return jsonify({'message': 'Logged out successfully'}), 200
 
 
 @auth_bp.route('/auth/me')
