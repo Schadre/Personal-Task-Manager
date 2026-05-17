@@ -16,12 +16,17 @@ fi
 mkdir -p "$DST_DIR"
 STAMP="$(date -u +%Y%m%d-%H%M%S)"
 DST="$DST_DIR/database-$STAMP.db"
+TMP="$DST.partial"
+
+trap 'rm -f "$TMP"' EXIT
 
 # Online backup so the file is consistent even if writers are active
 # (works under WAL mode; plain cp does not). The sqlite3 CLI isn't installed
 # on the host, but python3's stdlib exposes the same online-backup API.
+# Write to a temp file and rename on success so a failed run never leaves a
+# partial .db in place.
 PYTHON="${BACKUP_PYTHON:-python3}"
-"$PYTHON" - "$SRC" "$DST" <<'PY'
+"$PYTHON" - "$SRC" "$TMP" <<'PY'
 import sqlite3
 import sys
 
@@ -29,7 +34,8 @@ src, dst = sys.argv[1], sys.argv[2]
 with sqlite3.connect(src) as source, sqlite3.connect(dst) as dest:
     source.backup(dest)
 PY
-chmod 600 "$DST"
+chmod 600 "$TMP"
+mv "$TMP" "$DST"
 
 if [[ "$RETAIN_DAYS" =~ ^[1-9][0-9]*$ ]]; then
   if ! find "$DST_DIR" -maxdepth 1 -type f -name 'database-*.db' \
