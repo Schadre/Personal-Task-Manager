@@ -17,9 +17,18 @@ mkdir -p "$DST_DIR"
 STAMP="$(date -u +%Y%m%d-%H%M%S)"
 DST="$DST_DIR/database-$STAMP.db"
 
-# Use sqlite3 .backup so the file is consistent even if writers are active
-# (works under WAL mode; plain cp does not).
-sqlite3 "$SRC" ".backup '$DST'"
+# Online backup so the file is consistent even if writers are active
+# (works under WAL mode; plain cp does not). The sqlite3 CLI isn't installed
+# on the host, but python3's stdlib exposes the same online-backup API.
+PYTHON="${BACKUP_PYTHON:-python3}"
+"$PYTHON" - "$SRC" "$DST" <<'PY'
+import sqlite3
+import sys
+
+src, dst = sys.argv[1], sys.argv[2]
+with sqlite3.connect(src) as source, sqlite3.connect(dst) as dest:
+    source.backup(dest)
+PY
 chmod 600 "$DST"
 
 if [[ "$RETAIN_DAYS" =~ ^[1-9][0-9]*$ ]]; then
