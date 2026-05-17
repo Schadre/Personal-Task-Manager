@@ -22,13 +22,17 @@ export default function Login({ onLoginSuccess }) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center">
-        <h1 className="text-2xl font-bold mb-4">Personal Task Manager</h1>
-        <GoogleLogin
-          onSuccess={handleSuccess}
-          onError={() => console.log("Login Failed")}
-        />
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="bg-white rounded-lg shadow-md text-center w-full max-w-md mx-auto p-6 sm:p-8">
+        <h1 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800">
+          Personal Task Manager
+        </h1>
+        <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={() => console.log("Login Failed")}
+          />
+        </div>
       </div>
     </div>
   );

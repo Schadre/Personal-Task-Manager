@@ -34,22 +34,21 @@ const SearchFilter = ({ onFilterChange }) => {
 
   return (
     <div className="search-filter">
-      <div className="filter-controls flex gap-2 mb-3">
-        {/* Search box */}
+      {/* Responsive filter controls */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2 mb-3">
         <input
           type="text"
           placeholder="Search tasks..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full sm:w-auto"
         />
 
-        {/* Priority dropdown */}
         <select
           aria-label="Priority"
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full sm:w-auto"
         >
           <option value="">All Priorities</option>
           <option value="low">Low</option>
@@ -57,38 +56,36 @@ const SearchFilter = ({ onFilterChange }) => {
           <option value="high">High</option>
         </select>
 
-        {/* Status dropdown */}
         <select
           aria-label="Status"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full sm:w-auto"
         >
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
           <option value="completed">Completed</option>
         </select>
 
-        {/* Category input */}
         <input
           type="text"
           placeholder="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full sm:w-auto"
         />
 
         <button
           onClick={clearFilters}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 w-full sm:w-auto"
         >
           Clear Filters
         </button>
       </div>
 
-      {/* Active filter chips */}
+      {/* Active filter chips (responsive wrap) */}
       {activeFilters.length > 0 && (
-        <div className="active-filters flex gap-2 mb-3">
+        <div className="flex flex-wrap gap-2 mb-3">
           {activeFilters.map((f, i) => (
             <span
               key={i}

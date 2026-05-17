@@ -12,7 +12,7 @@ const NotificationDisplay = () => {
       const data = await getNotifications();
       setNotifications(Array.isArray(data) ? data : []);
     } catch (err) {
-  
+      
     }
   };
 
@@ -54,7 +54,7 @@ const NotificationDisplay = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={handleBellClick}
-        className="relative p-2 text-gray-500 hover:text-indigo-600 focus:outline-none"
+        className="relative p-2 text-gray-500 hover:text-indigo-600 focus:outline-none min-h-[44px] min-w-[44px]"
         aria-label="Notifications"
       >
         <Bell size={22} />
@@ -66,7 +66,10 @@ const NotificationDisplay = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+        <div
+          className="absolute right-0 mt-2 w-screen max-w-[calc(100vw-2rem)] sm:w-80 md:w-96 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+          style={{ right: "1rem", left: "auto" }}
+        >
           <div className="px-4 py-2 border-b border-gray-100">
             <h3 className="text-sm font-semibold text-gray-800">
               Notifications
@@ -93,7 +96,7 @@ const NotificationDisplay = () => {
                   </div>
                   <button
                     onClick={() => handleDismiss(n.id)}
-                    className="ml-2 text-gray-400 hover:text-red-500 focus:outline-none"
+                    className="ml-2 text-gray-400 hover:text-red-500 focus:outline-none p-1"
                     aria-label="Dismiss"
                   >
                     <X size={16} />

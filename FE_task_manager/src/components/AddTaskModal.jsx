@@ -75,14 +75,14 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-xl w-full max-w-md p-6"
+        className="bg-white rounded-lg shadow-xl w-full max-w-md md:max-w-lg mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold mb-4">Add New Task</h2>
+        <h2 className="text-lg sm:text-xl font-bold mb-4">Add New Task</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="title" className="block text-sm font-medium mb-1">
@@ -94,7 +94,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className={`w-full border rounded px-3 py-2 ${
+              className={`w-full border rounded px-3 py-2 text-base ${
                 errors.title ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -116,7 +116,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               value={formData.description}
               onChange={handleChange}
               rows="3"
-              className={`w-full border rounded px-3 py-2 ${
+              className={`w-full border rounded px-3 py-2 text-base ${
                 errors.description ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -138,7 +138,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="due_date"
               value={formData.due_date}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2 border-gray-300"
+              className="w-full border rounded px-3 py-2 text-base border-gray-300"
             />
           </div>
 
@@ -154,7 +154,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="priority"
               value={formData.priority}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2 border-gray-300"
+              className="w-full border rounded px-3 py-2 text-base border-gray-300"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -175,7 +175,7 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2 border-gray-300"
+              className="w-full border rounded px-3 py-2 text-base border-gray-300"
             />
           </div>
 
@@ -183,18 +183,18 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
             <p className="text-red-500 text-sm mb-4">{errors.form}</p>
           )}
 
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-100"
+              className="px-4 py-2 border rounded hover:bg-gray-100 order-2 sm:order-1"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 order-1 sm:order-2"
             >
               {isSubmitting ? "Creating..." : "Create Task"}
             </button>
