@@ -42,15 +42,26 @@ describe("TaskTable", () => {
       />,
     );
 
-    expect(screen.getByText("Task One")).toBeInTheDocument();
-    expect(screen.getByText("Task Two")).toBeInTheDocument();
-    expect(screen.getByText("Work")).toBeInTheDocument();
-    expect(screen.getByText("Uncategorized")).toBeInTheDocument();
+    // Both desktop table and mobile cards contain the task titles
+    expect(screen.getAllByText("Task One").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Task Two").length).toBeGreaterThan(0);
+
+    // Category appears in both views as well
+    expect(screen.getAllByText("Work").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Uncategorized").length).toBeGreaterThan(0);
+
+    // Due date placeholder "—" appears twice (once in desktop, once in mobile for task 2)
     expect(screen.getAllByText("—").length).toBe(2);
-    expect(screen.getByText("High")).toBeInTheDocument();
-    expect(screen.getByText("Medium")).toBeInTheDocument();
-    expect(screen.getByText("Overdue")).toBeInTheDocument();
-    expect(screen.getByText("Completed")).toBeInTheDocument();
+
+    // Priority badges appear in both views
+    expect(screen.getAllByText("High").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Medium").length).toBeGreaterThan(0);
+
+    // "Overdue" badge appears in both views for task 1
+    expect(screen.getAllByText("Overdue").length).toBeGreaterThan(0);
+
+    // "Completed" status appears in both views for task 2
+    expect(screen.getAllByText("Completed").length).toBeGreaterThan(0);
   });
 
   test("toggle complete: marks pending task as completed", async () => {
@@ -63,7 +74,8 @@ describe("TaskTable", () => {
       />,
     );
     const toggleButtons = screen.getAllByLabelText("Toggle complete");
-    fireEvent.click(toggleButtons[0]); 
+    // First button corresponds to Task One (pending)
+    fireEvent.click(toggleButtons[0]);
 
     await waitFor(() => {
       expect(updateTask).toHaveBeenCalledWith(1, { status: "completed" });
@@ -81,6 +93,7 @@ describe("TaskTable", () => {
       />,
     );
     const toggleButtons = screen.getAllByLabelText("Toggle complete");
+    // Second button corresponds to Task Two (completed)
     fireEvent.click(toggleButtons[1]);
 
     await waitFor(() => {

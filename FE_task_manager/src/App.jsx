@@ -187,7 +187,7 @@ function App() {
       )}
 
       {/* Main content area */}
-      <div className="flex-1 overflow-auto p-4 sm:p-6 md:p-8 w-full">
+      <div className="flex-1 overflow-auto p-4 sm:p-6 md:p-8 w-full pt-16 sm:pt-4 md:pt-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <Header user={user} />
           <button
