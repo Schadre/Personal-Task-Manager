@@ -46,3 +46,7 @@ class ProductionConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    # Static, test-only key. Flask's session_transaction() (used by the
+    # auth fixtures) can't open a session without a signing key, and the
+    # SECRET_KEY env var isn't set in CI.
+    SECRET_KEY = "test-secret-key"
