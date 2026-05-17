@@ -42,22 +42,6 @@ def _shutdown_scheduler():
         pass
 
 
-def create_app(config_name='development'):
-    app = Flask(__name__)
-
-    scheduler = BackgroundScheduler()
-
-    def shutdown():
-        try:
-            if scheduler.running:
-                scheduler.shutdown(wait=False)
-        except Exception:
-            pass
-
-    import atexit
-    atexit.register(shutdown)
-
-
 def heartbeat_job():
     """Simple heartbeat to confirm the scheduler is alive."""
     logger.info("Scheduler heartbeat – alive and ticking.")
