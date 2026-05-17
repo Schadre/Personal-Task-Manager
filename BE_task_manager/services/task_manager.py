@@ -1,10 +1,14 @@
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 from models import db, Task, Priority, Status
+from services.filter_sort import FilterSortService
 
 
 class TaskManager:
     """Handles all CRUD operations for tasks."""
+
+    def __init__(self):
+        self._filter_sort = FilterSortService()
 
     def create(self, user_id: int, data: Dict[str, Any]) -> Task:
         """Create a new task for the given user."""
@@ -57,50 +61,13 @@ class TaskManager:
         """Return tasks for a user with optional filtering, sorting, and search."""
         query = Task.query.filter_by(user_id=user_id)
 
-        if filters:
-            if 'priority' in filters and filters['priority']:
-                query = query.filter(
-                    Task.priority == Priority.from_string(filters['priority']))
-            if 'status' in filters and filters['status']:
-                query = query.filter(
-                    Task.status == Status.from_string(filters['status']))
-            if 'category' in filters and filters['category']:
-                query = query.filter(Task.category == filters['category'])
-
+        params: Dict[str, Any] = dict(filters or {})
         if search:
-            like_pattern = f"%{search}%"
-            query = query.filter(
-                db.or_(Task.title.ilike(like_pattern),
-                       Task.description.ilike(like_pattern))
-            )
+            params['q'] = search
+        params['sort'] = sort
+        params['dir'] = direction
 
-        sort_column = {
-            'created_at': Task.created_at,
-            'due_date': Task.due_date,
-            'priority': Task.priority,
-            'title': Task.title,
-            'status': Task.status
-        }.get(sort, Task.created_at)
-
-        if sort == 'priority':
-            from sqlalchemy import case
-            priority_order = case(
-                (Task.priority == Priority.HIGH, 1),
-                (Task.priority == Priority.MEDIUM, 2),
-                (Task.priority == Priority.LOW, 3),
-                else_=4
-            )
-            order_col = priority_order
-        else:
-            order_col = sort_column
-
-        if direction == 'asc':
-            order_col = order_col.asc()
-        else:
-            order_col = order_col.desc()
-
-        query = query.order_by(order_col)
-        return query.all()
+        return self._filter_sort.apply(query, params).all()
 
     @staticmethod
     def _parse_date(date_str: Optional[str]) -> Optional[datetime]:
