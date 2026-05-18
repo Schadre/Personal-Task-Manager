@@ -145,7 +145,11 @@ def create_app(config_name='development'):
 
     app.register_blueprint(auth_bp)
 
-    start_scheduler(app)
+    if config_name == 'production':
+        start_scheduler(app)
+    else:
+        logger.info(
+            f"Scheduler not started in {config_name} environment (Redis not required)")
 
     @app.route('/api/health')
     def health():
