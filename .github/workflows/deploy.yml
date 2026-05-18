@@ -63,5 +63,13 @@ jobs:
                cd /srv/task-manager/$ENVIRONMENT; \
                git fetch origin $BRANCH; \
                git reset --hard origin/$BRANCH; \
+               \
+               # Install and start Redis if not already present \
+               if ! command -v redis-server &> /dev/null; then \
+                 sudo apt-get update && sudo apt-get install -y redis-server; \
+                 sudo systemctl start redis; \
+                 sudo systemctl enable redis; \
+               fi; \
+               \
                VITE_GOOGLE_CLIENT_ID='$VITE_GOOGLE_CLIENT_ID' \
                  bash scripts/deploy.sh $ENVIRONMENT"
