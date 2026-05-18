@@ -97,6 +97,33 @@ class Task(db.Model):
 
     def __repr__(self):
         return f'<Task {self.id} {self.title}>'
+    
+
+
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+    id = db.Column(db.Integer, primary_key=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
+    task_title = db.Column(db.String(140), nullable=False)
+    due_date = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    seen = db.Column(db.Boolean, default=False, nullable=False)
+    created_at = db.Column(
+        db.DateTime, default=datetime.utcnow, nullable=False)
+
+    task = db.relationship('Task', backref='notifications')
+    user = db.relationship('User', backref='notifications')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'task_id': self.task_id,
+            'task_title': self.task_title,
+            'due_date': self.due_date.isoformat(),
+            'user_id': self.user_id,
+            'seen': self.seen,
+            'created_at': self.created_at.isoformat()
+        }
 
 
 @login_manager.user_loader

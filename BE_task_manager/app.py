@@ -1,3 +1,4 @@
+from locker import leader_lock
 import os
 import logging
 import atexit
@@ -13,7 +14,7 @@ from dateutil import parser
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers import SchedulerAlreadyRunningError
 
-from models import db, login_manager, Task, Priority, Status
+from models import db, login_manager, Task, Priority, Status, Notification
 from auth import auth_bp
 from services.task_manager import TaskManager
 from services.validation import ValidationService
@@ -48,19 +49,18 @@ def heartbeat_job():
 
 
 def start_scheduler(app):
-    """Start the scheduler unless we are in testing, a CLI command, reloader parent, or non-designated worker."""
+    """Start the scheduler only if we can acquire and hold the Redis lock."""
     if app.config.get('TESTING'):
         logger.info("Testing mode – scheduler not started.")
         return
-    if 'flask' in sys.argv[0] and len(sys.argv) > 1:
-        return
-    if os.environ.get('APSCHEDULER_RUN') == '1':
+
+    if leader_lock.acquire():
+        logger.info("This worker is the leader. Starting scheduler.")
         _start(app)
-        return
-    if os.environ.get('WERKZEUG_RUN_MAIN') != 'false':
-        _start(app)
-        return
-    logger.info("Scheduler not started in this worker.")
+        import atexit
+        atexit.register(leader_lock.release)
+    else:
+        logger.info("Another worker is the leader. Scheduler not started.")
 
 
 def _start(app):
@@ -258,39 +258,42 @@ def create_app(config_name='development'):
             'due_today': due_today
         })
 
-    # -------------------------------------------------------------
-    # Notifications
-    # -------------------------------------------------------------
-    from services.reminder import notification_queue
 
+    # -------------------------------------------------------------
+    # Notifications – now using database table
+    # -------------------------------------------------------------
     @app.route('/api/notifications', methods=['GET'])
     @login_required
     def get_notifications():
         user_id = current_user.id
-        user_notifs = [n for n in notification_queue
-                       if n['user_id'] == user_id and not n['seen']]
-        user_notifs.sort(key=lambda n: n['id'], reverse=True)
-        return jsonify(user_notifs)
+        notifications = Notification.query.filter_by(
+            user_id=user_id, seen=False
+        ).order_by(Notification.created_at.desc()).all()
+        return jsonify([n.to_dict() for n in notifications])
 
     @app.route('/api/notifications/<int:notification_id>/seen', methods=['PUT'])
     @login_required
     def mark_notification_seen(notification_id):
-        user_id = current_user.id
-        for notif in notification_queue:
-            if notif['id'] == notification_id and notif['user_id'] == user_id:
-                notif['seen'] = True
-                return jsonify({'success': True})
-        return jsonify({'error': 'Notification not found'}), 404
+        notification = Notification.query.filter_by(
+            id=notification_id, user_id=current_user.id
+        ).first()
+        if not notification:
+            return jsonify({'error': 'Notification not found'}), 404
+        notification.seen = True
+        db.session.commit()
+        return jsonify({'success': True})
 
     @app.route('/api/notifications/<int:notification_id>/dismiss', methods=['POST'])
     @login_required
     def dismiss_notification(notification_id):
-        user_id = current_user.id
-        for notif in notification_queue:
-            if notif['id'] == notification_id and notif['user_id'] == user_id:
-                notif['seen'] = True
-                return jsonify({'success': True, 'message': 'Notification dismissed'}), 200
-        return jsonify({'error': 'Notification not found'}), 404
+        notification = Notification.query.filter_by(
+            id=notification_id, user_id=current_user.id
+        ).first()
+        if not notification:
+            return jsonify({'error': 'Notification not found'}), 404
+        notification.seen = True
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Notification dismissed'}), 200
 
     return app
 
