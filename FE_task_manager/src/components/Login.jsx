@@ -1,4 +1,5 @@
 import { GoogleLogin } from "@react-oauth/google";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function Login({ onLoginSuccess }) {
   const handleSuccess = async (credentialResponse) => {
@@ -12,12 +13,16 @@ export default function Login({ onLoginSuccess }) {
       const data = await res.json();
       if (res.ok && data.user) {
         localStorage.setItem("user", JSON.stringify(data.user));
+        showSuccess(`Welcome, ${data.user.name || data.user.email}!`);
         onLoginSuccess(data.user);
+        window.location.reload();
       } else {
+        showError(data.error || "Login failed");
         console.error("Login failed", data.error);
       }
     } catch (err) {
       console.error("Login error", err);
+      showError("Login failed. Please try again.");
     }
   };
 
@@ -30,7 +35,7 @@ export default function Login({ onLoginSuccess }) {
         <div className="flex justify-center">
           <GoogleLogin
             onSuccess={handleSuccess}
-            onError={() => console.log("Login Failed")}
+            onError={() => showError("Google login failed")}
           />
         </div>
       </div>
