@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { LogOut, User } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { logout } from "../services/api";
+import NotificationDisplay from "./NotificationDisplay";
 
 export default function Header({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -86,6 +87,9 @@ export default function Header({ user, onLogout }) {
           )}
         </div>
       </div>
+
+      {/* Notification bell – placed below the top row */}
+      <NotificationDisplay />
     </div>
   );
 }
