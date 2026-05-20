@@ -1,5 +1,6 @@
 import { CheckCircle, Circle, Pencil, Trash2 } from "lucide-react";
 import { updateTask, deleteTask } from "../services/api";
+import { showSuccess, showError } from "../utils/toast";
 
 const SORTABLE_COLUMNS = {
   title: "Title",
@@ -26,9 +27,11 @@ const TaskTable = ({
     if (!confirmed) return;
     try {
       await deleteTask(id);
+      showSuccess("Task deleted");
       reload();
     } catch (err) {
       console.error(err);
+      showError(err.message || "Delete failed");
     }
   };
 
@@ -36,9 +39,11 @@ const TaskTable = ({
     const updatedStatus = task.status === "completed" ? "pending" : "completed";
     try {
       await updateTask(task.id, { status: updatedStatus });
+      showSuccess(`Task marked as ${updatedStatus}`);
       reload();
     } catch (err) {
       console.error(err);
+      showError(err.message || "Failed to update status");
     }
   };
 
@@ -47,13 +52,11 @@ const TaskTable = ({
     return sortDir === "asc" ? " ▲" : " ▼";
   };
 
-  // Helper to format date for mobile cards
   const formatDate = (dateString) => {
     if (!dateString) return "—";
     return new Date(dateString).toLocaleDateString();
   };
 
-  // Priority badge style
   const getPriorityStyle = (priority) => {
     switch (priority) {
       case "high":
@@ -65,7 +68,6 @@ const TaskTable = ({
     }
   };
 
-  // Table header (visible only on desktop)
   const TableHeader = () => (
     <thead className="bg-gray-50 hidden md:table-header-group">
       <tr>
@@ -92,7 +94,6 @@ const TaskTable = ({
     </thead>
   );
 
-  // Desktop table row
   const DesktopRow = ({ task }) => (
     <tr key={task.id} className="hover:bg-gray-50">
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -152,7 +153,6 @@ const TaskTable = ({
     </tr>
   );
 
-  // Mobile card layout
   const MobileCard = ({ task }) => (
     <div className="bg-white rounded-lg shadow p-4 mb-4 md:hidden">
       <div className="flex justify-between items-start">

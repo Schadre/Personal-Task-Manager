@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Menu, X } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 import { getTasks } from "./services/api";
 import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
@@ -146,103 +147,106 @@ function App() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
+      <>
+        <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+        <div className="flex justify-center items-center h-screen">
+          Loading...
+        </div>
+      </>
     );
   }
 
   if (!user) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
+    return (
+      <>
+        <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+        <Login onLoginSuccess={handleLoginSuccess} />
+      </>
+    );
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
-      {/* Hamburger button (mobile only) */}
-      <button
-        className="fixed top-4 left-4 z-50 md:hidden bg-white p-2 rounded-md shadow-md"
-        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-        aria-label="Toggle menu"
-      >
-        {isMobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+    <>
+      <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+      <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+        {/* Hamburger button (mobile only) */}
+        <button
+          className="fixed top-4 left-4 z-50 md:hidden bg-white p-2 rounded-md shadow-md"
+          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-      {/* Sidebar with responsive visibility */}
-      <div
-        className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
-          md:relative md:translate-x-0
-          ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-      >
-        <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
-      </div>
-
-      {/* Overlay for mobile sidebar */}
-      {isMobileSidebarOpen && (
+        {/* Sidebar with responsive visibility */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={() => setIsMobileSidebarOpen(false)}
+          className={`
+            fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+            md:relative md:translate-x-0
+            ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          `}
+        >
+          <Sidebar setShowModal={() => setIsAddModalOpen(true)} />
+        </div>
+
+        {/* Overlay for mobile sidebar */}
+        {isMobileSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+            onClick={() => setIsMobileSidebarOpen(false)}
+          />
+        )}
+
+        {/* Main content area */}
+        <div className="flex-1 overflow-auto p-4 sm:p-6 md:p-8 w-full pt-16 sm:pt-4 md:pt-6">
+          <Header user={user} onLogout={handleLogout} />
+
+          <StatsCards tasks={filteredTasks} />
+
+          {/* Quick filter buttons – scroll horizontally on mobile */}
+          <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
+            {["today", "overdue", "this_week"].map((name) => (
+              <button
+                key={name}
+                onClick={() => handleQuickFilter(name)}
+                className={`px-3 py-1 rounded text-sm font-medium capitalize whitespace-nowrap ${
+                  quickFilter === name
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                {name.replace("_", " ")}
+              </button>
+            ))}
+          </div>
+
+          <SearchFilter onFilterChange={handleFilterChange} />
+          <TaskTable
+            tasks={filteredTasks}
+            reload={() => loadTasks(queryString)}
+            onEditTask={handleEditTask}
+            sortColumn={sortColumn}
+            sortDir={sortDir}
+            onSortChange={handleSortChange}
+          />
+        </div>
+
+        <AddTaskModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onTaskAdded={() => loadTasks(queryString)}
         />
-      )}
-
-      {/* Main content area */}
-      <div className="flex-1 overflow-auto p-4 sm:p-6 md:p-8 w-full pt-16 sm:pt-4 md:pt-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <Header user={user} />
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-full sm:w-auto"
-          >
-            Logout
-          </button>
-        </div>
-
-        <StatsCards tasks={filteredTasks} />
-
-        {/* Quick filter buttons – scroll horizontally on mobile */}
-        <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
-          {["today", "overdue", "this_week"].map((name) => (
-            <button
-              key={name}
-              onClick={() => handleQuickFilter(name)}
-              className={`px-3 py-1 rounded text-sm font-medium capitalize whitespace-nowrap ${
-                quickFilter === name
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {name.replace("_", " ")}
-            </button>
-          ))}
-        </div>
-
-        <SearchFilter onFilterChange={handleFilterChange} />
-        <TaskTable
-          tasks={filteredTasks}
-          reload={() => loadTasks(queryString)}
-          onEditTask={handleEditTask}
-          sortColumn={sortColumn}
-          sortDir={sortDir}
-          onSortChange={handleSortChange}
+        <EditTaskModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedTask(null);
+          }}
+          task={selectedTask}
+          onTaskUpdated={() => loadTasks(queryString)}
         />
       </div>
-
-      <AddTaskModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onTaskAdded={() => loadTasks(queryString)}
-      />
-      <EditTaskModal
-        isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setSelectedTask(null);
-        }}
-        task={selectedTask}
-        onTaskUpdated={() => loadTasks(queryString)}
-      />
-    </div>
+    </>
   );
 }
 

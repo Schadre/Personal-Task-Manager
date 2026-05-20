@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateTask } from "../services/api";
+import { showSuccess, showError } from "../utils/toast";
 
 const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
   const [formData, setFormData] = useState({
@@ -62,15 +63,18 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
       };
 
       await updateTask(task.id, updatedTask);
+      showSuccess("Task updated");
       onTaskUpdated();
       onClose();
     } catch (error) {
       console.error("Failed to update task:", error);
       if (error.message.includes("404")) {
+        showError("Task no longer exists");
         setErrors({ form: "Task no longer exists. Refreshing list..." });
         onTaskUpdated();
         setTimeout(() => onClose(), 1500);
       } else {
+        showError(error.message || "Update failed");
         setErrors({ form: "Update failed. Please try again." });
       }
     } finally {

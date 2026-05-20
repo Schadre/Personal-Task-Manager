@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell, X } from "lucide-react";
 import { getNotifications, dismissNotification } from "../services/api";
+import { showSuccess, showError } from "../utils/toast";
 
 const NotificationDisplay = () => {
   const [notifications, setNotifications] = useState([]);
@@ -12,7 +13,6 @@ const NotificationDisplay = () => {
       const data = await getNotifications();
       setNotifications(Array.isArray(data) ? data : []);
     } catch (err) {
-      
     }
   };
 
@@ -37,8 +37,10 @@ const NotificationDisplay = () => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
     try {
       await dismissNotification(id);
+      showSuccess("Notification dismissed");
     } catch (err) {
       console.error("Failed to dismiss notification", err);
+      showError(err.message || "Dismiss failed");
       setNotifications(original);
     }
   };

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createTask } from "../services/api";
+import { showSuccess, showError } from "../utils/toast";
 
 export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
   const [formData, setFormData] = useState({
@@ -61,10 +62,12 @@ export default function AddTaskModal({ isOpen, onClose, onTaskAdded }) {
         category: formData.category.trim() || "Uncategorized",
       });
 
+      showSuccess("Task created");
       onTaskAdded();
       onClose();
     } catch (error) {
       console.error("Failed to create task:", error);
+      showError(error.message || "Creation failed");
       setErrors({ form: "Creation failed. Please try again." });
     } finally {
       setIsSubmitting(false);
