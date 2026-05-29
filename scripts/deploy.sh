@@ -16,13 +16,13 @@ export PATH="/opt/node-20/bin:$PATH"
 
 # TASKMGR_DB_PATH must match the systemd unit or migrations hit the wrong file
 DB_PATH="$TARGET/data/database.db"
-FLASK_ENV=$( [ "$ENV" = "prod" ] && echo production || echo development )
+TASKMGR_ENV_NAME=$( [ "$ENV" = "prod" ] && echo production || echo development )
 PORT=$( [ "$ENV" = "prod" ] && echo 5000 || echo 5001 )
 
 log() { printf '[deploy %s] %s\n' "$ENV" "$*"; }
 
 flask_db() {
-  TASKMGR_ENV="$FLASK_ENV" TASKMGR_DB_PATH="$DB_PATH" \
+  TASKMGR_ENV="$TASKMGR_ENV_NAME" TASKMGR_DB_PATH="$DB_PATH" \
     "$TARGET/.venv/bin/python" -m flask --app app db "$@"
 }
 
@@ -68,7 +68,8 @@ cd "$TARGET/BE_task_manager"
 log "verifying health on port $PORT"
 health=""
 for _ in $(seq 1 10); do
-  code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT/api/health" || true)
+  code=$(curl --connect-timeout 2 --max-time 5 -s -o /dev/null \
+    -w '%{http_code}' "http://127.0.0.1:$PORT/api/health" || printf '000')
   if [ "$code" = "200" ]; then health=ok; break; fi
   sleep 2
 done
@@ -79,8 +80,8 @@ fi
 log "health ok"
 
 log "verifying migration head"
-current=$(flask_db current 2>/dev/null | grep -oE '[0-9a-f]{12}' | head -1)
-head=$(flask_db heads 2>/dev/null | grep -oE '[0-9a-f]{12}' | head -1)
+current=$(flask_db current 2>/dev/null | grep -oE '[0-9a-f]{12}' | head -1 || true)
+head=$(flask_db heads 2>/dev/null | grep -oE '[0-9a-f]{12}' | head -1 || true)
 if [ -z "$current" ] || [ "$current" != "$head" ]; then
   echo "[deploy $ENV] migration mismatch: current=${current:-none} head=${head:-none}" >&2
   exit 1
