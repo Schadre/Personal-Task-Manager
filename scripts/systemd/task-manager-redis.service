@@ -1,0 +1,13 @@
+[Unit]
+Description=Redis for Personal Task Manager (dedicated instance)
+After=network.target
+
+[Service]
+Type=exec
+User=deploy
+Group=deploy
+ExecStart=/usr/bin/redis-server /srv/task-manager/redis/redis.conf
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
