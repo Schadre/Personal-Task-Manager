@@ -14,7 +14,17 @@ esac
 TARGET="/srv/task-manager/$ENV"
 export PATH="/opt/node-20/bin:$PATH"
 
+# TASKMGR_DB_PATH must match the systemd unit or migrations hit the wrong file
+DB_PATH="$TARGET/data/database.db"
+FLASK_ENV=$( [ "$ENV" = "prod" ] && echo production || echo development )
+PORT=$( [ "$ENV" = "prod" ] && echo 5000 || echo 5001 )
+
 log() { printf '[deploy %s] %s\n' "$ENV" "$*"; }
+
+flask_db() {
+  TASKMGR_ENV="$FLASK_ENV" TASKMGR_DB_PATH="$DB_PATH" \
+    "$TARGET/.venv/bin/python" -m flask --app app db "$@"
+}
 
 log "writing FE env from VITE_GOOGLE_CLIENT_ID"
 : "${VITE_GOOGLE_CLIENT_ID:?VITE_GOOGLE_CLIENT_ID must be set}"
@@ -41,17 +51,40 @@ cd "$TARGET/BE_task_manager"
 if [ -d "$TARGET/BE_task_manager/migrations" ]; then
   log "flask db upgrade"
   cd "$TARGET/BE_task_manager"
-  # TASKMGR_DB_PATH must match the systemd unit or migrations hit the wrong file
-  DB_PATH="$TARGET/data/database.db"
   mkdir -p "$(dirname "$DB_PATH")"
-  FLASK_ENV=$( [ "$ENV" = "prod" ] && echo production || echo development )
-  TASKMGR_ENV="$FLASK_ENV" TASKMGR_DB_PATH="$DB_PATH" \
-    "$TARGET/.venv/bin/python" -m flask --app app db upgrade
+  flask_db upgrade
 fi
 
 if [ "$(systemctl show --property=LoadState --value "$SERVICE.service" 2>/dev/null)" = "loaded" ]; then
   log "restarting $SERVICE"
   sudo /bin/systemctl restart "$SERVICE"
 fi
+
+# Post-deploy verification. A failure here exits non-zero, which fails the
+# SSH command in the deploy workflow, so a broken deploy shows up red
+# instead of silently reporting success.
+cd "$TARGET/BE_task_manager"
+
+log "verifying health on port $PORT"
+health=""
+for _ in $(seq 1 10); do
+  code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT/api/health" || true)
+  if [ "$code" = "200" ]; then health=ok; break; fi
+  sleep 2
+done
+if [ -z "$health" ]; then
+  echo "[deploy $ENV] health check failed (last status: ${code:-none})" >&2
+  exit 1
+fi
+log "health ok"
+
+log "verifying migration head"
+current=$(flask_db current 2>/dev/null | grep -oE '[0-9a-f]{12}' | head -1)
+head=$(flask_db heads 2>/dev/null | grep -oE '[0-9a-f]{12}' | head -1)
+if [ -z "$current" ] || [ "$current" != "$head" ]; then
+  echo "[deploy $ENV] migration mismatch: current=${current:-none} head=${head:-none}" >&2
+  exit 1
+fi
+log "migration head ok ($current)"
 
 log "done"
