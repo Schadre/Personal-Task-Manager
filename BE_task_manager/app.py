@@ -10,6 +10,7 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_login import current_user, login_required
 from flask_migrate import Migrate
+from werkzeug.exceptions import HTTPException
 from dateutil import parser
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers import SchedulerAlreadyRunningError
@@ -30,7 +31,7 @@ REPO_ROOT = BASE_DIR.parent
 FRONTEND_DIST = REPO_ROOT / 'FE_task_manager' / 'dist'
 
 # -------------------------------------------------------------------
-# Scheduler setup – module level (only one per process)
+# Scheduler setup
 # -------------------------------------------------------------------
 scheduler = BackgroundScheduler()
 
@@ -68,7 +69,6 @@ def _start(app):
     if scheduler.running:
         return
 
-    # Heartbeat
     scheduler.add_job(
         func=lambda: app.app_context().push() or heartbeat_job(),
         trigger='interval',
@@ -151,6 +151,40 @@ def create_app(config_name='development'):
         logger.info(
             f"Scheduler not started in {config_name} environment (Redis not required)")
 
+    # -------------------------------------------------------------
+    # Global error handlers – ensure JSON responses, no stack traces
+    # -------------------------------------------------------------
+    @app.errorhandler(400)
+    def bad_request(e):
+        return jsonify({'error': 'Bad request', 'message': str(e)}), 400
+
+    @app.errorhandler(401)
+    def unauthorized(e):
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    @app.errorhandler(403)
+    def forbidden(e):
+        return jsonify({'error': 'Forbidden'}), 403
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return jsonify({'error': 'Not found'}), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(e):
+        return jsonify({'error': 'Method not allowed'}), 405
+
+    @app.errorhandler(500)
+    def internal_error(e):
+        app.logger.error(f'Internal server error: {e}', exc_info=True)
+        return jsonify({'error': 'Internal server error'}), 500
+
+    if not app.debug:
+        @app.errorhandler(Exception)
+        def handle_unhandled_exception(e):
+            app.logger.error(f'Unhandled exception: {e}', exc_info=True)
+            return jsonify({'error': 'An unexpected error occurred'}), 500
+
     @app.route('/api/health')
     def health():
         return {'status': 'ok', 'service': 'Personal Task Manager API'}
@@ -166,7 +200,7 @@ def create_app(config_name='development'):
         return send_from_directory(FRONTEND_DIST, 'index.html')
 
     # -------------------------------------------------------------
-    # CRUD routes – thin controllers
+    # CRUD routes 
     # -------------------------------------------------------------
     @app.route('/api/tasks', methods=['GET'])
     @login_required
@@ -262,9 +296,8 @@ def create_app(config_name='development'):
             'due_today': due_today
         })
 
-
     # -------------------------------------------------------------
-    # Notifications – now using database table
+    # Notifications
     # -------------------------------------------------------------
     @app.route('/api/notifications', methods=['GET'])
     @login_required
