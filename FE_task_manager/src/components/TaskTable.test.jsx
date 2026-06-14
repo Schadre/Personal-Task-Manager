@@ -76,7 +76,7 @@ describe("TaskTable", () => {
         onEditTask={mockOnEditTask}
       />,
     );
-    const toggleButtons = screen.getAllByLabelText("Toggle complete");
+    const toggleButtons = screen.getAllByLabelText(/^Mark task .* as /);
     // First button corresponds to Task One (pending)
     fireEvent.click(toggleButtons[0]);
 
@@ -95,7 +95,7 @@ describe("TaskTable", () => {
         onEditTask={mockOnEditTask}
       />,
     );
-    const toggleButtons = screen.getAllByLabelText("Toggle complete");
+    const toggleButtons = screen.getAllByLabelText(/^Mark task .* as /);
     // Second button corresponds to Task Two (completed)
     fireEvent.click(toggleButtons[1]);
 
@@ -115,7 +115,7 @@ describe("TaskTable", () => {
         onEditTask={mockOnEditTask}
       />,
     );
-    const deleteButtons = screen.getAllByLabelText("Delete");
+    const deleteButtons = screen.getAllByLabelText(/^Delete task /);
     fireEvent.click(deleteButtons[0]);
 
     await waitFor(() => {
@@ -133,7 +133,7 @@ describe("TaskTable", () => {
         onEditTask={mockOnEditTask}
       />,
     );
-    const deleteButtons = screen.getAllByLabelText("Delete");
+    const deleteButtons = screen.getAllByLabelText(/^Delete task /);
     fireEvent.click(deleteButtons[0]);
 
     expect(deleteTask).not.toHaveBeenCalled();
