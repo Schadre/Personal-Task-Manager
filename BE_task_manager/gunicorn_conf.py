@@ -1,6 +1,3 @@
-import os
-
-
-def post_fork(server, worker):
-    if worker.age == 0:  
-        os.environ['APSCHEDULER_RUN'] = '1'
+bind = "127.0.0.1:8000"
+workers = 3
+timeout = 120
